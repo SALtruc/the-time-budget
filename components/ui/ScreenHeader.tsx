@@ -13,8 +13,8 @@ export function ScreenHeader({
       {backHref ? (
         <Link
           href={backHref}
-          className={`-m-3 flex min-h-11 min-w-11 items-center rounded-full p-3 text-base font-semibold active:bg-black/10 sm:text-lg ${
-            theme === "blue" ? "text-white" : "text-brand-navy"
+          className={`flex min-h-11 items-center gap-1 rounded-full border-ink px-4 py-2 text-base font-bold shadow-sticker-sm active-press sm:text-lg ${
+            theme === "blue" ? "bg-brand-navy text-white" : "bg-white text-brand-navy"
           }`}
         >
           ‹ Back
@@ -25,9 +25,9 @@ export function ScreenHeader({
       <Image
         src="/assets/mascot-start.png"
         alt=""
-        width={64}
-        height={64}
-        className="h-12 w-12 sm:h-14 sm:w-14 rounded-full border-ink bg-white object-cover object-top shadow-sticker-sm"
+        width={72}
+        height={72}
+        className="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-ink bg-white object-cover object-top shadow-sticker-sm"
       />
     </div>
   );

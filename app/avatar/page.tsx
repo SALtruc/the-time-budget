@@ -42,17 +42,21 @@ export default function AvatarPage() {
                   type="button"
                   onClick={() => setAvatarId(avatar.id)}
                   className={clsx(
-                    "aspect-square w-full overflow-hidden rounded-full border-ink bg-white transition-transform active:scale-95",
-                    isSelected ? "scale-105 ring-4 ring-brand-red" : ""
+                    "aspect-square w-full rounded-full border-ink p-1.5 transition-all active:scale-95",
+                    isSelected
+                      ? "scale-105 bg-brand-red ring-4 ring-brand-red"
+                      : "bg-white"
                   )}
                 >
-                  <Image
-                    src={avatar.src}
-                    alt=""
-                    width={276}
-                    height={276}
-                    className="h-full w-full object-cover"
-                  />
+                  <span className="block h-full w-full overflow-hidden rounded-full bg-white">
+                    <Image
+                      src={avatar.src}
+                      alt=""
+                      width={276}
+                      height={276}
+                      className="h-full w-full object-cover"
+                    />
+                  </span>
                 </button>
                 {isSelected && (
                   <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-ink bg-brand-red font-display text-sm text-white shadow-sticker-sm">

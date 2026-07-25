@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Baloo_2, Nunito } from "next/font/google";
+import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
 
-// Baloo 2: bold, rounded, and stays legible at small sizes on mobile —
-// a better fit for this playful "sticker" style than Archivo Black, which
-// is tight/condensed and got hard to read at mobile body-copy sizes.
-const displayFont = Baloo_2({
+// Fredoka: bold, rounded, purpose-built for playful UI and reads clean
+// at every size — a better fit for this "sticker" style than Archivo
+// Black (too tight/condensed for mobile body copy).
+const displayFont = Fredoka({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
 const sansFont = Nunito({
