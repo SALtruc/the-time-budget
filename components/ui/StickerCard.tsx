@@ -8,13 +8,14 @@ export function StickerCard({
   ...props
 }: HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
-  tone?: "white" | "gold" | "navy" | "cream";
+  tone?: "white" | "gold" | "navy" | "cream" | "custom";
 }) {
   const toneClasses: Record<string, string> = {
     white: "bg-white",
     gold: "bg-brand-gold",
     navy: "bg-brand-navy text-white",
     cream: "bg-brand-cream",
+    custom: "",
   };
 
   return (

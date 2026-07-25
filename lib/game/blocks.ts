@@ -7,6 +7,9 @@ export interface BlockDefinition {
   description: string;
   careerRelevance: "Moderate" | "Foundational" | "High" | "Very high";
   careerRelevanceNote: string;
+  /** Tailwind background/text classes for the allocation card, matching the design reference. */
+  cardBg: string;
+  cardText: string;
 }
 
 export const BLOCKS: Record<BlockKey, BlockDefinition> = {
@@ -19,6 +22,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "Moderate",
     careerRelevanceNote:
       "Academic knowledge supports career readiness but is not sufficient alone.",
+    cardBg: "bg-brand-gold",
+    cardText: "text-brand-navy",
   },
   assignment: {
     key: "assignment",
@@ -29,6 +34,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "Moderate",
     careerRelevanceNote:
       "Deadline-driven work matters, but rarely translates into career capital on its own.",
+    cardBg: "bg-brand-pink",
+    cardText: "text-brand-navy",
   },
   networking: {
     key: "networking",
@@ -39,6 +46,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "Very high",
     careerRelevanceNote:
       "Genuine relationships create opportunities that job boards never will.",
+    cardBg: "bg-brand-cyan",
+    cardText: "text-brand-navy",
   },
   restWellbeing: {
     key: "restWellbeing",
@@ -48,6 +57,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "Foundational",
     careerRelevanceNote:
       "Everything else you do runs on the recovery you protect here.",
+    cardBg: "bg-white",
+    cardText: "text-brand-navy",
   },
   workExperience: {
     key: "workExperience",
@@ -58,6 +69,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "High",
     careerRelevanceNote:
       "Real-world experience becomes career capital when you reflect on it.",
+    cardBg: "bg-brand-red",
+    cardText: "text-white",
   },
   careerPrep: {
     key: "careerPrep",
@@ -68,6 +81,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "Very high",
     careerRelevanceNote:
       "Small, consistent career actions compound over time.",
+    cardBg: "bg-brand-navy",
+    cardText: "text-white",
   },
   leadership: {
     key: "leadership",
@@ -78,6 +93,8 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     careerRelevance: "High",
     careerRelevanceNote:
       "Community-building is a highly transferable professional skill.",
+    cardBg: "bg-brand-blue",
+    cardText: "text-white",
   },
 };
 

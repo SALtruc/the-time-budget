@@ -9,6 +9,7 @@ interface SessionState {
   mode: SessionMode | null;
   roleId: RoleId | null;
   isHost: boolean;
+  bonusHours: number;
   setSession: (params: {
     sessionId: string;
     roomCode: string;
@@ -16,7 +17,9 @@ interface SessionState {
     mode: SessionMode;
     roleId?: RoleId | null;
     isHost?: boolean;
+    bonusHours?: number;
   }) => void;
+  setRoleId: (roleId: RoleId) => void;
   clearSession: () => void;
 }
 
@@ -27,9 +30,19 @@ export const useSessionStore = create<SessionState>((set) => ({
   mode: null,
   roleId: null,
   isHost: false,
+  bonusHours: 0,
 
-  setSession: ({ sessionId, roomCode, participantId, mode, roleId = null, isHost = false }) =>
-    set({ sessionId, roomCode, participantId, mode, roleId, isHost }),
+  setSession: ({
+    sessionId,
+    roomCode,
+    participantId,
+    mode,
+    roleId = null,
+    isHost = false,
+    bonusHours = 0,
+  }) => set({ sessionId, roomCode, participantId, mode, roleId, isHost, bonusHours }),
+
+  setRoleId: (roleId) => set({ roleId }),
 
   clearSession: () =>
     set({
@@ -39,5 +52,6 @@ export const useSessionStore = create<SessionState>((set) => ({
       mode: null,
       roleId: null,
       isHost: false,
+      bonusHours: 0,
     }),
 }));

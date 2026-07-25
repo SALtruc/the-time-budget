@@ -11,6 +11,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
       "Strong grades matter, but employers also value practical experience and career readiness.",
     advice:
       "Try shifting 2–3 hours from self-studying into career preparation or networking each week. You do not need to study less — you need to make sure your knowledge is being translated into career action.",
+    deltas: [
+      { block: "selfStudying", hours: -2 },
+      { block: "careerPrep", hours: 2 },
+    ],
   },
   deadlineWarrior: {
     id: "deadlineWarrior",
@@ -22,6 +26,11 @@ export const PROFILES: Record<ProfileId, Profile> = {
       "Career preparation is often overlooked because it has no immediate deadline.",
     advice:
       "Cut assignment hours by planning ahead so you are not cramming at the last minute. Redirect even 2–3 hours into rest or career preparation. A well-rested student produces better work in less time.",
+    deltas: [
+      { block: "assignment", hours: -2 },
+      { block: "restWellbeing", hours: 2 },
+      { block: "careerPrep", hours: 1 },
+    ],
   },
   academicStrategist: {
     id: "academicStrategist",
@@ -32,6 +41,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Strategic planning shouldn't stop academics, apply it to your career too.",
     advice:
       "Keep your study and assignment balance but find 3–4 hours to add networking or career preparation. Attend one industry event or career workshop this week instead of an extra revision session.",
+    deltas: [
+      { block: "networking", hours: 2 },
+      { block: "careerPrep", hours: 2 },
+    ],
   },
   sideHustleHero: {
     id: "sideHustleHero",
@@ -43,6 +56,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
       "Work experience only becomes career capital when you reflect on and communicate what you've learned.",
     advice:
       "Try reducing work hours by 2–3 hours and putting that time into rest and wellbeing. You are building great experience — protect your ability to sustain it by looking after yourself.",
+    deltas: [
+      { block: "workExperience", hours: -2 },
+      { block: "restWellbeing", hours: 2 },
+    ],
   },
   busyBeeProfessional: {
     id: "busyBeeProfessional",
@@ -53,6 +70,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Constantly juggling commitments can lead to burnout.",
     advice:
       "You need to make a hard decision about what to cut. Consider reducing either work hours or assignment prep time and putting at least 5–6 hours back into rest and wellbeing. You cannot pour from an empty cup.",
+    deltas: [
+      { block: "workExperience", hours: -3 },
+      { block: "restWellbeing", hours: 6 },
+    ],
   },
   miniCeo: {
     id: "miniCeo",
@@ -63,6 +84,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Sustainable performance requires recovery, not just effort.",
     advice:
       "Protect at least 6–8 hours of genuine rest and recovery each week. You do not need to slow down — you need to be sustainable. Even the most successful people schedule recovery time.",
+    deltas: [{ block: "restWellbeing", hours: 7 }],
   },
   careerClimber: {
     id: "careerClimber",
@@ -73,6 +95,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Small, consistent career actions compound over time.",
     advice:
       "You are doing well — the main thing to watch is not burning out on career preparation alone. Add a small amount of networking to complement your preparation work, and make sure rest is not being sacrificed.",
+    deltas: [
+      { block: "networking", hours: 2 },
+      { block: "restWellbeing", hours: 1 },
+    ],
   },
   networkingNinja: {
     id: "networkingNinja",
@@ -83,6 +109,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Networks create opportunities when relationships are genuine and purposeful.",
     advice:
       "Make sure self-studying and assignments are getting enough hours to keep your academic standing strong. Even shifting 3–4 hours from networking into study will protect your GPA without losing your networking momentum.",
+    deltas: [
+      { block: "networking", hours: -3 },
+      { block: "selfStudying", hours: 3 },
+    ],
   },
   opportunityHunter: {
     id: "opportunityHunter",
@@ -93,6 +123,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Career growth shouldn't come at the expense of wellbeing or academics.",
     advice:
       "The main risk is that rest is being squeezed. Make sure you are getting enough recovery time to sustain this level of activity. Even 1–2 extra hours of rest per week can significantly improve your focus and output.",
+    deltas: [{ block: "restWellbeing", hours: 2 }],
   },
   rechargeChampion: {
     id: "rechargeChampion",
@@ -103,6 +134,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Recovery improves the quality of every other activity.",
     advice:
       "You do not need to give up rest — you need to redirect some of it into career preparation. Try swapping 3–4 hours of leisure time for a career workshop, a CV review, or a networking event. Rest smart, not just more.",
+    deltas: [
+      { block: "restWellbeing", hours: -3 },
+      { block: "careerPrep", hours: 3 },
+    ],
   },
   zenMaster: {
     id: "zenMaster",
@@ -113,6 +148,11 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Too much rest can sometimes indicate avoidance rather than recovery.",
     advice:
       "You need to make a meaningful shift toward career preparation and networking. Even moving 8–10 hours from rest into career-focused activities will dramatically change your trajectory without destroying your wellbeing.",
+    deltas: [
+      { block: "restWellbeing", hours: -8 },
+      { block: "careerPrep", hours: 4 },
+      { block: "networking", hours: 4 },
+    ],
   },
   balancedBattery: {
     id: "balancedBattery",
@@ -123,6 +163,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Consistency often outperforms periods of intense effort followed by burnout.",
     advice:
       "You are in a strong position — the main upgrade is to push career preparation slightly higher. Even 2–3 more hours on career prep per week will take you from balanced to truly ahead of the curve.",
+    deltas: [{ block: "careerPrep", hours: 2 }],
   },
   campusConnector: {
     id: "campusConnector",
@@ -133,6 +174,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Social capital becomes valuable when converted into opportunities and learning.",
     advice:
       "Try channelling some of your social energy into professional networking rather than purely campus socialising. And protect at least 15–18 hours for study and assignments to keep your academic performance on track.",
+    deltas: [
+      { block: "leadership", hours: -3 },
+      { block: "networking", hours: 3 },
+    ],
   },
   communityBuilder: {
     id: "communityBuilder",
@@ -143,6 +188,7 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Community-building is a highly transferable professional skill.",
     advice:
       "Consider adding some work experience to your week if you have not already. Practical real-world experience alongside your strong community presence will make your graduate profile very competitive.",
+    deltas: [{ block: "workExperience", hours: 3 }],
   },
   timeManagementArchitect: {
     id: "timeManagementArchitect",
@@ -153,6 +199,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Success comes from conscious trade-offs, not perfect balance.",
     advice:
       "The only upgrade available to you is to push career preparation slightly higher while trimming from self-studying. You are already doing everything right — the question is whether you can sharpen your focus just a little more in the areas with the highest career return.",
+    deltas: [
+      { block: "selfStudying", hours: -2 },
+      { block: "careerPrep", hours: 2 },
+    ],
   },
   rmitAllRounder: {
     id: "rmitAllRounder",
@@ -163,6 +213,10 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: "Exploration is valuable early on but should gradually lead to focus.",
     advice:
       "Pick one or two areas to invest in more deliberately this semester. If you are unsure where to focus, career preparation and networking tend to have the highest long-term return. Start there and see where it leads.",
+    deltas: [
+      { block: "careerPrep", hours: 2 },
+      { block: "networking", hours: 2 },
+    ],
   },
   strategicJuggler: {
     id: "strategicJuggler",
@@ -173,6 +227,11 @@ export const PROFILES: Record<ProfileId, Profile> = {
     keyInsight: 'The ability to say "no" is as important as the ability to say "yes."',
     advice:
       "You need to make a deliberate choice to do less. Identify your lowest-priority block and cut it by 5–8 hours. Redirect that time into rest. Doing five things sustainably is more valuable than doing seven things at the edge of burnout.",
+    // Illustrative only — the actual lowest-priority block varies per player.
+    deltas: [
+      { block: "assignment", hours: -5 },
+      { block: "restWellbeing", hours: 5 },
+    ],
   },
 };
 

@@ -1,7 +1,41 @@
 import { StickerCard } from "@/components/ui/StickerCard";
+import { ProgressBar } from "@/components/ui/ProgressBar";
+import { BLOCKS } from "@/lib/game/blocks";
 import type { Profile } from "@/lib/game/types";
 
-export function ProfileResultCard({ profile }: { profile: Profile }) {
+function DeltaRow({ block, hours }: { block: string; hours: number }) {
+  const label = BLOCKS[block as keyof typeof BLOCKS].label;
+  const positive = hours > 0;
+
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-28 sm:w-36 shrink-0 text-sm sm:text-base font-bold">
+        {label}
+      </span>
+      <ProgressBar
+        percent={Math.min(Math.abs(hours) * 8, 100)}
+        colorClassName={positive ? "bg-brand-pink" : "bg-brand-red"}
+        className="h-2.5 flex-1"
+      />
+      <span
+        className={`w-10 shrink-0 text-right text-sm sm:text-base font-bold ${
+          positive ? "text-brand-pink" : "text-brand-red"
+        }`}
+      >
+        {positive ? "+" : ""}
+        {hours}h
+      </span>
+    </div>
+  );
+}
+
+export function ProfileResultCard({
+  profile,
+  subtitle,
+}: {
+  profile: Profile;
+  subtitle?: string;
+}) {
   return (
     <div className="flex flex-col gap-4">
       <StickerCard tone="navy" className="p-5 sm:p-6 text-center">
@@ -9,9 +43,14 @@ export function ProfileResultCard({ profile }: { profile: Profile }) {
           Your Time Profile
         </p>
         <h1 className="font-display text-3xl sm:text-4xl">{profile.name}</h1>
+        {subtitle && (
+          <p className="mt-1 text-sm sm:text-base italic text-white/80">
+            {subtitle}
+          </p>
+        )}
       </StickerCard>
 
-      <StickerCard tone="white" className="p-5 sm:p-6">
+      <StickerCard tone="gold" className="p-5 sm:p-6">
         <h2 className="font-display text-lg sm:text-xl mb-2">
           What does this character mean?
         </h2>
@@ -23,11 +62,18 @@ export function ProfileResultCard({ profile }: { profile: Profile }) {
         </p>
       </StickerCard>
 
-      <StickerCard tone="gold" className="p-5 sm:p-6">
-        <h2 className="font-display text-lg sm:text-xl mb-2">
+      <StickerCard tone="white" className="p-5 sm:p-6">
+        <h2 className="font-display text-lg sm:text-xl mb-2 text-brand-pink">
           What to do differently?
         </h2>
-        <p className="text-sm sm:text-base leading-relaxed">{profile.advice}</p>
+        <p className="text-sm sm:text-base leading-relaxed mb-4">
+          {profile.advice}
+        </p>
+        <div className="flex flex-col gap-3">
+          {profile.deltas.map((delta) => (
+            <DeltaRow key={delta.block} block={delta.block} hours={delta.hours} />
+          ))}
+        </div>
       </StickerCard>
     </div>
   );

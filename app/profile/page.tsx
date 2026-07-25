@@ -1,0 +1,110 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import { Ribbon } from "@/components/ui/Ribbon";
+import { ScreenHeader } from "@/components/ui/ScreenHeader";
+import { InfoModal } from "@/components/ui/InfoModal";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { updatePlayerProfile } from "@/lib/supabase/profiles";
+import { usePlayerStore } from "@/lib/store/usePlayerStore";
+
+export default function ProfilePage() {
+  const router = useRouter();
+  const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
+  const program = usePlayerStore((s) => s.program);
+  const accessCode = usePlayerStore((s) => s.accessCode);
+  const setProfileFields = usePlayerStore((s) => s.setProfileFields);
+  const playerProfileId = usePlayerStore((s) => s.playerProfileId);
+
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleNext() {
+    setSubmitting(true);
+    if (isSupabaseConfigured && playerProfileId) {
+      await updatePlayerProfile(playerProfileId, {
+        yearOfStudy,
+        program,
+        accessCode,
+      }).catch(() => {});
+    }
+    router.push("/mode");
+  }
+
+  return (
+    <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
+      <ScreenHeader backHref="/avatar" />
+
+      <div className="mx-auto flex w-full max-w-md flex-col gap-6">
+        <div className="flex items-center gap-3">
+          <Image
+            src="/assets/mascot-start.png"
+            alt=""
+            width={90}
+            height={110}
+            className="w-16 h-auto shrink-0"
+          />
+          <div className="rounded-2xl border-ink bg-white px-4 py-3 shadow-sticker-sm font-semibold">
+            Tell us more about yourself
+          </div>
+        </div>
+
+        <div>
+          <Ribbon color="gold" className="mb-2">
+            What year of study are you in?
+          </Ribbon>
+          <input
+            type="text"
+            value={yearOfStudy}
+            onChange={(e) => setProfileFields({ yearOfStudy: e.target.value })}
+            placeholder="e.g. Year 3"
+            className="w-full rounded-2xl border-ink bg-white px-4 py-3 text-base font-semibold shadow-sticker-sm"
+          />
+        </div>
+
+        <div>
+          <Ribbon color="gold" className="mb-2">
+            What is your current program?
+          </Ribbon>
+          <input
+            type="text"
+            value={program}
+            onChange={(e) => setProfileFields({ program: e.target.value })}
+            placeholder="e.g. Digital Marketing"
+            className="w-full rounded-2xl border-ink bg-white px-4 py-3 text-base font-semibold shadow-sticker-sm"
+          />
+        </div>
+
+        <div>
+          <Ribbon color="gold" className="mb-2 flex items-center gap-3 pr-10">
+            <span>Access code (Optional)</span>
+            <InfoModal title="Access code">
+              If your facilitator gave you a class access code, enter it here. Otherwise,
+              leave this blank.
+            </InfoModal>
+          </Ribbon>
+          <input
+            type="text"
+            value={accessCode}
+            onChange={(e) => setProfileFields({ accessCode: e.target.value })}
+            placeholder="e.g. CXVED"
+            className="w-full rounded-2xl border-ink bg-white px-4 py-3 text-base font-semibold shadow-sticker-sm"
+          />
+        </div>
+
+        <div className="flex justify-end pt-2">
+          <Button
+            variant="secondary"
+            size="lg"
+            disabled={submitting}
+            onClick={handleNext}
+          >
+            {submitting ? "Please wait…" : "Next ›"}
+          </Button>
+        </div>
+      </div>
+    </main>
+  );
+}

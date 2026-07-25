@@ -1,9 +1,9 @@
+import clsx from "clsx";
 import { StickerCard } from "@/components/ui/StickerCard";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { InfoModal } from "@/components/ui/InfoModal";
 import { Stepper } from "@/components/ui/Stepper";
 import { BLOCKS } from "@/lib/game/blocks";
-import { percentToHours } from "@/lib/game/hours";
 import type { BlockKey } from "@/lib/game/types";
 
 export function BlockAllocatorCard({
@@ -18,10 +18,12 @@ export function BlockAllocatorCard({
   disabled?: boolean;
 }) {
   const block = BLOCKS[blockKey];
-  const hours = percentToHours(percent);
 
   return (
-    <StickerCard tone="gold" className="flex flex-col gap-4 p-5 sm:p-6">
+    <StickerCard
+      tone="custom"
+      className={clsx("flex flex-col gap-3 p-5 sm:p-6", block.cardBg, block.cardText)}
+    >
       <div className="flex items-start justify-between">
         <span className="text-3xl" aria-hidden>
           {block.icon}
@@ -37,20 +39,17 @@ export function BlockAllocatorCard({
 
       <div>
         <h3 className="font-display text-xl sm:text-2xl">{block.label}</h3>
-        <p className="mt-1 text-sm sm:text-base text-brand-navy/80">
-          {block.description}
-        </p>
+        <p className="mt-1 text-sm sm:text-base opacity-80">{block.description}</p>
       </div>
 
       <div className="mt-auto">
-        <div className="mb-2 flex items-baseline justify-between">
+        <div className="mb-2 flex items-baseline justify-end">
           <span className="font-display text-2xl sm:text-3xl">{percent}%</span>
-          <span className="text-sm font-bold">{hours}h / wk</span>
         </div>
         <ProgressBar
           percent={percent}
-          colorClassName="bg-brand-navy"
-          className="h-3 bg-white/60"
+          colorClassName={block.cardText === "text-white" ? "bg-white" : "bg-brand-navy"}
+          className="h-3 bg-black/10"
         />
       </div>
 

@@ -6,17 +6,22 @@ interface GameState {
   playerName: string;
   allocation: Allocation;
   roleId: RoleId | null;
+  bonusHours: number;
+  bonusRolled: boolean;
   setPlayerName: (name: string) => void;
   setPercent: (key: BlockKey, value: number) => void;
   adjustPercent: (key: BlockKey, delta: number) => void;
   setRole: (roleId: RoleId | null, fixedAllocation: Partial<Allocation>) => void;
+  rollBonusHours: () => void;
   reset: () => void;
 }
 
-export const useGameStore = create<GameState>((set) => ({
+export const useGameStore = create<GameState>((set, get) => ({
   playerName: "",
   allocation: { ...EMPTY_ALLOCATION },
   roleId: null,
+  bonusHours: 0,
+  bonusRolled: false,
 
   setPlayerName: (name) => set({ playerName: name }),
 
@@ -39,6 +44,17 @@ export const useGameStore = create<GameState>((set) => ({
       allocation: { ...state.allocation, ...fixedAllocation },
     })),
 
+  rollBonusHours: () => {
+    if (get().bonusRolled) return;
+    set({ bonusHours: Math.random() < 0.5 ? 2 : 0, bonusRolled: true });
+  },
+
   reset: () =>
-    set({ playerName: "", allocation: { ...EMPTY_ALLOCATION }, roleId: null }),
+    set({
+      playerName: "",
+      allocation: { ...EMPTY_ALLOCATION },
+      roleId: null,
+      bonusHours: 0,
+      bonusRolled: false,
+    }),
 }));

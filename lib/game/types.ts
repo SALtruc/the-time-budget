@@ -41,6 +41,11 @@ export interface ProfileMetrics {
   missedOpps: number;
 }
 
+export interface ProfileDelta {
+  block: BlockKey;
+  hours: number;
+}
+
 export interface Profile {
   id: ProfileId;
   name: string;
@@ -48,6 +53,8 @@ export interface Profile {
   meaning: string;
   keyInsight: string;
   advice: string;
+  /** Suggested hour adjustments illustrating the advice text, shown as delta rows on the result screen. */
+  deltas: ProfileDelta[];
 }
 
 export const ROLE_IDS = [

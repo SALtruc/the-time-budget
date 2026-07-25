@@ -8,6 +8,7 @@ export interface SessionRow {
   mode: SessionMode;
   room_code: string;
   status: "waiting" | "active" | "complete";
+  bonus_hours: number;
   created_at: string;
 }
 
@@ -16,20 +17,16 @@ export interface ParticipantRow {
   session_id: string;
   display_name: string;
   role_id: RoleId | null;
+  player_profile_id: string | null;
   allocation: Allocation | null;
   profile_result: Profile | null;
   is_ready: boolean;
   joined_at: string;
 }
 
-const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I
-
-function generateRoomCode(length = 5): string {
-  let code = "";
-  for (let i = 0; i < length; i++) {
-    code += CODE_ALPHABET[Math.floor(Math.random() * CODE_ALPHABET.length)];
-  }
-  return code;
+function generateRoomCode(): string {
+  // 5-digit numeric code, matching the design reference's OTP-style entry.
+  return String(Math.floor(10000 + Math.random() * 90000));
 }
 
 function requireSupabase() {
@@ -44,12 +41,16 @@ function requireSupabase() {
 export async function createSession(mode: SessionMode): Promise<SessionRow> {
   const client = requireSupabase();
 
+  // "Surprise lecture cancelled" event: rolled once per session so every
+  // participant in a Pair/Group room sees the same bonus (fairness).
+  const bonusHours = Math.random() < 0.5 ? 2 : 0;
+
   // Retry on the (rare) chance a generated code collides with an existing one.
   for (let attempt = 0; attempt < 5; attempt++) {
     const roomCode = generateRoomCode();
     const { data, error } = await client
       .from("sessions")
-      .insert({ mode, room_code: roomCode })
+      .insert({ mode, room_code: roomCode, bonus_hours: bonusHours })
       .select()
       .single();
 
@@ -67,7 +68,7 @@ export async function getSessionByRoomCode(
   const { data, error } = await client
     .from("sessions")
     .select()
-    .eq("room_code", roomCode.toUpperCase())
+    .eq("room_code", roomCode.trim())
     .maybeSingle();
 
   if (error) throw error;
@@ -77,7 +78,8 @@ export async function getSessionByRoomCode(
 export async function joinSession(
   sessionId: string,
   displayName: string,
-  roleId: RoleId | null = null
+  roleId: RoleId | null = null,
+  playerProfileId: string | null = null
 ): Promise<ParticipantRow> {
   const client = requireSupabase();
   const { data, error } = await client
@@ -86,6 +88,7 @@ export async function joinSession(
       session_id: sessionId,
       display_name: displayName,
       role_id: roleId,
+      player_profile_id: playerProfileId,
     })
     .select()
     .single();
@@ -107,6 +110,19 @@ export async function submitAllocation(
       profile_result: profileResult,
       is_ready: true,
     })
+    .eq("id", participantId);
+
+  if (error) throw error;
+}
+
+export async function updateParticipantRole(
+  participantId: string,
+  roleId: RoleId
+): Promise<void> {
+  const client = requireSupabase();
+  const { error } = await client
+    .from("participants")
+    .update({ role_id: roleId })
     .eq("id", participantId);
 
   if (error) throw error;

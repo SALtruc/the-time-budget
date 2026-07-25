@@ -4,13 +4,13 @@
   --background: #fdf6e8;
   --foreground: #10142a;
 
-  /* Brand palette (sampled from the Time Budget asset library) */
+  /* Brand palette (sampled from the Time Budget Figma design reference) */
   --color-brand-red: #e5202e;
   --color-brand-red-dark: #b81424;
   --color-brand-gold: #f6c400;
   --color-brand-gold-dark: #c99a00;
   --color-brand-navy: #10142a;
-  --color-brand-blue: #2f6feb;
+  --color-brand-blue: #2f5fe6;
   --color-brand-cyan: #35d7e0;
   --color-brand-pink: #f45fd0;
   --color-brand-cream: #fdf6e8;
@@ -68,4 +68,26 @@ body {
 .font-display {
   font-family: var(--font-display), "Arial Black", sans-serif;
   letter-spacing: 0.01em;
+}
+
+/* Page background themes (from the design reference: yellow grid on the
+   intro/onboarding screens, blue grid everywhere else) */
+.bg-grid-yellow,
+.bg-grid-blue {
+  background-size: 40px 40px;
+  background-position: -1px -1px;
+}
+
+.bg-grid-yellow {
+  background-color: var(--color-brand-gold);
+  background-image:
+    linear-gradient(rgba(16, 20, 42, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 20, 42, 0.08) 1px, transparent 1px);
+}
+
+.bg-grid-blue {
+  background-color: var(--color-brand-blue);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
 }
