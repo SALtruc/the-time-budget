@@ -9,7 +9,7 @@ export function TimeBudgetCard({ allocation }: { allocation: Allocation }) {
   return (
     <StickerCard className="p-5 sm:p-6">
       <div className="mb-2 flex items-baseline justify-between">
-        <span className="font-bold text-lg sm:text-xl">Time Budget</span>
+        <span className="font-bold text-lg sm:text-xl">Time budget</span>
         <span className="font-display text-2xl sm:text-3xl text-brand-red">
           {total}%
         </span>

@@ -92,6 +92,13 @@ body {
   letter-spacing: 0;
 }
 
+/* Chunky outlined "sticker" headline text, matching the design reference's
+   section headers (e.g. "WHAT DOES YOUR CHARACTER MEAN?"). */
+.text-stroke {
+  -webkit-text-stroke: 1.5px var(--color-brand-navy);
+  paint-order: stroke fill;
+}
+
 /* Page background themes (from the design reference: yellow grid on the
    intro/onboarding screens, blue grid everywhere else) */
 .bg-grid-yellow,

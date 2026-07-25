@@ -53,11 +53,11 @@ export function BlockAllocatorCard({
         />
       </div>
 
-      <div className="flex justify-center pt-1">
+      <div className="pt-1">
         {disabled ? (
           <span className="font-display text-lg">{percent}% (fixed)</span>
         ) : (
-          <Stepper value={percent} onChange={onChange} />
+          <Stepper value={percent} onChange={onChange} showValue={false} />
         )}
       </div>
     </StickerCard>

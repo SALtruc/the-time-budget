@@ -51,8 +51,8 @@ export function ProfileResultCard({
       </StickerCard>
 
       <StickerCard tone="gold" className="p-5 sm:p-6">
-        <h2 className="font-display text-lg sm:text-xl mb-2">
-          What does this character mean?
+        <h2 className="text-stroke font-display text-xl sm:text-2xl mb-2 text-white">
+          WHAT DOES YOUR CHARACTER MEAN?
         </h2>
         <p className="text-sm sm:text-base leading-relaxed mb-3">
           {profile.meaning}
@@ -63,8 +63,8 @@ export function ProfileResultCard({
       </StickerCard>
 
       <StickerCard tone="white" className="p-5 sm:p-6">
-        <h2 className="font-display text-lg sm:text-xl mb-2 text-brand-pink">
-          What to do differently?
+        <h2 className="text-stroke font-display text-xl sm:text-2xl mb-2 text-brand-pink">
+          WHAT TO DO DIFFERENTLY
         </h2>
         <p className="text-sm sm:text-base leading-relaxed mb-4">
           {profile.advice}
