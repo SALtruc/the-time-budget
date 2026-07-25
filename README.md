@@ -19,8 +19,10 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). **Self-paced mode works
-immediately with no setup** — it's fully client-side.
+Open [http://localhost:3000](http://localhost:3000). Every mode now goes
+through an onboarding step (RMIT Student ID → avatar → profile) that writes to
+Supabase, so **all three modes need Supabase configured** — see below. Without
+it, onboarding will show a "Something went wrong" error rather than crashing.
 
 Run the game-logic test suite:
 
@@ -28,43 +30,51 @@ Run the game-logic test suite:
 npm test
 ```
 
-## Enabling Pair Comparison & Group Roleplay (Supabase)
-
-These two modes sync players in real time and need a free Supabase project.
+## Enabling Supabase (required for all modes)
 
 1. Create a project at [supabase.com](https://supabase.com) (free tier: 500MB
    database, unlimited API requests, Realtime included).
-2. In the Supabase dashboard, open the **SQL Editor** and run the contents of
-   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
-   This creates the `sessions` and `participants` tables, enables Row Level
-   Security with permissive policies (fine for a low-stakes classroom game —
-   see the comment in the migration for the tradeoff), and turns on Realtime
-   for both tables.
-3. In **Project Settings → API**, copy the **Project URL** and **anon public
-   key**.
+2. In the Supabase dashboard, open the **SQL Editor** and run, in order:
+   - [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql)
+     — `sessions` + `participants` tables (co-op rooms), RLS + Realtime.
+   - [`supabase/migrations/0002_profiles_and_bonus.sql`](supabase/migrations/0002_profiles_and_bonus.sql)
+     — `player_profiles` table (RMIT ID/avatar/onboarding), plus
+     `sessions.bonus_hours` and `participants.player_profile_id`.
+
+   Both use the same permissive-RLS tradeoff (fine for a low-stakes classroom
+   game, not for anything sensitive — see the comments in each file), and
+   both need explicit `grant`s in addition to the RLS policies (a fresh
+   Postgres doesn't grant table access by default the way a hosted Supabase
+   project's default schema sometimes does).
+3. In **Project Settings → API**, copy the **Project URL** and the
+   **anon public / publishable key**.
 4. Copy `.env.local.example` to `.env.local` and fill them in:
 
    ```
    NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ... (or sb_publishable_...)
    ```
 
-5. Restart `npm run dev`. Pair Comparison and Group Roleplay will now work —
-   until these are set, both modes show a friendly "needs a database" screen
-   instead of crashing.
+5. Restart `npm run dev` (or redeploy). All three modes need this now — the
+   onboarding flow (RMIT ID → avatar → profile) that runs before mode select
+   writes to `player_profiles` regardless of which mode is picked afterward.
 
 ## Project structure
 
 ```
-app/                  Routes (Start, Choose mode, How to play, Self-paced,
-                       Pair + Pair/[roomCode], Group + Group/[roomCode])
-components/ui/         Design-system primitives (Button, StickerCard, MetricBar, ...)
-components/game/       Game-specific pieces (BlockAllocatorCard, ProfileResultCard, ...)
+app/                  Routes: Start -> rmit-id -> avatar -> profile -> mode ->
+                       {self-paced | pair(+[roomCode]) | group(+[roomCode])}
+components/ui/         Design-system primitives (Button, StickerCard, Ribbon,
+                        StripeDivider, DigitInput, MetricBar, ScreenHeader, ...)
+components/game/       Game-specific pieces (BlockAllocatorCard, ProfileResultCard,
+                        TimeBudgetCard, SurpriseEventCard, ChallengeAgainCTA, ...)
 lib/game/              Framework-independent game engine:
-                        types, blocks, hours, 17 profiles, matchProfile, 5 roles
-lib/store/              Zustand stores (allocation state, co-op session state)
-lib/supabase/           Supabase client + session/participant helpers
-supabase/migrations/    SQL schema for co-op sessions
+                        types, blocks, hours, 17 profiles (+ deltas), matchProfile,
+                        5 roles, avatars
+lib/store/              Zustand stores (allocation state, co-op session state,
+                        onboarding/player-profile state)
+lib/supabase/           Supabase client + session/participant/profile helpers
+supabase/migrations/    SQL schema (0001: co-op sessions, 0002: player profiles + bonus hours)
 ```
 
 The game engine (`lib/game/`) has no dependency on React or Supabase — it's
