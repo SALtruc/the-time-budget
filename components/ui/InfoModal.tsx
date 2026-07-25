@@ -18,7 +18,7 @@ export function InfoModal({
         type="button"
         aria-label={`More info about ${title}`}
         onClick={() => setOpen(true)}
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-ink bg-white font-display text-sm shadow-sticker-sm active-press"
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-ink bg-white font-display text-sm shadow-sticker-sm active-press transition-colors hover:bg-brand-cream"
       >
         i
       </button>
@@ -42,7 +42,7 @@ export function InfoModal({
                 type="button"
                 aria-label="Close"
                 onClick={() => setOpen(false)}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-ink bg-white font-display shadow-sticker-sm active-press"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-ink bg-white font-display shadow-sticker-sm active-press transition-colors hover:bg-brand-cream"
               >
                 ×
               </button>

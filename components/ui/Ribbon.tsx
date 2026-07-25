@@ -7,10 +7,13 @@ export function Ribbon({
   children,
   color = "red",
   className,
+  contentClassName,
   ...props
 }: HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
   color?: "red" | "gold";
+  /** Classes for the visible clipped content layer (use this for flex/layout tweaks, not `className`). */
+  contentClassName?: string;
 }) {
   const bg = color === "red" ? "bg-brand-red" : "bg-brand-gold";
   const text = color === "red" ? "text-white" : "text-brand-navy";
@@ -23,7 +26,12 @@ export function Ribbon({
         style={{ clipPath: RIBBON_CLIP }}
       />
       <div
-        className={clsx("relative px-6 py-4 sm:px-7 sm:py-5 font-bold leading-snug", bg, text)}
+        className={clsx(
+          "relative w-full px-6 py-4 sm:px-7 sm:py-5 font-bold leading-snug",
+          bg,
+          text,
+          contentClassName
+        )}
         style={{ clipPath: RIBBON_CLIP }}
       >
         {children}

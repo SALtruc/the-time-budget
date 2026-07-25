@@ -33,26 +33,35 @@ export default function AvatarPage() {
           But first, let&apos;s choose your <span className="text-brand-red">avatar</span>
         </h1>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-6">
-          {AVATARS.map((avatar) => (
-            <button
-              key={avatar.id}
-              type="button"
-              onClick={() => setAvatarId(avatar.id)}
-              className={clsx(
-                "aspect-square w-full overflow-hidden rounded-full border-ink transition-transform active:scale-95",
-                avatarId === avatar.id ? "bg-brand-blue ring-4 ring-brand-navy" : "bg-white"
-              )}
-            >
-              <Image
-                src={avatar.src}
-                alt=""
-                width={276}
-                height={276}
-                className="h-full w-full object-cover"
-              />
-            </button>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-7">
+          {AVATARS.map((avatar) => {
+            const isSelected = avatarId === avatar.id;
+            return (
+              <div key={avatar.id} className="relative">
+                <button
+                  type="button"
+                  onClick={() => setAvatarId(avatar.id)}
+                  className={clsx(
+                    "aspect-square w-full overflow-hidden rounded-full border-ink bg-white transition-transform active:scale-95",
+                    isSelected ? "scale-105 ring-4 ring-brand-red" : ""
+                  )}
+                >
+                  <Image
+                    src={avatar.src}
+                    alt=""
+                    width={276}
+                    height={276}
+                    className="h-full w-full object-cover"
+                  />
+                </button>
+                {isSelected && (
+                  <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-ink bg-brand-red font-display text-sm text-white shadow-sticker-sm">
+                    ✓
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-8 w-full max-w-md">

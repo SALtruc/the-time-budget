@@ -13,7 +13,7 @@ export function ScreenHeader({
       {backHref ? (
         <Link
           href={backHref}
-          className={`font-semibold sm:text-lg ${
+          className={`-m-3 flex min-h-11 min-w-11 items-center rounded-full p-3 text-base font-semibold active:bg-black/10 sm:text-lg ${
             theme === "blue" ? "text-white" : "text-brand-navy"
           }`}
         >

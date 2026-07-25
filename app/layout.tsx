@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Nunito } from "next/font/google";
+import { Baloo_2, Nunito } from "next/font/google";
 import "./globals.css";
 
-const displayFont = Archivo_Black({
+// Baloo 2: bold, rounded, and stays legible at small sizes on mobile —
+// a better fit for this playful "sticker" style than Archivo Black, which
+// is tight/condensed and got hard to read at mobile body-copy sizes.
+const displayFont = Baloo_2({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["600", "700", "800"],
 });
 
 const sansFont = Nunito({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {

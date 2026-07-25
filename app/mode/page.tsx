@@ -16,6 +16,7 @@ const MODES = [
     icon: "🧑",
     title: "Self-paced",
     titleColor: "text-brand-gold-dark",
+    accent: "var(--color-brand-gold-dark)",
     description: "Allocate your own 40-hour week and see your outcomes.",
   },
   {
@@ -23,6 +24,7 @@ const MODES = [
     icon: "🧑‍🤝‍🧑",
     title: "Pair Comparison",
     titleColor: "text-brand-cyan",
+    accent: "var(--color-brand-cyan)",
     description:
       "Each player plans separately, then compare and reflect together. No right answer, just dialogue.",
   },
@@ -31,6 +33,7 @@ const MODES = [
     icon: "👑",
     title: "Group Roleplay",
     titleColor: "text-brand-pink",
+    accent: "var(--color-brand-pink)",
     description:
       "Assign roles, student leader vs team member, and plan the week together with different priorities.",
   },
@@ -58,36 +61,45 @@ export default function ModePage() {
         </Ribbon>
 
         <div className="flex flex-col gap-5">
-          {MODES.map((mode) => (
-            <button
-              key={mode.href}
-              type="button"
-              onClick={() => setSelected(mode.href)}
-              className="text-left"
-            >
-              <StickerCard className="flex items-center gap-4 p-5 sm:p-6">
-                <span className="text-4xl shrink-0" aria-hidden>
-                  {mode.icon}
-                </span>
-                <div className="flex-1">
-                  <h2 className={clsx("font-display text-lg sm:text-xl", mode.titleColor)}>
-                    {mode.title.toUpperCase()}
-                  </h2>
-                  <p className="mt-1 text-sm sm:text-base text-brand-navy">
-                    {mode.description}
-                  </p>
-                </div>
-                <span
-                  className={clsx(
-                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-ink",
-                    selected === mode.href ? "bg-brand-navy text-white" : "bg-white"
-                  )}
+          {MODES.map((mode) => {
+            const isSelected = selected === mode.href;
+            return (
+              <button
+                key={mode.href}
+                type="button"
+                onClick={() => setSelected(mode.href)}
+                className={clsx(
+                  "text-left rounded-3xl transition-transform",
+                  isSelected && "scale-[1.02]"
+                )}
+              >
+                <StickerCard
+                  className="flex items-center gap-4 p-5 sm:p-6 transition-colors"
+                  style={
+                    isSelected
+                      ? { borderColor: mode.accent, borderWidth: "3.5px" }
+                      : undefined
+                  }
                 >
-                  {selected === mode.href && "✓"}
-                </span>
-              </StickerCard>
-            </button>
-          ))}
+                  <span className="text-4xl shrink-0" aria-hidden>
+                    {mode.icon}
+                  </span>
+                  <div className="flex-1">
+                    <h2 className={clsx("font-display text-lg sm:text-xl", mode.titleColor)}>
+                      {mode.title.toUpperCase()}
+                    </h2>
+                    <p className="mt-1 text-sm sm:text-base text-brand-navy">
+                      {mode.description}
+                    </p>
+                  </div>
+                  <span
+                    className="h-7 w-7 shrink-0 rounded-full border-ink"
+                    style={{ backgroundColor: isSelected ? mode.accent : "white" }}
+                  />
+                </StickerCard>
+              </button>
+            );
+          })}
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-4">

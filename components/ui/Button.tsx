@@ -5,10 +5,10 @@ type Variant = "primary" | "secondary" | "outline" | "ghost";
 type Size = "md" | "lg";
 
 const variantClasses: Record<Variant, string> = {
-  primary: "bg-brand-red text-white",
-  secondary: "bg-brand-gold text-brand-navy",
-  outline: "bg-white text-brand-navy",
-  ghost: "bg-brand-grey/40 text-brand-navy",
+  primary: "bg-brand-red text-white hover:bg-brand-red-dark",
+  secondary: "bg-brand-gold text-brand-navy hover:bg-brand-gold-dark hover:text-white",
+  outline: "bg-white text-brand-navy hover:bg-brand-cream",
+  ghost: "bg-brand-grey/40 text-brand-navy hover:bg-brand-grey/70",
 };
 
 const sizeClasses: Record<Size, string> = {
@@ -32,7 +32,7 @@ export function Button({
   return (
     <button
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-full font-display border-ink shadow-sticker active-press transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:translate-x-0 disabled:active:translate-y-0 disabled:active:shadow-sticker",
+        "inline-flex items-center justify-center gap-2 rounded-full font-display border-ink shadow-sticker active-press transition-[transform,background-color,color] duration-150 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
         variantClasses[variant],
         sizeClasses[size],
         className

@@ -78,7 +78,11 @@ export default function ProfilePage() {
         </div>
 
         <div>
-          <Ribbon color="gold" className="mb-2 flex items-center gap-3 pr-10">
+          <Ribbon
+            color="gold"
+            className="mb-2"
+            contentClassName="flex items-center gap-3 pr-10"
+          >
             <span>Access code (Optional)</span>
             <InfoModal title="Access code">
               If your facilitator gave you a class access code, enter it here. Otherwise,

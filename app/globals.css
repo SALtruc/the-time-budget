@@ -34,6 +34,20 @@
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
+
+  /* Bump the whole type scale up slightly — the default Tailwind sizes
+     read as too small for mobile body copy in a game full of short
+     instructional text. Ratios/line-heights stay proportional. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: calc(1.25 / 0.8125);
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: calc(1.5 / 0.9375);
+  --text-base: 1.0625rem;
+  --text-base--line-height: calc(1.65 / 1.0625);
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: calc(1.75 / 1.1875);
+  --text-xl: 1.3125rem;
+  --text-xl--line-height: calc(1.85 / 1.3125);
 }
 
 body {
@@ -67,7 +81,8 @@ body {
 
 .font-display {
   font-family: var(--font-display), "Arial Black", sans-serif;
-  letter-spacing: 0.01em;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 /* Page background themes (from the design reference: yellow grid on the
