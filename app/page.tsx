@@ -5,7 +5,7 @@ import { StickerCard } from "@/components/ui/StickerCard";
 
 export default function StartPage() {
   return (
-    <main className="bg-grid-yellow flex flex-1 flex-col items-center justify-between gap-6 px-4 py-10 sm:py-14">
+    <main className="bg-grid-yellow flex flex-1 flex-col items-center justify-center gap-8 sm:gap-10 px-4 py-10 sm:py-14">
       <Image
         src="/assets/logo.png"
         alt="The Time Budget"

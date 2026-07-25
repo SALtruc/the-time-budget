@@ -37,7 +37,7 @@ export default function ProfilePage() {
     <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
       <ScreenHeader backHref="/avatar" />
 
-      <div className="mx-auto flex w-full max-w-md flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6">
         <div className="flex items-center gap-3">
           <Image
             src="/assets/mascot-start.png"

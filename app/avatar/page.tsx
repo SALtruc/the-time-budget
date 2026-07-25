@@ -28,19 +28,19 @@ export default function AvatarPage() {
     <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-8 sm:py-10">
       <ScreenHeader backHref="/rmit-id" theme="yellow" />
 
-      <div className="mx-auto w-full max-w-md flex-1">
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center">
         <h1 className="mb-8 text-center font-display text-2xl sm:text-3xl leading-tight">
           But first, let&apos;s choose your <span className="text-brand-red">avatar</span>
         </h1>
 
-        <div className="grid grid-cols-2 gap-5 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-6">
           {AVATARS.map((avatar) => (
             <button
               key={avatar.id}
               type="button"
               onClick={() => setAvatarId(avatar.id)}
               className={clsx(
-                "aspect-square overflow-hidden rounded-full border-ink transition-transform active:scale-95",
+                "aspect-square w-full overflow-hidden rounded-full border-ink transition-transform active:scale-95",
                 avatarId === avatar.id ? "bg-brand-blue ring-4 ring-brand-navy" : "bg-white"
               )}
             >
@@ -54,18 +54,18 @@ export default function AvatarPage() {
             </button>
           ))}
         </div>
-      </div>
 
-      <div className="mx-auto mt-8 w-full max-w-md">
-        <Button
-          variant="secondary"
-          size="lg"
-          className="w-full"
-          disabled={!avatarId}
-          onClick={handleNext}
-        >
-          Next ›
-        </Button>
+        <div className="mt-8 w-full max-w-md">
+          <Button
+            variant="secondary"
+            size="lg"
+            className="w-full"
+            disabled={!avatarId}
+            onClick={handleNext}
+          >
+            Next ›
+          </Button>
+        </div>
       </div>
     </main>
   );

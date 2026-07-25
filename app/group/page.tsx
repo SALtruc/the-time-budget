@@ -150,7 +150,7 @@ export default function GroupLobbyPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
         <ScreenHeader backHref="/mode" />
-        <div className="mx-auto w-full max-w-md">
+        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
           <StripeDivider />
           <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
             <h1 className="font-display text-3xl sm:text-4xl text-brand-red mb-8">
@@ -182,6 +182,9 @@ export default function GroupLobbyPage() {
               height={150}
               className="w-24 sm:w-32 h-auto shrink-0"
             />
+            <StickerCard className="p-4 text-sm sm:text-base">
+              The more roles at the table, the more perspectives to compare!
+            </StickerCard>
           </div>
         </div>
       </main>
@@ -192,7 +195,7 @@ export default function GroupLobbyPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
         <ScreenHeader backHref="/group" />
-        <div className="mx-auto w-full max-w-md">
+        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
           <StripeDivider />
           <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
             <h1 className="font-display text-2xl sm:text-3xl text-brand-red mb-4">
@@ -222,7 +225,7 @@ export default function GroupLobbyPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
         <ScreenHeader />
-        <div className="mx-auto w-full max-w-md">
+        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
           <StripeDivider />
           <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
             <h1 className="font-display text-2xl sm:text-3xl text-brand-red mb-4">
