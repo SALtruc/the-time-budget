@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -14,12 +15,15 @@ import { TimeBudgetCard } from "@/components/game/TimeBudgetCard";
 import { SurpriseEventCard } from "@/components/game/SurpriseEventCard";
 import { MetricsGrid } from "@/components/game/MetricsGrid";
 import { ParticipantsList } from "@/components/game/ParticipantsList";
+import { ParticipantResultCard } from "@/components/game/ParticipantResultCard";
+import { ProfileResultCard } from "@/components/game/ProfileResultCard";
 import { ReflectionQuestions } from "@/components/game/ReflectionQuestions";
 import { ChallengeAgainCTA } from "@/components/game/ChallengeAgainCTA";
 import { BLOCK_ORDER, BLOCKS } from "@/lib/game/blocks";
 import { matchProfile } from "@/lib/game/matchProfile";
 import { percentToHours, TOTAL_HOURS } from "@/lib/game/hours";
 import { useGameStore } from "@/lib/store/useGameStore";
+import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { useSessionStore } from "@/lib/store/useSessionStore";
 import {
   subscribeToParticipants,
@@ -41,6 +45,7 @@ export default function PairRoomPage() {
   const allocation = useGameStore((s) => s.allocation);
   const setPercent = useGameStore((s) => s.setPercent);
   const reset = useGameStore((s) => s.reset);
+  const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
 
   const [participants, setParticipants] = useState<ParticipantRow[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -95,8 +100,34 @@ export default function PairRoomPage() {
   if (allReady) {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-10 sm:py-14">
+        <Image
+          src="/assets/logo.png"
+          alt="The Time Budget"
+          width={800}
+          height={220}
+          className="w-full max-w-xs h-auto"
+        />
+
+        <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {participants.map((p, i) => (
+            <ParticipantResultCard
+              key={p.id}
+              index={i}
+              profileName={p.profile_result?.name ?? ""}
+            />
+          ))}
+        </div>
+
+        <div className="w-full max-w-2xl flex flex-col gap-6">
+          <ProfileResultCard
+            profile={profile}
+            subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
+          />
+          <MetricsGrid metrics={profile.metrics} />
+        </div>
+
         <div className="w-full max-w-3xl">
-          <Ribbon color="red" className="mb-6">
+          <Ribbon color="red" className="mb-2">
             <p className="font-display text-lg sm:text-xl mb-1">
               Before the reveal — discuss
             </p>
@@ -133,22 +164,6 @@ export default function PairRoomPage() {
                 </StickerCard>
               ))}
             </div>
-          ))}
-        </div>
-
-        <div className="w-full max-w-3xl flex flex-col gap-4">
-          {participants.map((p) => (
-            <StickerCard key={p.id} tone="navy" className="p-4 sm:p-5 text-center">
-              <p className="font-display text-xs uppercase tracking-[0.3em] text-brand-gold mb-1">
-                {p.display_name}
-              </p>
-              <h2 className="font-display text-2xl">{p.profile_result?.name}</h2>
-              {p.profile_result && (
-                <div className="mt-3">
-                  <MetricsGrid metrics={p.profile_result.metrics} />
-                </div>
-              )}
-            </StickerCard>
           ))}
         </div>
 

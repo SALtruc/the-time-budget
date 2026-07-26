@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -8,12 +9,15 @@ import { StickerCard } from "@/components/ui/StickerCard";
 import { Ribbon } from "@/components/ui/Ribbon";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
 import { RoomCodeBadge } from "@/components/ui/RoomCodeBadge";
+import { StripeDivider } from "@/components/ui/StripeDivider";
 import { BlockAllocatorCard } from "@/components/game/BlockAllocatorCard";
 import { AllocationSummaryBar } from "@/components/game/AllocationSummaryBar";
 import { TimeBudgetCard } from "@/components/game/TimeBudgetCard";
 import { SurpriseEventCard } from "@/components/game/SurpriseEventCard";
 import { MetricsGrid } from "@/components/game/MetricsGrid";
 import { ParticipantsList } from "@/components/game/ParticipantsList";
+import { ParticipantResultCard } from "@/components/game/ParticipantResultCard";
+import { ProfileResultCard } from "@/components/game/ProfileResultCard";
 import { ReflectionQuestions } from "@/components/game/ReflectionQuestions";
 import { ChallengeAgainCTA } from "@/components/game/ChallengeAgainCTA";
 import { RoleContextCard } from "@/components/game/RoleContextCard";
@@ -21,6 +25,7 @@ import { BLOCK_ORDER } from "@/lib/game/blocks";
 import { matchProfile } from "@/lib/game/matchProfile";
 import { getRole, ROLE_ORDER } from "@/lib/game/roles";
 import { useGameStore } from "@/lib/store/useGameStore";
+import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { useSessionStore } from "@/lib/store/useSessionStore";
 import {
   subscribeToParticipants,
@@ -46,6 +51,7 @@ export default function GroupRoomPage() {
   const setPercent = useGameStore((s) => s.setPercent);
   const setRole = useGameStore((s) => s.setRole);
   const reset = useGameStore((s) => s.reset);
+  const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
 
   const [participants, setParticipants] = useState<ParticipantRow[]>([]);
   const [submitted, setSubmitted] = useState(false);
@@ -54,6 +60,7 @@ export default function GroupRoomPage() {
 
   const role = roleId ? getRole(roleId) : null;
   const profile = useMemo(() => matchProfile(allocation), [allocation]);
+  const myIndex = Math.max(0, participants.findIndex((p) => p.id === participantId));
 
   useEffect(() => {
     if (!sessionId) return;
@@ -114,25 +121,31 @@ export default function GroupRoomPage() {
   if (allReady) {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-10 sm:py-14">
-        <h1 className="font-display text-2xl sm:text-3xl text-white text-center">
-          Everyone&apos;s allocations
-        </h1>
+        <Image
+          src="/assets/logo.png"
+          alt="The Time Budget"
+          width={800}
+          height={220}
+          className="w-full max-w-xs h-auto"
+        />
 
         <div className="grid w-full max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {participants.map((p) => (
-            <div key={p.id} className="flex flex-col gap-4">
-              <StickerCard tone="navy" className="p-4 sm:p-5 text-center">
-                <p className="font-display text-xs uppercase tracking-[0.3em] text-brand-gold mb-1">
-                  {p.display_name}
-                  {p.role_id && ` · ${getRole(p.role_id).name}`}
-                </p>
-                <h2 className="font-display text-xl">
-                  {p.profile_result?.name}
-                </h2>
-              </StickerCard>
-              {p.profile_result && <MetricsGrid metrics={p.profile_result.metrics} />}
-            </div>
+          {participants.map((p, i) => (
+            <ParticipantResultCard
+              key={p.id}
+              index={i}
+              roleName={p.role_id ? getRole(p.role_id).name : undefined}
+              profileName={p.profile_result?.name ?? ""}
+            />
           ))}
+        </div>
+
+        <div className="w-full max-w-2xl flex flex-col gap-6">
+          <ProfileResultCard
+            profile={profile}
+            subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
+          />
+          <MetricsGrid metrics={profile.metrics} />
         </div>
 
         <div className="w-full max-w-3xl">
@@ -168,23 +181,31 @@ export default function GroupRoomPage() {
 
   if (!started) {
     return (
-      <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-        <ScreenHeader />
-        <h1 className="font-display text-2xl sm:text-3xl text-white">
-          Waiting room
-        </h1>
+      <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 sm:py-10 text-center">
+        <ScreenHeader backHref="/group" />
         <RoomCodeBadge code={roomCode} />
 
-        <StickerCard tone="gold" className="w-full max-w-sm p-5 text-center">
-          <p className="text-sm font-bold mb-1">You are</p>
-          <p className="font-display text-2xl">{role.name}</p>
-        </StickerCard>
-        <button
-          onClick={handleChangeRole}
-          className="text-sm sm:text-base font-bold text-brand-red underline underline-offset-4"
-        >
-          ⇄ Change to a different role
-        </button>
+        <div className="w-full max-w-sm">
+          <StripeDivider />
+          <StickerCard className="rounded-t-none p-6 sm:p-8">
+            <h1 className="font-display text-3xl text-brand-red mb-6">
+              Group roleplay
+            </h1>
+
+            <StickerCard tone="gold" className="p-5 text-center">
+              <p className="text-sm font-bold mb-1">You are</p>
+              <p className="text-stroke font-display text-2xl text-white">
+                {role.name}
+              </p>
+            </StickerCard>
+            <button
+              onClick={handleChangeRole}
+              className="mt-4 text-sm sm:text-base font-bold text-brand-red underline underline-offset-4"
+            >
+              ⇄ Change to a different role
+            </button>
+          </StickerCard>
+        </div>
 
         <p className="text-sm sm:text-base max-w-sm text-white">
           Share this code with your group (3+ players recommended). Everyone
@@ -214,8 +235,7 @@ export default function GroupRoomPage() {
 
         <div className="mb-4">
           <Ribbon color="red" className="mb-4">
-            {role.name} — Spend 100% of your time budget across 7 activities
-            for 1 week!
+            Player {myIndex + 1} - {role.name}
           </Ribbon>
           <RoleContextCard role={role} />
         </div>
