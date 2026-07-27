@@ -28,7 +28,11 @@ export default function AvatarPage() {
     <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-8 sm:py-10">
       <ScreenHeader backHref="/rmit-id" theme="yellow" />
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center">
+      {/* justify-start, not justify-center: with all 8 avatars now at full
+          size the content is taller than the viewport on most phones, and
+          centering an overflowing flex column pushes its top (the heading)
+          up past the visible area instead of just letting the page scroll. */}
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-start">
         <h1 className="mb-8 text-center font-display text-2xl sm:text-3xl leading-tight">
           But first, let&apos;s choose your <span className="text-brand-red">avatar</span>
         </h1>

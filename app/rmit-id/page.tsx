@@ -48,7 +48,7 @@ export default function RmitIdPage() {
     <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-8 sm:py-10">
       <ScreenHeader theme="yellow" />
 
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-start gap-6">
         <Image
           src="/assets/logo.png"
           alt="The Time Budget"
@@ -82,6 +82,14 @@ export default function RmitIdPage() {
             <p className="mt-3 text-sm font-bold text-brand-red">{error}</p>
           )}
         </StickerCard>
+
+        <Image
+          src="/assets/mascot-start.png"
+          alt=""
+          width={140}
+          height={165}
+          className="w-28 sm:w-36 h-auto self-start"
+        />
 
         <Button
           variant="primary"
