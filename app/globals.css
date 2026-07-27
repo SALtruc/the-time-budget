@@ -92,10 +92,8 @@ body {
 
 .font-display {
   font-family: var(--font-display), "Arial Black", sans-serif;
-  /* Chewy only ships a 400 weight — it's already a chunky bubble face,
-     forcing 700 would just trigger blurry synthetic faux-bold. */
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 /* Chunky outlined "sticker" headline text, matching the design reference's

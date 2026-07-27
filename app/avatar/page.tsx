@@ -42,13 +42,18 @@ export default function AvatarPage() {
                     drop shadow on a yellow square that matches this page's
                     background, so it's shown edge-to-edge — no second CSS
                     circle wrapped around it (that was the "double ring /
-                    bulging" bug). Selection is a ring drawn on top instead
-                    of a container that reflows/crops the art. */}
+                    bulging" bug). The border below sits on the square tile
+                    itself (not traced to the art's inner circle, which
+                    isn't pixel-identical across every avatar), so it can
+                    never come out bigger/misaligned for any given avatar. */}
                 <button
                   type="button"
                   onClick={() => setAvatarId(avatar.id)}
                   aria-pressed={isSelected}
-                  className="block aspect-square w-full select-none overflow-hidden rounded-2xl [-webkit-tap-highlight-color:transparent] active:opacity-80"
+                  className={clsx(
+                    "block aspect-square w-full select-none overflow-hidden rounded-2xl border-[3px] [-webkit-tap-highlight-color:transparent] transition-colors duration-150 active:opacity-80",
+                    isSelected ? "border-brand-red" : "border-transparent"
+                  )}
                 >
                   <Image
                     src={avatar.src}
@@ -59,13 +64,6 @@ export default function AvatarPage() {
                     draggable={false}
                   />
                 </button>
-                <span
-                  aria-hidden
-                  className={clsx(
-                    "pointer-events-none absolute inset-[3%] rounded-full border-4 transition-colors duration-150",
-                    isSelected ? "border-brand-red" : "border-transparent"
-                  )}
-                />
                 {isSelected && (
                   <span className="pointer-events-none absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-ink bg-brand-red font-display text-base text-white shadow-sticker-sm">
                     ✓
