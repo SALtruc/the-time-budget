@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Baloo_2, Quicksand } from "next/font/google";
+import { Chewy, Quicksand } from "next/font/google";
 import "./globals.css";
 
-// Baloo 2: extra-chunky, rounded display face — reads "cute sticker",
-// bolder/friendlier than Fredoka at the large headline sizes this app uses.
-const displayFont = Baloo_2({
+// Chewy: bubble-letter display face — unmistakably playful/"cute" rather
+// than just bold, matching the hand-drawn sticker illustrations. Swapped
+// in after feedback that Baloo 2 still read as a fairly plain bold font.
+const displayFont = Chewy({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400"],
 });
 
 // Quicksand: soft, rounded body face that pairs with Baloo 2 without

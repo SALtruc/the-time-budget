@@ -39,25 +39,26 @@
      game that's mostly short instructional text — bumped up a full
      step across the board (not just a nudge), ratios/line-heights kept
      proportional. Bumped a second time after feedback that body copy
-     still read small even after the first pass. */
-  --text-xs: 0.9375rem;
-  --text-xs--line-height: calc(1.4 / 0.9375);
-  --text-sm: 1.0625rem;
-  --text-sm--line-height: calc(1.7 / 1.0625);
-  --text-base: 1.1875rem;
-  --text-base--line-height: calc(1.8 / 1.1875);
-  --text-lg: 1.375rem;
-  --text-lg--line-height: calc(1.9 / 1.375);
-  --text-xl: 1.5rem;
-  --text-xl--line-height: calc(2 / 1.5);
-  --text-2xl: 1.75rem;
-  --text-2xl--line-height: calc(2.2 / 1.75);
-  --text-3xl: 2.25rem;
-  --text-3xl--line-height: calc(2.5 / 2.25);
-  --text-4xl: 2.75rem;
-  --text-4xl--line-height: calc(2.9 / 2.75);
-  --text-5xl: 3.25rem;
-  --text-5xl--line-height: calc(3.35 / 3.25);
+     still read small even after the first pass, and a third time after
+     it still read small. */
+  --text-xs: 1rem;
+  --text-xs--line-height: calc(1.5 / 1);
+  --text-sm: 1.125rem;
+  --text-sm--line-height: calc(1.8 / 1.125);
+  --text-base: 1.25rem;
+  --text-base--line-height: calc(1.9 / 1.25);
+  --text-lg: 1.5rem;
+  --text-lg--line-height: calc(2.1 / 1.5);
+  --text-xl: 1.625rem;
+  --text-xl--line-height: calc(2.2 / 1.625);
+  --text-2xl: 1.875rem;
+  --text-2xl--line-height: calc(2.4 / 1.875);
+  --text-3xl: 2.5rem;
+  --text-3xl--line-height: calc(2.8 / 2.5);
+  --text-4xl: 3rem;
+  --text-4xl--line-height: calc(3.2 / 3);
+  --text-5xl: 3.5rem;
+  --text-5xl--line-height: calc(3.6 / 3.5);
 }
 
 body {
@@ -91,8 +92,10 @@ body {
 
 .font-display {
   font-family: var(--font-display), "Arial Black", sans-serif;
-  font-weight: 700;
-  letter-spacing: 0;
+  /* Chewy only ships a 400 weight — it's already a chunky bubble face,
+     forcing 700 would just trigger blurry synthetic faux-bold. */
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 /* Chunky outlined "sticker" headline text, matching the design reference's

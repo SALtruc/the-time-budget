@@ -81,18 +81,20 @@ export default function SelfPacedPage() {
         <ScreenHeader backHref="/mode" />
       </div>
       <div className="w-full max-w-2xl flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
+        <div>
           <Image
             src="/assets/logo.png"
             alt="The Time Budget"
             width={800}
             height={220}
-            className="mx-auto w-full max-w-xs h-auto"
+            className="relative z-10 mx-auto w-full max-w-xs h-auto"
           />
-          <ProfileResultCard
-            profile={profile}
-            subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
-          />
+          <div className="-mt-5 sm:-mt-7">
+            <ProfileResultCard
+              profile={profile}
+              subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
+            />
+          </div>
         </div>
         <MetricsGrid metrics={profile.metrics} />
         <ReflectionQuestions />
