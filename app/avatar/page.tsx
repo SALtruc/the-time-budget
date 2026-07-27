@@ -41,10 +41,11 @@ export default function AvatarPage() {
                 <button
                   type="button"
                   onClick={() => setAvatarId(avatar.id)}
+                  aria-pressed={isSelected}
                   className={clsx(
-                    "aspect-square w-full rounded-full border-ink p-1.5 transition-all active:scale-95",
+                    "aspect-square w-full select-none rounded-full border-ink p-1.5 [-webkit-tap-highlight-color:transparent] transition-[background-color,box-shadow] duration-150 active:opacity-80",
                     isSelected
-                      ? "scale-105 bg-brand-red ring-4 ring-brand-red"
+                      ? "bg-brand-red ring-4 ring-brand-red shadow-sticker-sm"
                       : "bg-white"
                   )}
                 >
@@ -55,11 +56,12 @@ export default function AvatarPage() {
                       width={276}
                       height={276}
                       className="h-full w-full object-cover"
+                      draggable={false}
                     />
                   </span>
                 </button>
                 {isSelected && (
-                  <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full border-ink bg-brand-red font-display text-sm text-white shadow-sticker-sm">
+                  <span className="pointer-events-none absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-ink bg-brand-red font-display text-base text-white shadow-sticker-sm">
                     ✓
                   </span>
                 )}

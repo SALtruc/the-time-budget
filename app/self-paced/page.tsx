@@ -76,19 +76,24 @@ export default function SelfPacedPage() {
   }
 
   return (
-    <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-10 sm:py-14">
+    <main className="bg-grid-blue flex flex-1 flex-col items-center px-4 py-8 sm:py-10">
+      <div className="w-full max-w-2xl">
+        <ScreenHeader backHref="/mode" />
+      </div>
       <div className="w-full max-w-2xl flex flex-col gap-6">
-        <Image
-          src="/assets/logo.png"
-          alt="The Time Budget"
-          width={800}
-          height={220}
-          className="mx-auto w-full max-w-xs h-auto"
-        />
-        <ProfileResultCard
-          profile={profile}
-          subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
-        />
+        <div className="flex flex-col gap-2">
+          <Image
+            src="/assets/logo.png"
+            alt="The Time Budget"
+            width={800}
+            height={220}
+            className="mx-auto w-full max-w-xs h-auto"
+          />
+          <ProfileResultCard
+            profile={profile}
+            subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
+          />
+        </div>
         <MetricsGrid metrics={profile.metrics} />
         <ReflectionQuestions />
 

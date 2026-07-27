@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePlayerStore } from "@/lib/store/usePlayerStore";
+import { getAvatarSrc } from "@/lib/game/avatars";
 
 export function ScreenHeader({
   backHref,
@@ -9,6 +13,8 @@ export function ScreenHeader({
   theme?: "blue" | "yellow";
 }) {
   const textColor = theme === "blue" ? "text-white" : "text-brand-navy";
+  const avatarId = usePlayerStore((s) => s.avatarId);
+  const avatarSrc = getAvatarSrc(avatarId) ?? "/assets/mascot-start.png";
 
   return (
     <div className="mb-6 flex flex-col gap-2">
@@ -21,7 +27,7 @@ export function ScreenHeader({
           className="h-10 w-auto sm:h-12"
         />
         <Image
-          src="/assets/mascot-start.png"
+          src={avatarSrc}
           alt=""
           width={72}
           height={72}
