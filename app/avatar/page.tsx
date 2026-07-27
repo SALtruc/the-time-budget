@@ -37,22 +37,23 @@ export default function AvatarPage() {
           {AVATARS.map((avatar) => {
             const isSelected = avatarId === avatar.id;
             return (
-              <div key={avatar.id} className="relative">
-                {/* Each avatar PNG already bakes in its own circle + border +
-                    drop shadow on a yellow square that matches this page's
-                    background, so it's shown edge-to-edge — no second CSS
-                    circle wrapped around it (that was the "double ring /
-                    bulging" bug). The border below sits on the square tile
-                    itself (not traced to the art's inner circle, which
-                    isn't pixel-identical across every avatar), so it can
-                    never come out bigger/misaligned for any given avatar. */}
+              // aspect-square lives on this grid cell itself, not just the
+              // button inside it — a CSS grid cell stretches to its row's
+              // height by default, so if only the button were pinned to a
+              // square, the cell (and anything absolutely positioned off
+              // it) could end up taller than the button and render as an
+              // oversized oval instead of a circle. That mismatch was the
+              // "oversized ugly ring" bug.
+              <div key={avatar.id} className="relative aspect-square">
                 <button
                   type="button"
                   onClick={() => setAvatarId(avatar.id)}
                   aria-pressed={isSelected}
                   className={clsx(
-                    "block aspect-square w-full select-none overflow-hidden rounded-2xl border-[3px] [-webkit-tap-highlight-color:transparent] transition-colors duration-150 active:opacity-80",
-                    isSelected ? "border-brand-red" : "border-transparent"
+                    "absolute inset-[2%] block select-none overflow-hidden rounded-full border-ink bg-white [-webkit-tap-highlight-color:transparent] transition-[transform,box-shadow] duration-150",
+                    isSelected
+                      ? "-translate-y-[3px] scale-[1.02] shadow-[0_0_0_4px_var(--color-brand-red),3px_3px_0_0_var(--color-brand-navy)]"
+                      : "shadow-sticker-sm active:opacity-80"
                   )}
                 >
                   <Image
@@ -65,7 +66,7 @@ export default function AvatarPage() {
                   />
                 </button>
                 {isSelected && (
-                  <span className="pointer-events-none absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full border-ink bg-brand-red font-display text-base text-white shadow-sticker-sm">
+                  <span className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 flex h-8 w-8 items-center justify-center rounded-full border-ink bg-brand-red font-display text-sm text-white shadow-sticker-sm">
                     ✓
                   </span>
                 )}
