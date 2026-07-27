@@ -33,7 +33,7 @@ export default function AvatarPage() {
           But first, let&apos;s choose your <span className="text-brand-red">avatar</span>
         </h1>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-7">
+        <div className="grid w-full grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-7">
           {AVATARS.map((avatar) => {
             const isSelected = avatarId === avatar.id;
             return (
