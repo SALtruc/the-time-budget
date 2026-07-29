@@ -12,11 +12,11 @@ export function ChallengeAgainCTA({
   return (
     <div className="flex items-end gap-3 sm:gap-5">
       <Image
-        src="/assets/mascot-clipboard.png"
+        src="/assets/mascot-start.png"
         alt=""
-        width={240}
-        height={154}
-        className="h-auto w-40 shrink-0 sm:w-48"
+        width={220}
+        height={273}
+        className="h-auto w-32 shrink-0 self-end sm:w-40"
       />
       <div className="flex flex-1 flex-col gap-3">
         <StickerCard className="p-3 text-sm font-semibold leading-snug sm:p-4 sm:text-base">

@@ -60,7 +60,11 @@ export default function RmitIdPage() {
             placeholder="Enter your Student ID"
             aria-invalid={touched && !isValid}
             aria-describedby={touched && !isValid ? errorId : undefined}
-            className="w-full border-b-2 border-brand-navy bg-transparent pb-3 text-center text-xl font-semibold outline-none placeholder:text-brand-navy/25 sm:text-2xl"
+            className={`w-full border-b-2 bg-transparent pb-3 text-center text-xl font-semibold outline-none transition-colors sm:text-2xl ${
+              touched && !isValid
+                ? "border-brand-red placeholder:text-brand-red/35"
+                : "border-brand-navy placeholder:text-brand-navy/25"
+            }`}
           />
         </StickerCard>
 
@@ -73,17 +77,26 @@ export default function RmitIdPage() {
             className="h-auto w-40 shrink-0 sm:w-48"
           />
           <div className="flex flex-1 flex-col items-stretch gap-5 pt-4">
-            <Button
-              variant="primary"
-              size="lg"
-              className="w-full !bg-brand-red px-4 text-sm !text-white sm:text-base"
-              onClick={handleContinue}
-              aria-describedby={touched && !isValid ? errorId : undefined}
-            >
-              Please enter your SID to verify!
-            </Button>
+            {touched && !isValid ? (
+              <div
+                id={errorId}
+                className="rounded-[22px] border-ink bg-brand-red px-4 py-3 text-center font-display text-sm leading-snug text-white shadow-sticker sm:text-base"
+                role="alert"
+              >
+                Please enter your SID to verify!
+              </div>
+            ) : (
+              <Button
+                variant="primary"
+                size="lg"
+                className="w-full !bg-brand-red px-4 text-sm !text-white sm:text-base"
+                onClick={handleContinue}
+              >
+                Verify
+              </Button>
+            )}
             {touched && !isValid && (
-              <p id={errorId} className="sr-only">
+              <p className="sr-only">
                 Please enter your 7-digit SID to verify.
               </p>
             )}
