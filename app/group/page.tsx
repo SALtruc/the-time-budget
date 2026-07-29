@@ -150,39 +150,44 @@ export default function GroupLobbyPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
         <ScreenHeader backHref="/mode" />
-        <div className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center">
+        <div className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center">
           <StripeDivider />
-          <StickerCard className="rounded-t-none p-5 text-center sm:p-7">
-            <h1 className="font-display text-3xl sm:text-4xl text-brand-red mb-8">
+          <StickerCard className="rounded-t-none p-6 text-center sm:p-8">
+            <h1 className="font-display text-[2.35rem] leading-tight sm:text-5xl text-brand-red mb-7">
               Group roleplay
             </h1>
-            <div className="flex flex-col gap-4">
-              <Button variant="secondary" size="md" onClick={() => setStep("create")}>
+            <div className="mx-auto flex w-full max-w-md flex-col gap-4">
+              <Button
+                variant="secondary"
+                size="lg"
+                className="w-full text-lg"
+                onClick={() => setStep("create")}
+              >
                 Create invitation code
               </Button>
               <Button
-                className="!bg-brand-cyan !text-brand-navy"
-                size="md"
+                className="w-full !bg-brand-cyan !text-brand-navy text-lg"
+                size="lg"
                 onClick={() => setStep("join")}
               >
                 Enter invitation code
               </Button>
             </div>
-            <p className="mt-8 text-left text-xs sm:text-sm">
+            <p className="mt-8 text-left text-sm font-medium sm:text-base">
               3 or more students. Each plays a different student role with
               unique constraints. Compare profiles and debrief together.
             </p>
           </StickerCard>
 
-          <div className="mt-6 flex items-end gap-3">
+          <div className="mt-5 flex items-end gap-4">
             <Image
-              src="/assets/mascot-clipboard.png"
+              src="/assets/mascot-start.png"
               alt=""
-              width={240}
-              height={154}
-              className="h-auto w-40 shrink-0 sm:w-48"
+              width={320}
+              height={393}
+              className="h-auto w-36 shrink-0 sm:w-44"
             />
-            <StickerCard className="p-3 text-sm leading-snug sm:p-4 sm:text-base">
+            <StickerCard className="p-4 text-sm font-semibold leading-snug sm:p-5 sm:text-lg">
               The more roles at the table, the more perspectives to compare!
             </StickerCard>
           </div>

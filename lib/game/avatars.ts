@@ -7,9 +7,9 @@ export interface AvatarOption {
 
 export const AVATARS: AvatarOption[] = Array.from({ length: 8 }, (_, i) => ({
   id: `avatar-${i + 1}`,
-  src: `/assets/avatars-roadmap/nonselect-${i + 1}.png`,
-  selectedSrc: `/assets/avatars-roadmap/selected-${i + 1}.png`,
-  nonSelectedSrc: `/assets/avatars-roadmap/nonselect-${i + 1}.png`,
+  src: `/assets/avatars-roadmap/nonselect-${i + 1}.webp`,
+  selectedSrc: `/assets/avatars-roadmap/selected-${i + 1}.webp`,
+  nonSelectedSrc: `/assets/avatars-roadmap/nonselect-${i + 1}.webp`,
 }));
 
 export function getAvatarSrc(avatarId: string | null): string | null {

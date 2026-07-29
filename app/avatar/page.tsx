@@ -34,7 +34,7 @@ export default function AvatarPage() {
         </h1>
 
         <div className="grid w-full max-w-[312px] grid-cols-2 gap-x-6 gap-y-4 sm:max-w-2xl sm:grid-cols-4 sm:gap-6">
-          {AVATARS.map((avatar) => {
+          {AVATARS.map((avatar, index) => {
             const isSelected = avatarId === avatar.id;
             return (
               <div key={avatar.id} className="relative aspect-square">
@@ -52,6 +52,9 @@ export default function AvatarPage() {
                     alt=""
                     width={300}
                     height={300}
+                    sizes="(max-width: 640px) 144px, 150px"
+                    priority={index < 4}
+                    unoptimized
                     className="h-full w-full object-contain object-center"
                     draggable={false}
                   />

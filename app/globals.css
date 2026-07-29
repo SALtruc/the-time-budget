@@ -112,8 +112,17 @@ body {
    intro/onboarding screens, blue grid everywhere else) */
 .bg-grid-yellow,
 .bg-grid-blue {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
   background-size: 40px 40px;
   background-position: -1px -1px;
+}
+
+.bg-grid-yellow > *,
+.bg-grid-blue > * {
+  position: relative;
+  z-index: 1;
 }
 
 .bg-grid-yellow {
@@ -128,4 +137,93 @@ body {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+}
+
+.bg-grid-yellow::before,
+.bg-grid-blue::before,
+.bg-grid-yellow::after,
+.bg-grid-blue::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, opacity;
+}
+
+.bg-grid-yellow::before,
+.bg-grid-blue::before {
+  top: 11%;
+  left: 9%;
+  width: 12px;
+  height: 12px;
+  opacity: 0.5;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  animation: sticker-drift 16s ease-in-out infinite alternate;
+}
+
+.bg-grid-yellow::before {
+  background: var(--color-brand-cyan);
+  box-shadow:
+    68vw 9vh 0 var(--color-brand-red),
+    10vw 32vh 0 #ffffff,
+    72vw 55vh 0 var(--color-brand-blue),
+    20vw 76vh 0 var(--color-brand-pink);
+}
+
+.bg-grid-blue::before {
+  background: var(--color-brand-gold);
+  box-shadow:
+    64vw 8vh 0 #ffffff,
+    13vw 31vh 0 var(--color-brand-cyan),
+    71vw 58vh 0 var(--color-brand-pink),
+    18vw 78vh 0 var(--color-brand-red);
+}
+
+.bg-grid-yellow::after,
+.bg-grid-blue::after {
+  right: 9%;
+  bottom: 14%;
+  width: 28px;
+  height: 28px;
+  opacity: 0.42;
+  border: 3px solid currentColor;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  color: var(--color-brand-navy);
+  animation: corner-wiggle 13s ease-in-out infinite alternate;
+}
+
+.bg-grid-blue::after {
+  color: #ffffff;
+}
+
+@keyframes sticker-drift {
+  from {
+    transform: translate3d(-8px, 6px, 0) rotate(-4deg);
+    opacity: 0.38;
+  }
+
+  to {
+    transform: translate3d(12px, -10px, 0) rotate(6deg);
+    opacity: 0.62;
+  }
+}
+
+@keyframes corner-wiggle {
+  from {
+    transform: translate3d(4px, 10px, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(-10px, -6px, 0) rotate(11deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-grid-yellow::before,
+  .bg-grid-blue::before,
+  .bg-grid-yellow::after,
+  .bg-grid-blue::after {
+    animation: none;
+  }
 }
