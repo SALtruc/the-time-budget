@@ -9,27 +9,24 @@ export function AllocationSummaryBar({
   onContinue,
   buttonLabel = "See Results",
   disabled = false,
-  bonusHours = 0,
 }: {
   allocation: Allocation;
   onContinue: () => void;
   buttonLabel?: string;
   disabled?: boolean;
-  bonusHours?: number;
 }) {
   const total = getTotalPercent(allocation);
   const remaining = getRemainingPercent(allocation);
   const isComplete = total === 100;
   const overAllocated = total > 100;
-  const effectiveTotalHours = TOTAL_HOURS + bonusHours;
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 z-30 border-t-2 border-brand-navy bg-brand-cream/95 backdrop-blur px-4 py-4 sm:px-8">
-      <div className="mx-auto flex max-w-4xl flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+    <div className="sticky bottom-0 left-0 right-0 z-30 border-t-[3px] border-brand-navy bg-brand-cream/95 px-4 py-3 backdrop-blur sm:px-8">
+      <div className="mx-auto flex max-w-4xl flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex-1">
           <div className="mb-1 flex items-center justify-between text-sm sm:text-base font-bold">
             <span>
-              {total}% allocated ({percentToHours(total, effectiveTotalHours)}h)
+              {total}% allocated ({percentToHours(total, TOTAL_HOURS)}h)
             </span>
             <span className={overAllocated ? "text-brand-red" : ""}>
               {overAllocated
@@ -40,8 +37,8 @@ export function AllocationSummaryBar({
           <ProgressBar
             percent={Math.min(total, 100)}
             colorClassName={overAllocated ? "bg-brand-red" : "bg-brand-navy"}
-            className="h-3"
-          />
+          className="h-3 border-2 border-brand-navy"
+        />
         </div>
         <Button
           variant="secondary"
@@ -50,7 +47,7 @@ export function AllocationSummaryBar({
           onClick={onContinue}
           className="w-full sm:w-auto"
         >
-          {buttonLabel} ›
+          {buttonLabel}
         </Button>
       </div>
     </div>

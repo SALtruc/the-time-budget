@@ -24,7 +24,7 @@ const sansFont = Quicksand({
 export const metadata: Metadata = {
   title: "The Time Budget",
   description:
-    "Allocate your 40-hour week across 7 life blocks and discover your Time Profile character.",
+    "Allocate your 168-hour week across 7 life blocks and discover your Time Profile character.",
 };
 
 export default function RootLayout({

@@ -1,6 +1,7 @@
 import { StickerCard } from "@/components/ui/StickerCard";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { getTotalPercent } from "@/lib/game/allocation";
+import { percentToHours, TOTAL_HOURS } from "@/lib/game/hours";
 import type { Allocation } from "@/lib/game/types";
 
 export function TimeBudgetCard({ allocation }: { allocation: Allocation }) {
@@ -11,7 +12,7 @@ export function TimeBudgetCard({ allocation }: { allocation: Allocation }) {
       <div className="mb-2 flex items-baseline justify-between">
         <span className="font-bold text-lg sm:text-xl">Time budget</span>
         <span className="font-display text-2xl sm:text-3xl text-brand-red">
-          {total}%
+          {total}% / {percentToHours(total, TOTAL_HOURS)}h
         </span>
       </div>
       <ProgressBar

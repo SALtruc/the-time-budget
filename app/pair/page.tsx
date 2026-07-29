@@ -144,19 +144,19 @@ export default function PairLobbyPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
         <ScreenHeader backHref="/mode" />
-        <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
+        <div className="mx-auto flex w-full max-w-lg flex-1 flex-col justify-center">
           <StripeDivider />
-          <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
+          <StickerCard className="rounded-t-none p-5 text-center sm:p-7">
             <h1 className="font-display text-3xl sm:text-4xl text-brand-red mb-8">
               Pair Comparison
             </h1>
             <div className="flex flex-col gap-4">
-              <Button variant="secondary" size="lg" onClick={() => setStep("create")}>
+              <Button variant="secondary" size="md" onClick={() => setStep("create")}>
                 Create invitation code
               </Button>
               <Button
                 className="!bg-brand-cyan !text-brand-navy"
-                size="lg"
+                size="md"
                 onClick={() => setStep("join")}
               >
                 Enter invitation code
@@ -164,15 +164,15 @@ export default function PairLobbyPage() {
             </div>
           </StickerCard>
 
-          <div className="mt-8 flex items-end gap-3">
+          <div className="mt-6 flex items-end gap-3">
             <Image
               src="/assets/mascot-clipboard.png"
               alt=""
-              width={120}
-              height={150}
-              className="w-24 sm:w-32 h-auto shrink-0"
+              width={240}
+              height={154}
+              className="h-auto w-40 shrink-0 sm:w-48"
             />
-            <StickerCard className="p-4 text-sm sm:text-base">
+            <StickerCard className="p-3 text-sm leading-snug sm:p-4 sm:text-base">
               Let&apos;s do this challenge with a partner! Learn together,
               discuss together.
             </StickerCard>
@@ -204,7 +204,7 @@ export default function PairLobbyPage() {
               disabled={loading}
               onClick={handleCreate}
             >
-              {loading ? "Please wait…" : "Create ›"}
+              {loading ? "Please wait..." : "Create"}
             </Button>
           </StickerCard>
         </div>
@@ -256,7 +256,7 @@ export default function PairLobbyPage() {
                 disabled={loading}
                 onClick={handleEnterRoomAsHost}
               >
-                {loading ? "Please wait…" : "Continue to waiting room ›"}
+                {loading ? "Please wait..." : "Continue to waiting room"}
               </Button>
             </div>
           </StickerCard>
@@ -298,7 +298,7 @@ export default function PairLobbyPage() {
             disabled={loading}
             onClick={handleJoin}
           >
-            {loading ? "Please wait…" : "Start ›"}
+            {loading ? "Please wait..." : "Start"}
           </Button>
         </StickerCard>
       </div>

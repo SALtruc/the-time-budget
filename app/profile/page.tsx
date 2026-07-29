@@ -34,19 +34,19 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
+    <main className="bg-grid-blue flex flex-1 flex-col px-4 py-6 sm:py-10">
       <ScreenHeader backHref="/avatar" />
 
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-4 sm:gap-5">
         <div className="flex items-center gap-3">
           <Image
             src="/assets/mascot-start.png"
             alt=""
-            width={90}
-            height={110}
-            className="w-16 h-auto shrink-0"
+            width={150}
+            height={185}
+            className="h-auto w-24 shrink-0 sm:w-28"
           />
-          <div className="rounded-2xl border-ink bg-white px-4 py-3 shadow-sticker-sm font-semibold">
+          <div className="rounded-[16px] border-ink bg-white px-4 py-3 text-sm font-semibold shadow-sticker-sm sm:text-base">
             Tell us more about yourself
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function ProfilePage() {
             value={yearOfStudy}
             onChange={(e) => setProfileFields({ yearOfStudy: e.target.value })}
             placeholder="e.g. Year 3"
-            className="w-full rounded-2xl border-ink bg-white px-4 py-3 text-base font-semibold shadow-sticker-sm"
+            className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm"
           />
         </div>
 
@@ -73,7 +73,7 @@ export default function ProfilePage() {
             value={program}
             onChange={(e) => setProfileFields({ program: e.target.value })}
             placeholder="e.g. Digital Marketing"
-            className="w-full rounded-2xl border-ink bg-white px-4 py-3 text-base font-semibold shadow-sticker-sm"
+            className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm"
           />
         </div>
 
@@ -94,7 +94,7 @@ export default function ProfilePage() {
             value={accessCode}
             onChange={(e) => setProfileFields({ accessCode: e.target.value })}
             placeholder="e.g. CXVED"
-            className="w-full rounded-2xl border-ink bg-white px-4 py-3 text-base font-semibold shadow-sticker-sm"
+            className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm"
           />
         </div>
 
@@ -105,7 +105,7 @@ export default function ProfilePage() {
             disabled={submitting}
             onClick={handleNext}
           >
-            {submitting ? "Please wait…" : "Next ›"}
+            {submitting ? "Please wait..." : "Next"}
           </Button>
         </div>
       </div>

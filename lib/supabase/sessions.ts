@@ -41,9 +41,7 @@ function requireSupabase() {
 export async function createSession(mode: SessionMode): Promise<SessionRow> {
   const client = requireSupabase();
 
-  // "Surprise lecture cancelled" event: rolled once per session so every
-  // participant in a Pair/Group room sees the same bonus (fairness).
-  const bonusHours = Math.random() < 0.5 ? 2 : 0;
+  const bonusHours = 0;
 
   // Retry on the (rare) chance a generated code collides with an existing one.
   for (let attempt = 0; attempt < 5; attempt++) {

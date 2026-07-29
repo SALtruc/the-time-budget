@@ -2,14 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { StickerCard } from "@/components/ui/StickerCard";
 import { Button } from "@/components/ui/Button";
-import { Ribbon } from "@/components/ui/Ribbon";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
+import { ActivityIcon } from "@/components/game/ActivityIcon";
 import { BLOCK_ORDER, BLOCKS } from "@/lib/game/blocks";
 
-export default function HowToPlayPage() {
+export default async function HowToPlayPage({
+  searchParams,
+}: PageProps<"/how-to-play">) {
+  const params = await searchParams;
+  const from =
+    typeof params.from === "string" && params.from.startsWith("/")
+      ? params.from
+      : "/mode";
+
   return (
     <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
-      <ScreenHeader backHref="/mode" />
+      <ScreenHeader backHref={from} />
 
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-8">
         <Image
@@ -21,22 +29,26 @@ export default function HowToPlayPage() {
         />
 
         <div className="w-full">
-          <Ribbon color="gold" className="mb-4">
-            How does this work?
-          </Ribbon>
-          <StickerCard className="w-full p-5 sm:p-6">
-            <ol className="list-decimal space-y-2 pl-5 text-sm sm:text-base">
-              <li>Pick a mode: Self-paced, Pair Comparison, or Group Roleplay.</li>
+          <StickerCard tone="custom" className="overflow-hidden bg-brand-red text-white">
+            <div className="border-b-[3px] border-brand-navy bg-brand-gold px-5 py-2 text-center font-display text-xl text-brand-navy">
+              HOW TO PLAY
+            </div>
+            <ol className="space-y-3 px-5 py-5 text-sm leading-relaxed sm:text-base">
               <li>
-                Allocate your 40-hour week across 7 activity blocks as
-                percentages that add up to 100%.
+                <strong>1.</strong> Your 100% time budget equals 168 hours:
+                24 hours a day, 7 days a week.
               </li>
               <li>
-                We match your allocation to one of 17 Time Profile characters.
+                <strong>2.</strong> Allocate that budget across the 7 activity
+                blocks until the total reaches 100%.
               </li>
               <li>
-                See your character, 4 outcome metrics, a key insight, and
-                reflection questions to discuss.
+                <strong>3.</strong> Review your Time Profile, live outcome
+                metrics, key insight, and reflection questions.
+              </li>
+              <li>
+                <strong>4.</strong> There is no perfect balance here, only
+                trade-offs worth discussing.
               </li>
             </ol>
           </StickerCard>
@@ -55,9 +67,7 @@ export default function HowToPlayPage() {
                   tone="custom"
                   className={`p-4 sm:p-5 ${block.cardBg} ${block.cardText}`}
                 >
-                  <p className="text-2xl mb-1" aria-hidden>
-                    {block.icon}
-                  </p>
+                  <ActivityIcon blockKey={key} className="mb-1 size-8" />
                   <h3 className="font-display text-lg">{block.label}</h3>
                   <p className="text-sm mt-1 opacity-90">{block.description}</p>
                   <p className="text-xs font-bold mt-2 opacity-70">
@@ -69,9 +79,9 @@ export default function HowToPlayPage() {
           </div>
         </div>
 
-        <Link href="/mode">
+        <Link href={from}>
           <Button variant="primary" size="lg">
-            Let&apos;s go ›
+            Let&apos;s go
           </Button>
         </Link>
       </div>

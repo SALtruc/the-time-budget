@@ -18,10 +18,10 @@ export function MascotBubble({
         alt={alt}
         width={220}
         height={260}
-        className="w-32 sm:w-44 h-auto shrink-0"
+        className="h-auto w-40 shrink-0 sm:w-52"
         priority
       />
-      <StickerCard className="p-4 sm:p-5 text-base sm:text-lg font-semibold text-center sm:text-left">
+      <StickerCard className="p-5 text-base font-semibold text-center sm:p-6 sm:text-xl sm:text-left">
         {children}
       </StickerCard>
     </div>

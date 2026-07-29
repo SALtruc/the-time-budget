@@ -20,7 +20,8 @@ export default function RmitIdPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isValid = /^[0-9]{6}$/.test(studentId);
+  const isValid = /^[0-9]{7}$/.test(studentId);
+  const errorId = "student-id-error";
 
   async function handleContinue() {
     setTouched(true);
@@ -45,61 +46,72 @@ export default function RmitIdPage() {
   }
 
   return (
-    <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-8 sm:py-10">
+    <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-6 sm:py-10">
       <ScreenHeader theme="yellow" />
 
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-start gap-6">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-start gap-5">
         <Image
           src="/assets/logo.png"
           alt="The Time Budget"
           width={800}
           height={220}
-          className="w-full max-w-xs h-auto"
+          className="h-auto w-full max-w-xs"
         />
 
-        <StickerCard className="w-full p-6 sm:p-8 text-center">
+        <StickerCard className="w-full p-5 text-center sm:p-7">
+          <p className="mb-3 font-display text-xl text-brand-blue sm:text-2xl">
+            Verify your SID
+          </p>
           <p className="text-lg sm:text-xl">This is exclusively for</p>
-          <p className="font-display text-2xl sm:text-3xl text-brand-red mb-6">
+          <p className="mb-6 font-display text-2xl text-brand-red sm:text-3xl">
             RMIT Students
           </p>
+          <label htmlFor="student-id" className="sr-only">
+            Student ID
+          </label>
           <input
+            id="student-id"
             type="text"
             inputMode="numeric"
             pattern="[0-9]*"
             value={studentId}
             onChange={(e) =>
-              setStudentId(e.target.value.replace(/\D/g, "").slice(0, 6))
+              setStudentId(e.target.value.replace(/\D/g, "").slice(0, 7))
             }
             placeholder="Enter your Student ID"
+            aria-invalid={touched && !isValid}
+            aria-describedby={touched && !isValid ? errorId : undefined}
             className="w-full border-b-2 border-brand-navy bg-transparent pb-2 text-center text-lg font-semibold outline-none placeholder:text-brand-navy/40"
           />
           {touched && !isValid && (
-            <p className="mt-3 text-sm font-bold text-brand-red">
-              Please enter your 6-digit SID to verify!
+            <p id={errorId} className="mt-3 text-sm font-bold text-brand-red">
+              Please enter your 7-digit SID to verify.
             </p>
           )}
           {error && (
             <p className="mt-3 text-sm font-bold text-brand-red">{error}</p>
           )}
+
+          <div className="mt-6">
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full !bg-brand-blue !text-white"
+              disabled={submitting}
+              onClick={handleContinue}
+            >
+              {submitting ? "Verifying..." : "Verify"}
+            </Button>
+          </div>
         </StickerCard>
 
         <Image
           src="/assets/mascot-start.png"
           alt=""
-          width={140}
-          height={165}
-          className="w-28 sm:w-36 h-auto self-start"
+          width={180}
+          height={220}
+          className="-mt-1 h-auto w-44 self-start sm:w-52"
         />
-
-        <Button
-          variant="primary"
-          size="lg"
-          className="w-full"
-          disabled={submitting}
-          onClick={handleContinue}
-        >
-          {submitting ? "Please wait…" : "Next ›"}
-        </Button>
       </div>
     </main>
   );

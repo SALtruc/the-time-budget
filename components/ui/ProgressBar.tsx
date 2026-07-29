@@ -14,7 +14,7 @@ export function ProgressBar({
   return (
     <div
       className={clsx(
-        "h-3 w-full rounded-full bg-brand-grey overflow-hidden",
+        "h-3 w-full overflow-hidden rounded-full bg-brand-grey",
         className
       )}
       role="progressbar"
@@ -23,7 +23,7 @@ export function ProgressBar({
       aria-valuemax={100}
     >
       <div
-        className={clsx("h-full rounded-full transition-all", colorClassName)}
+        className={clsx("h-full rounded-full transition-all duration-200", colorClassName)}
         style={{ width: `${clamped}%` }}
       />
     </div>

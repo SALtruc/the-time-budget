@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { getAvatarSrc } from "@/lib/game/avatars";
 import { StickerCard } from "./StickerCard";
@@ -11,18 +11,21 @@ import { StickerCard } from "./StickerCard";
 export function ScreenHeader({
   backHref,
   theme = "blue",
+  showHelp = true,
 }: {
   backHref?: string;
   theme?: "blue" | "yellow";
+  showHelp?: boolean;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const textColor = theme === "blue" ? "text-white" : "text-brand-navy";
   const avatarId = usePlayerStore((s) => s.avatarId);
   const avatarSrc = getAvatarSrc(avatarId) ?? "/assets/mascot-start.png";
   const [confirmingHome, setConfirmingHome] = useState(false);
 
   return (
-    <div className="mb-6 flex flex-col gap-2">
+    <div className="mb-4 flex flex-col gap-2">
       <div className="flex items-start justify-between">
         <button
           type="button"
@@ -52,18 +55,22 @@ export function ScreenHeader({
             href={backHref}
             className={`-m-2 flex min-h-11 items-center gap-1 rounded-full p-2 text-base font-bold active-press sm:text-lg ${textColor}`}
           >
-            ‹ Back
+            Back
           </Link>
         ) : (
           <span />
         )}
-        <Link
-          href="/how-to-play"
-          aria-label="How to play"
-          className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-full border-ink bg-white font-display text-lg text-brand-navy shadow-sticker-sm active-press transition-colors hover:bg-brand-cream"
-        >
-          ?
-        </Link>
+        {showHelp ? (
+          <Link
+            href={`/how-to-play?from=${encodeURIComponent(pathname)}`}
+            aria-label="How to play"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-ink bg-white font-display text-base text-brand-navy shadow-sticker-sm active-press transition-colors hover:bg-brand-cream sm:h-11 sm:w-11 sm:text-lg"
+          >
+            ?
+          </Link>
+        ) : (
+          <span />
+        )}
       </div>
 
       {confirmingHome && (

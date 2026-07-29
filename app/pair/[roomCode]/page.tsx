@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { StickerCard } from "@/components/ui/StickerCard";
 import { Ribbon } from "@/components/ui/Ribbon";
@@ -12,16 +12,14 @@ import { RoomCodeBadge } from "@/components/ui/RoomCodeBadge";
 import { BlockAllocatorCard } from "@/components/game/BlockAllocatorCard";
 import { AllocationSummaryBar } from "@/components/game/AllocationSummaryBar";
 import { TimeBudgetCard } from "@/components/game/TimeBudgetCard";
-import { SurpriseEventCard } from "@/components/game/SurpriseEventCard";
-import { MetricsGrid } from "@/components/game/MetricsGrid";
 import { ParticipantsList } from "@/components/game/ParticipantsList";
 import { ParticipantResultCard } from "@/components/game/ParticipantResultCard";
 import { ProfileResultCard } from "@/components/game/ProfileResultCard";
 import { ReflectionQuestions } from "@/components/game/ReflectionQuestions";
 import { ChallengeAgainCTA } from "@/components/game/ChallengeAgainCTA";
-import { BLOCK_ORDER, BLOCKS } from "@/lib/game/blocks";
+import { AllocationComparisonGrid } from "@/components/game/AllocationComparisonGrid";
+import { BLOCK_ORDER } from "@/lib/game/blocks";
 import { matchProfile } from "@/lib/game/matchProfile";
-import { percentToHours, TOTAL_HOURS } from "@/lib/game/hours";
 import { useGameStore } from "@/lib/store/useGameStore";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { useSessionStore } from "@/lib/store/useSessionStore";
@@ -39,7 +37,6 @@ export default function PairRoomPage() {
   const sessionId = useSessionStore((s) => s.sessionId);
   const participantId = useSessionStore((s) => s.participantId);
   const storedRoomCode = useSessionStore((s) => s.roomCode);
-  const bonusHours = useSessionStore((s) => s.bonusHours);
   const clearSession = useSessionStore((s) => s.clearSession);
 
   const allocation = useGameStore((s) => s.allocation);
@@ -50,9 +47,9 @@ export default function PairRoomPage() {
   const [participants, setParticipants] = useState<ParticipantRow[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [revealResults, setRevealResults] = useState(false);
 
   const profile = useMemo(() => matchProfile(allocation), [allocation]);
-  const effectiveTotalHours = TOTAL_HOURS + bonusHours;
 
   useEffect(() => {
     if (!sessionId) return;
@@ -64,10 +61,10 @@ export default function PairRoomPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-4 px-4 py-12 text-center">
         <StickerCard className="max-w-md p-6">
-          <h1 className="font-display text-2xl mb-3">Session not found</h1>
-          <p className="text-sm sm:text-base mb-5">
-            This room link isn&apos;t linked to an active session on this
-            device. Join or create a new room to continue.
+          <h1 className="mb-3 font-display text-2xl">Session not found</h1>
+          <p className="mb-5 text-sm sm:text-base">
+            This room link isn&apos;t linked to an active session on this device.
+            Join or create a new room to continue.
           </p>
           <Link href="/pair">
             <Button variant="primary">Back to Pair Comparison</Button>
@@ -97,6 +94,37 @@ export default function PairRoomPage() {
     router.push("/mode");
   }
 
+  if (allReady && !revealResults) {
+    return (
+      <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 sm:py-10">
+        <div className="w-full max-w-3xl">
+          <ScreenHeader backHref="/mode" />
+        </div>
+        <div className="w-full max-w-3xl">
+          <Ribbon color="red" className="mb-3">
+            <p className="mb-1 font-display text-lg sm:text-xl">Before the reveal: discuss</p>
+            <p className="text-sm font-normal sm:text-base">
+              Compare your allocations with your partner before you reveal the
+              Time Profiles.
+            </p>
+          </Ribbon>
+          <AllocationComparisonGrid participants={participants} columns="pair" />
+        </div>
+        <div className="w-full max-w-3xl">
+          <ReflectionQuestions variant="pair" />
+        </div>
+        <Button
+          variant="primary"
+          size="lg"
+          className="!bg-brand-blue !text-white"
+          onClick={() => setRevealResults(true)}
+        >
+          Reveal results
+        </Button>
+      </main>
+    );
+  }
+
   if (allReady) {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 sm:py-10">
@@ -108,10 +136,10 @@ export default function PairRoomPage() {
           alt="The Time Budget"
           width={800}
           height={220}
-          className="w-full max-w-xs h-auto"
+          className="h-auto w-full max-w-xs"
         />
 
-        <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid w-full max-w-3xl grid-cols-2 gap-3 sm:gap-4">
           {participants.map((p, i) => (
             <ParticipantResultCard
               key={p.id}
@@ -121,57 +149,15 @@ export default function PairRoomPage() {
           ))}
         </div>
 
-        <div className="w-full max-w-2xl flex flex-col gap-6">
+        <div className="flex w-full max-w-2xl flex-col gap-6">
           <ProfileResultCard
             profile={profile}
             subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
           />
-          <MetricsGrid metrics={profile.metrics} />
-        </div>
-
-        <div className="w-full max-w-3xl">
-          <Ribbon color="red" className="mb-2">
-            <p className="font-display text-lg sm:text-xl mb-1">
-              Before the reveal — discuss
-            </p>
-            <p className="text-sm sm:text-base font-normal">
-              Compare your allocations with your partner. Which activities
-              did you each prioritize? Where did you make different choices
-              and why?
-            </p>
-          </Ribbon>
-        </div>
-
-        <h2 className="font-display text-lg sm:text-xl text-white text-center">
-          Your allocations side by side
-        </h2>
-        <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {BLOCK_ORDER.map((key) => (
-            <div key={key} className="contents">
-              {participants.map((p) => (
-                <StickerCard
-                  key={p.id + key}
-                  tone="custom"
-                  className={`p-4 ${BLOCKS[key].cardBg} ${BLOCKS[key].cardText}`}
-                >
-                  <p className="text-xs sm:text-sm opacity-80">{p.display_name}</p>
-                  <p className="font-semibold text-sm sm:text-base">
-                    {BLOCKS[key].icon} {BLOCKS[key].label}
-                  </p>
-                  <p className="font-display text-2xl">
-                    {p.allocation
-                      ? percentToHours(p.allocation[key], effectiveTotalHours)
-                      : 0}
-                    h
-                  </p>
-                </StickerCard>
-              ))}
-            </div>
-          ))}
-        </div>
-
-        <div className="w-full max-w-3xl">
-          <ReflectionQuestions discussionPrompt="Compare your profiles with your partner — did you end up with the same character? Where did your priorities differ? What does that tell you about how different students manage the same 40 hours?" />
+          <ReflectionQuestions
+            variant="pair"
+            discussionPrompt="Compare your profiles with your partner: did you end up with the same character, and what does that say about different ways to manage the same 168 hours?"
+          />
         </div>
 
         <div className="w-full max-w-3xl">
@@ -188,10 +174,8 @@ export default function PairRoomPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <StickerCard className="max-w-md p-6">
-          <h1 className="font-display text-2xl mb-3">
-            Waiting for your partner…
-          </h1>
-          <p className="text-sm sm:text-base mb-5">
+          <h1 className="mb-3 font-display text-2xl">Waiting for your partner...</h1>
+          <p className="mb-5 text-sm sm:text-base">
             You matched <strong>{profile.name}</strong>. Results reveal once
             everyone has submitted.
           </p>
@@ -204,13 +188,13 @@ export default function PairRoomPage() {
   if (!bothJoined) {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12 text-center">
-        <h1 className="font-display text-2xl sm:text-3xl text-white">
+        <h1 className="font-display text-2xl text-white sm:text-3xl">
           Waiting for your partner to join
         </h1>
         <RoomCodeBadge code={roomCode} />
-        <p className="text-sm sm:text-base max-w-sm text-white">
-          Share this code with your partner. As soon as they join, you can
-          both start allocating your 40-hour week.
+        <p className="max-w-sm text-sm text-white sm:text-base">
+          Share this code with your partner. As soon as they join, you can both
+          start allocating your 168-hour week.
         </p>
         <StickerCard className="w-full max-w-sm p-5">
           <ParticipantsList participants={participants} />
@@ -220,26 +204,25 @@ export default function PairRoomPage() {
   }
 
   return (
-    <main className="bg-grid-blue flex flex-1 flex-col gap-6 px-4 py-8 sm:py-10 pb-32">
+    <main className="bg-grid-blue flex flex-1 flex-col gap-6 px-4 pb-32 py-8 sm:py-10">
       <ScreenHeader />
       <div className="mx-auto w-full max-w-4xl">
-        <div className="flex items-center justify-between mb-4 gap-4">
-          <h1 className="font-display text-2xl sm:text-3xl text-white">
-            Allocate your 40-hour week
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <h1 className="font-display text-2xl text-white sm:text-3xl">
+            Allocate your 168-hour week
           </h1>
           <RoomCodeBadge code={roomCode} />
         </div>
 
         <Ribbon color="red" className="mb-4">
-          Spend 100% of your time budget across 7 activities for 1 week!
+          Spend 100% of your time budget across 7 activities for 1 week.
         </Ribbon>
 
-        <div className="mb-4 flex flex-col gap-4">
-          <SurpriseEventCard bonusHours={bonusHours} />
+        <div className="mb-4">
           <TimeBudgetCard allocation={allocation} />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {BLOCK_ORDER.map((key) => (
             <BlockAllocatorCard
               key={key}
@@ -254,9 +237,8 @@ export default function PairRoomPage() {
       <AllocationSummaryBar
         allocation={allocation}
         onContinue={handleSubmit}
-        buttonLabel={submitting ? "Submitting…" : "Submit"}
+        buttonLabel={submitting ? "Submitting..." : "Submit"}
         disabled={submitting}
-        bonusHours={bonusHours}
       />
     </main>
   );

@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { StickerCard } from "@/components/ui/StickerCard";
 import { Ribbon } from "@/components/ui/Ribbon";
@@ -13,14 +13,13 @@ import { StripeDivider } from "@/components/ui/StripeDivider";
 import { BlockAllocatorCard } from "@/components/game/BlockAllocatorCard";
 import { AllocationSummaryBar } from "@/components/game/AllocationSummaryBar";
 import { TimeBudgetCard } from "@/components/game/TimeBudgetCard";
-import { SurpriseEventCard } from "@/components/game/SurpriseEventCard";
-import { MetricsGrid } from "@/components/game/MetricsGrid";
 import { ParticipantsList } from "@/components/game/ParticipantsList";
 import { ParticipantResultCard } from "@/components/game/ParticipantResultCard";
 import { ProfileResultCard } from "@/components/game/ProfileResultCard";
 import { ReflectionQuestions } from "@/components/game/ReflectionQuestions";
 import { ChallengeAgainCTA } from "@/components/game/ChallengeAgainCTA";
 import { RoleContextCard } from "@/components/game/RoleContextCard";
+import { AllocationComparisonGrid } from "@/components/game/AllocationComparisonGrid";
 import { BLOCK_ORDER } from "@/lib/game/blocks";
 import { matchProfile } from "@/lib/game/matchProfile";
 import { getRole, ROLE_ORDER } from "@/lib/game/roles";
@@ -43,7 +42,6 @@ export default function GroupRoomPage() {
   const participantId = useSessionStore((s) => s.participantId);
   const storedRoomCode = useSessionStore((s) => s.roomCode);
   const roleId = useSessionStore((s) => s.roleId);
-  const bonusHours = useSessionStore((s) => s.bonusHours);
   const setRoleId = useSessionStore((s) => s.setRoleId);
   const clearSession = useSessionStore((s) => s.clearSession);
 
@@ -57,6 +55,7 @@ export default function GroupRoomPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [started, setStarted] = useState(false);
+  const [revealResults, setRevealResults] = useState(false);
 
   const role = roleId ? getRole(roleId) : null;
   const profile = useMemo(() => matchProfile(allocation), [allocation]);
@@ -78,10 +77,10 @@ export default function GroupRoomPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-4 px-4 py-12 text-center">
         <StickerCard className="max-w-md p-6">
-          <h1 className="font-display text-2xl mb-3">Session not found</h1>
-          <p className="text-sm sm:text-base mb-5">
-            This room link isn&apos;t linked to an active session on this
-            device. Join or host a new room to continue.
+          <h1 className="mb-3 font-display text-2xl">Session not found</h1>
+          <p className="mb-5 text-sm sm:text-base">
+            This room link isn&apos;t linked to an active session on this device.
+            Join or host a new room to continue.
           </p>
           <Link href="/group">
             <Button variant="primary">Back to Group Roleplay</Button>
@@ -118,6 +117,37 @@ export default function GroupRoomPage() {
     router.push("/mode");
   }
 
+  if (allReady && !revealResults) {
+    return (
+      <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 sm:py-10">
+        <div className="w-full max-w-5xl">
+          <ScreenHeader backHref="/mode" />
+        </div>
+        <div className="w-full max-w-5xl">
+          <Ribbon color="red" className="mb-3">
+            <p className="mb-1 font-display text-lg sm:text-xl">Before the reveal: discuss</p>
+            <p className="text-sm font-normal sm:text-base">
+              Compare how each role changed the 168-hour allocation before the
+              Time Profiles are revealed.
+            </p>
+          </Ribbon>
+          <AllocationComparisonGrid participants={participants} />
+        </div>
+        <div className="w-full max-w-3xl">
+          <ReflectionQuestions variant="group" />
+        </div>
+        <Button
+          variant="primary"
+          size="lg"
+          className="!bg-brand-blue !text-white"
+          onClick={() => setRevealResults(true)}
+        >
+          Reveal results
+        </Button>
+      </main>
+    );
+  }
+
   if (allReady) {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 sm:py-10">
@@ -129,10 +159,10 @@ export default function GroupRoomPage() {
           alt="The Time Budget"
           width={800}
           height={220}
-          className="w-full max-w-xs h-auto"
+          className="h-auto w-full max-w-xs"
         />
 
-        <div className="grid w-full max-w-5xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {participants.map((p, i) => (
             <ParticipantResultCard
               key={p.id}
@@ -143,16 +173,15 @@ export default function GroupRoomPage() {
           ))}
         </div>
 
-        <div className="w-full max-w-2xl flex flex-col gap-6">
+        <div className="flex w-full max-w-2xl flex-col gap-6">
           <ProfileResultCard
             profile={profile}
             subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
           />
-          <MetricsGrid metrics={profile.metrics} />
-        </div>
-
-        <div className="w-full max-w-3xl">
-          <ReflectionQuestions discussionPrompt="Compare your profiles with your group — did you end up with the same character? Where did your priorities differ? What does that tell you about how different students manage the same 40 hours?" />
+          <ReflectionQuestions
+            variant="group"
+            discussionPrompt="Compare your profiles with your group: where did priorities differ, and what does that say about different ways to manage the same 168 hours?"
+          />
         </div>
 
         <div className="w-full max-w-3xl">
@@ -169,10 +198,10 @@ export default function GroupRoomPage() {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-6 px-4 py-12 text-center">
         <StickerCard className="max-w-md p-6">
-          <h1 className="font-display text-2xl mb-3">
-            Waiting for the rest of the group…
+          <h1 className="mb-3 font-display text-2xl">
+            Waiting for the rest of the group...
           </h1>
-          <p className="text-sm sm:text-base mb-5">
+          <p className="mb-5 text-sm sm:text-base">
             You matched <strong>{profile.name}</strong>. Results reveal once
             everyone has submitted.
           </p>
@@ -184,54 +213,55 @@ export default function GroupRoomPage() {
 
   if (!started) {
     return (
-      <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 sm:py-10 text-center">
+      <main className="bg-grid-blue flex flex-1 flex-col items-center gap-6 px-4 py-8 text-center sm:py-10">
         <ScreenHeader backHref="/group" />
         <RoomCodeBadge code={roomCode} />
 
         <div className="w-full max-w-sm">
           <StripeDivider />
           <StickerCard className="rounded-t-none p-6 sm:p-8">
-            <h1 className="font-display text-3xl text-brand-red mb-6">
+            <h1 className="mb-6 font-display text-3xl text-brand-red">
               Group roleplay
             </h1>
 
             <StickerCard tone="gold" className="p-5 text-center">
-              <p className="text-sm font-bold mb-1">You are</p>
-              <p className="text-stroke font-display text-2xl text-white">
+              <p className="mb-1 text-sm font-bold">You are</p>
+              <p className="section-title-shadow text-stroke font-display text-2xl text-white">
                 {role.name}
               </p>
             </StickerCard>
             <button
+              type="button"
               onClick={handleChangeRole}
-              className="mt-4 text-sm sm:text-base font-bold text-brand-red underline underline-offset-4"
+              className="mt-4 text-sm font-bold text-brand-red underline underline-offset-4 sm:text-base"
             >
-              ⇄ Change to a different role
+              Change to a different role
             </button>
           </StickerCard>
         </div>
 
-        <p className="text-sm sm:text-base max-w-sm text-white">
+        <p className="max-w-sm text-left text-sm text-white sm:text-base">
           Share this code with your group (3+ players recommended). Everyone
-          can allocate whenever they&apos;re ready — you don&apos;t have to
-          wait for the others to start.
+          can allocate whenever they&apos;re ready; you don&apos;t have to wait for the
+          others to start.
         </p>
         <StickerCard className="w-full max-w-sm p-5">
           <ParticipantsList participants={participants} />
         </StickerCard>
         <Button variant="primary" size="lg" onClick={() => setStarted(true)}>
-          Start ›
+          Start
         </Button>
       </main>
     );
   }
 
   return (
-    <main className="bg-grid-blue flex flex-1 flex-col gap-6 px-4 py-8 sm:py-10 pb-32">
+    <main className="bg-grid-blue flex flex-1 flex-col gap-6 px-4 pb-32 py-8 sm:py-10">
       <ScreenHeader />
       <div className="mx-auto w-full max-w-4xl">
-        <div className="flex items-center justify-between mb-4 gap-4">
-          <h1 className="font-display text-2xl sm:text-3xl text-white">
-            Allocate your 40-hour week
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <h1 className="font-display text-2xl text-white sm:text-3xl">
+            Allocate your 168-hour week
           </h1>
           <RoomCodeBadge code={roomCode} />
         </div>
@@ -243,12 +273,11 @@ export default function GroupRoomPage() {
           <RoleContextCard role={role} />
         </div>
 
-        <div className="mb-4 flex flex-col gap-4">
-          <SurpriseEventCard bonusHours={bonusHours} />
+        <div className="mb-4">
           <TimeBudgetCard allocation={allocation} />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {BLOCK_ORDER.map((key) => (
             <BlockAllocatorCard
               key={key}
@@ -264,9 +293,8 @@ export default function GroupRoomPage() {
       <AllocationSummaryBar
         allocation={allocation}
         onContinue={handleSubmit}
-        buttonLabel={submitting ? "Submitting…" : "Submit"}
+        buttonLabel={submitting ? "Submitting..." : "Submit"}
         disabled={submitting}
-        bonusHours={bonusHours}
       />
     </main>
   );
