@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BlockAllocatorCard } from "@/components/game/BlockAllocatorCard";
 import { AllocationSummaryBar } from "@/components/game/AllocationSummaryBar";
 import { TimeBudgetCard } from "@/components/game/TimeBudgetCard";
-import { SurpriseEventCard } from "@/components/game/SurpriseEventCard";
 import { ProfileResultCard } from "@/components/game/ProfileResultCard";
-import { MetricsGrid } from "@/components/game/MetricsGrid";
 import { ReflectionQuestions } from "@/components/game/ReflectionQuestions";
 import { ChallengeAgainCTA } from "@/components/game/ChallengeAgainCTA";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
@@ -26,13 +24,7 @@ export default function SelfPacedPage() {
   const allocation = useGameStore((s) => s.allocation);
   const setPercent = useGameStore((s) => s.setPercent);
   const reset = useGameStore((s) => s.reset);
-  const bonusHours = useGameStore((s) => s.bonusHours);
-  const rollBonusHours = useGameStore((s) => s.rollBonusHours);
   const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
-
-  useEffect(() => {
-    rollBonusHours();
-  }, [rollBonusHours]);
 
   const profile = useMemo(() => matchProfile(allocation), [allocation]);
 
@@ -42,7 +34,7 @@ export default function SelfPacedPage() {
         <ScreenHeader backHref="/mode" />
         <div className="mx-auto w-full max-w-4xl">
           <h1 className="font-display text-2xl sm:text-3xl mb-4 text-white">
-            Allocate your 40-hour week
+            Allocate your 168-hour week
           </h1>
 
           <Ribbon color="red" className="mb-4">
@@ -50,7 +42,6 @@ export default function SelfPacedPage() {
           </Ribbon>
 
           <div className="mb-4 flex flex-col gap-4">
-            <SurpriseEventCard bonusHours={bonusHours} />
             <TimeBudgetCard allocation={allocation} />
           </div>
 
@@ -69,7 +60,6 @@ export default function SelfPacedPage() {
         <AllocationSummaryBar
           allocation={allocation}
           onContinue={() => setStep("result")}
-          bonusHours={bonusHours}
         />
       </main>
     );
@@ -96,7 +86,6 @@ export default function SelfPacedPage() {
             />
           </div>
         </div>
-        <MetricsGrid metrics={profile.metrics} />
         <ReflectionQuestions />
 
         <ChallengeAgainCTA

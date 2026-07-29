@@ -25,19 +25,19 @@ export default function AvatarPage() {
   }
 
   return (
-    <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-8 sm:py-10">
-      <ScreenHeader backHref="/rmit-id" theme="yellow" />
+    <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-5 sm:py-8">
+      <ScreenHeader backHref="/rmit-id" theme="yellow" showHelp={false} />
 
       {/* justify-start, not justify-center: with all 8 avatars now at full
           size the content is taller than the viewport on most phones, and
           centering an overflowing flex column pushes its top (the heading)
           up past the visible area instead of just letting the page scroll. */}
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-start">
-        <h1 className="mb-8 text-center font-display text-2xl sm:text-3xl leading-tight">
+        <h1 className="mb-4 max-w-xs text-center font-display text-xl leading-tight sm:mb-7 sm:text-3xl">
           But first, let&apos;s choose your <span className="text-brand-red">avatar</span>
         </h1>
 
-        <div className="grid w-full grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-7">
+        <div className="grid w-full max-w-[260px] grid-cols-2 gap-2 sm:max-w-2xl sm:grid-cols-4 sm:gap-6">
           {AVATARS.map((avatar) => {
             const isSelected = avatarId === avatar.id;
             return (
@@ -54,7 +54,7 @@ export default function AvatarPage() {
                   onClick={() => setAvatarId(avatar.id)}
                   aria-pressed={isSelected}
                   className={clsx(
-                    "absolute inset-[2%] block select-none overflow-hidden rounded-full border-ink bg-white [-webkit-tap-highlight-color:transparent] transition-[transform,box-shadow] duration-150",
+                    "absolute inset-[4%] block select-none overflow-hidden rounded-full border-ink bg-white [-webkit-tap-highlight-color:transparent] transition-[transform,box-shadow] duration-150",
                     isSelected
                       ? "-translate-y-[3px] scale-[1.02] shadow-[0_0_0_4px_var(--color-brand-red),3px_3px_0_0_var(--color-brand-navy)]"
                       : "shadow-sticker-sm active:opacity-80"
@@ -65,7 +65,7 @@ export default function AvatarPage() {
                     alt=""
                     width={276}
                     height={276}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain object-center p-1"
                     draggable={false}
                   />
                 </button>
@@ -79,15 +79,15 @@ export default function AvatarPage() {
           })}
         </div>
 
-        <div className="mt-8 w-full max-w-md">
+        <div className="mt-3 w-full max-w-[260px] sm:mt-8 sm:max-w-md">
           <Button
-            variant="secondary"
+            variant="primary"
             size="lg"
-            className="w-full"
+            className="w-full !bg-brand-blue !text-white"
             disabled={!avatarId}
             onClick={handleNext}
           >
-            Next ›
+            Next
           </Button>
         </div>
       </div>

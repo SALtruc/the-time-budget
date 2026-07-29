@@ -103,6 +103,11 @@ body {
   paint-order: stroke fill;
 }
 
+.profile-title-shadow,
+.section-title-shadow {
+  text-shadow: 2px 2px 0 var(--color-brand-navy);
+}
+
 /* Page background themes (from the design reference: yellow grid on the
    intro/onboarding screens, blue grid everywhere else) */
 .bg-grid-yellow,

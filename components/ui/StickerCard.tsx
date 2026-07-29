@@ -21,7 +21,7 @@ export function StickerCard({
   return (
     <div
       className={clsx(
-        "rounded-3xl border-ink shadow-sticker",
+        "rounded-[18px] border-ink shadow-sticker",
         toneClasses[tone],
         className
       )}

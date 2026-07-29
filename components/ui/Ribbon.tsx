@@ -27,7 +27,7 @@ export function Ribbon({
       />
       <div
         className={clsx(
-          "relative w-full px-6 py-4 sm:px-7 sm:py-5 font-bold leading-snug",
+          "relative w-full px-4 py-2 text-sm font-bold leading-snug sm:px-5 sm:py-2.5 sm:text-base",
           bg,
           text,
           contentClassName

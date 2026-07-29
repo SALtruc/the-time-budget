@@ -5,19 +5,19 @@ import { StickerCard } from "@/components/ui/StickerCard";
 
 export default function StartPage() {
   return (
-    <main className="bg-grid-yellow flex flex-1 flex-col items-center justify-center gap-8 sm:gap-10 px-4 py-10 sm:py-14">
+    <main className="bg-grid-yellow flex flex-1 flex-col items-center justify-center gap-5 px-4 py-7 sm:gap-8 sm:py-12">
       <Image
         src="/assets/logo.png"
         alt="The Time Budget"
         width={800}
         height={220}
-        className="w-full max-w-xs sm:max-w-md h-auto"
+        className="h-auto w-full max-w-xs sm:max-w-md"
         priority
       />
 
       <div className="flex flex-col items-center gap-6">
-        <StickerCard className="px-6 py-4 text-center">
-          <p className="text-lg sm:text-xl font-semibold">
+        <StickerCard className="px-5 py-3 text-center sm:px-6 sm:py-4">
+          <p className="text-lg font-semibold leading-snug sm:text-xl">
             <span className="text-brand-red">Balance</span> your time.{" "}
             <span className="text-brand-red">Shape</span> your future.
           </p>
@@ -35,7 +35,7 @@ export default function StartPage() {
         alt="Time Budget guide"
         width={220}
         height={260}
-        className="w-40 sm:w-56 h-auto"
+        className="h-auto w-60 sm:w-72"
       />
     </main>
   );

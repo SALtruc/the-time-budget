@@ -2,8 +2,8 @@ import type { RoleDefinition, RoleId } from "./types";
 
 /**
  * Pre-allocated percentages are from the spec (PDF §7) and are unchanged.
- * Fixed/free hour values are re-derived for the 40-hour week base
- * (see lib/game/hours.ts) instead of the spec's 168-hour figures.
+ * Fixed role constraints are represented as percentages so they scale with
+ * the 168-hour weekly budget.
  */
 export const ROLES: Record<RoleId, RoleDefinition> = {
   intern: {

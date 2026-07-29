@@ -46,7 +46,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   rollBonusHours: () => {
     if (get().bonusRolled) return;
-    set({ bonusHours: Math.random() < 0.5 ? 2 : 0, bonusRolled: true });
+    set({ bonusHours: 0, bonusRolled: true });
   },
 
   reset: () =>

@@ -12,8 +12,8 @@ const variantClasses: Record<Variant, string> = {
 };
 
 const sizeClasses: Record<Size, string> = {
-  md: "px-6 py-3 text-base",
-  lg: "px-8 py-4 text-lg sm:text-xl",
+  md: "px-5 py-2.5 text-sm sm:text-base",
+  lg: "px-7 py-3 text-base sm:text-lg",
 };
 
 export function Button({
@@ -32,7 +32,7 @@ export function Button({
   return (
     <button
       className={clsx(
-        "inline-flex items-center justify-center gap-2 rounded-full font-display border-ink shadow-sticker active-press transition-[transform,background-color,color] duration-150 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center gap-2 rounded-[28px] font-display border-ink shadow-sticker active-press transition-[transform,background-color,color,box-shadow] duration-200 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed",
         variantClasses[variant],
         sizeClasses[size],
         className

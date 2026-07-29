@@ -9,14 +9,14 @@ export function ParticipantsList({
 }) {
   return (
     <StickerCard className="p-5 sm:p-6">
-      <h2 className="font-display text-lg sm:text-xl mb-3">Players</h2>
+      <h2 className="mb-3 font-display text-lg sm:text-xl">Players</h2>
       <ul className="flex flex-col gap-2">
         {participants.map((p) => (
           <li
             key={p.id}
-            className="flex items-center justify-between rounded-xl border-ink px-4 py-2.5"
+            className="flex items-center justify-between gap-3 rounded-xl border-ink px-4 py-2.5"
           >
-            <span className="font-semibold">
+            <span className="min-w-0 truncate font-semibold">
               {p.display_name}
               {p.role_id && (
                 <span className="ml-2 text-xs font-bold text-brand-navy/50">
@@ -27,17 +27,17 @@ export function ParticipantsList({
             <span
               className={
                 p.is_ready
-                  ? "text-brand-navy font-display text-sm"
-                  : "text-brand-navy/50 text-sm"
+                  ? "shrink-0 font-display text-sm text-brand-navy"
+                  : "shrink-0 text-sm text-brand-navy/50"
               }
             >
-              {p.is_ready ? "✓ Ready" : "Allocating…"}
+              {p.is_ready ? "Ready" : "Allocating..."}
             </span>
           </li>
         ))}
         {participants.length === 0 && (
           <li className="text-sm text-brand-navy/60">
-            Waiting for players to join…
+            Waiting for players to join...
           </li>
         )}
       </ul>

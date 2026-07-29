@@ -1,5 +1,6 @@
 import { StickerCard } from "@/components/ui/StickerCard";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { MetricsGrid } from "@/components/game/MetricsGrid";
 import { BLOCKS } from "@/lib/game/blocks";
 import type { Profile } from "@/lib/game/types";
 
@@ -42,7 +43,7 @@ export function ProfileResultCard({
         <p className="font-display text-base sm:text-lg tracking-wide text-brand-navy/70">
           Your Time Profile
         </p>
-        <h1 className="font-display text-4xl sm:text-5xl leading-tight text-brand-gold-dark">
+        <h1 className="profile-title-shadow text-stroke font-display text-4xl sm:text-5xl leading-tight text-brand-gold">
           {profile.name}
         </h1>
         {subtitle && (
@@ -52,8 +53,10 @@ export function ProfileResultCard({
         )}
       </StickerCard>
 
+      <MetricsGrid metrics={profile.metrics} />
+
       <StickerCard tone="gold" className="p-5 sm:p-6">
-        <h2 className="text-stroke font-display text-xl sm:text-2xl mb-2 text-white">
+        <h2 className="section-title-shadow text-stroke font-display text-xl sm:text-2xl mb-2 text-white">
           WHAT DOES YOUR CHARACTER MEAN?
         </h2>
         <p className="text-sm sm:text-base leading-relaxed mb-3">
@@ -65,7 +68,7 @@ export function ProfileResultCard({
       </StickerCard>
 
       <StickerCard tone="white" className="p-5 sm:p-6">
-        <h2 className="text-stroke font-display text-xl sm:text-2xl mb-2 text-brand-pink">
+        <h2 className="section-title-shadow text-stroke font-display text-xl sm:text-2xl mb-2 text-brand-pink">
           WHAT TO DO DIFFERENTLY
         </h2>
         <p className="text-sm sm:text-base leading-relaxed mb-4">
