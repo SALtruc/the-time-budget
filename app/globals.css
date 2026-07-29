@@ -119,8 +119,8 @@ body {
   background-position: -1px -1px;
 }
 
-.bg-grid-yellow > *,
-.bg-grid-blue > * {
+.bg-grid-yellow > :not(.fixed),
+.bg-grid-blue > :not(.fixed) {
   position: relative;
   z-index: 1;
 }

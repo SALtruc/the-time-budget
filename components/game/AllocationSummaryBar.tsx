@@ -21,7 +21,7 @@ export function AllocationSummaryBar({
   const overAllocated = total > 100;
 
   return (
-    <div className="sticky bottom-0 left-0 right-0 z-30 border-t-[3px] border-brand-navy bg-brand-cream/95 px-4 py-3 backdrop-blur sm:px-8">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[3px] border-brand-navy bg-brand-cream/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur sm:px-8">
       <div className="mx-auto flex max-w-4xl flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex-1">
           <div className="mb-1 flex items-center justify-between text-sm sm:text-base font-bold">

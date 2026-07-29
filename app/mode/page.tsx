@@ -13,7 +13,7 @@ import { ScreenHeader } from "@/components/ui/ScreenHeader";
 const MODES = [
   {
     href: "/self-paced",
-    icon: "solo",
+    iconSrc: "/assets/mode-self-paced.png",
     title: "Self-paced",
     titleColor: "text-brand-gold-dark",
     accent: "var(--color-brand-gold-dark)",
@@ -21,7 +21,7 @@ const MODES = [
   },
   {
     href: "/pair",
-    icon: "pair",
+    iconSrc: "/assets/mode-pair.png",
     title: "Pair Comparison",
     titleColor: "text-brand-cyan",
     accent: "var(--color-brand-cyan)",
@@ -30,7 +30,7 @@ const MODES = [
   },
   {
     href: "/group",
-    icon: "group",
+    iconSrc: "/assets/mode-group.png",
     title: "Group Roleplay",
     titleColor: "text-brand-pink",
     accent: "var(--color-brand-pink)",
@@ -38,54 +38,6 @@ const MODES = [
       "Assign roles, student leader vs team member, and plan the week together with different priorities.",
   },
 ];
-
-function ModeGlyph({
-  type,
-  className = "size-14",
-}: {
-  type: string;
-  className?: string;
-}) {
-  if (type === "group") {
-    return (
-      <svg viewBox="0 0 64 64" className={className} aria-hidden>
-        <path
-          d="M9 50h46l-5-28-13 10-5-18-5 18-13-10z"
-          fill="#f6c400"
-          stroke="#10142a"
-          strokeLinejoin="round"
-          strokeWidth="5"
-        />
-      </svg>
-    );
-  }
-
-  const pair = type === "pair";
-  return (
-    <svg viewBox="0 0 64 64" className={className} aria-hidden>
-      {pair && (
-        <>
-          <circle cx="39" cy="22" r="12" fill="#2f5fe6" stroke="#10142a" strokeWidth="5" />
-          <path
-            d="M29 54c1-16 8-24 20-24s19 8 20 24"
-            fill="#f45fd0"
-            stroke="#10142a"
-            strokeLinejoin="round"
-            strokeWidth="5"
-          />
-        </>
-      )}
-      <circle cx="25" cy="22" r="12" fill="#2f5fe6" stroke="#10142a" strokeWidth="5" />
-      <path
-        d="M5 54c1-16 8-24 20-24s19 8 20 24"
-        fill="#e5202e"
-        stroke="#10142a"
-        strokeLinejoin="round"
-        strokeWidth="5"
-      />
-    </svg>
-  );
-}
 
 export default function ModePage() {
   const router = useRouter();
@@ -101,6 +53,7 @@ export default function ModePage() {
           alt="The Time Budget"
           width={800}
           height={220}
+          priority
           className="mx-auto mb-6 h-auto w-full max-w-xs"
         />
 
@@ -130,7 +83,15 @@ export default function ModePage() {
                       : undefined
                   }
                 >
-                  <ModeGlyph type={mode.icon} className="size-16 shrink-0" />
+                  <span className="relative size-16 shrink-0 overflow-hidden">
+                    <Image
+                      src={mode.iconSrc}
+                      alt=""
+                      fill
+                      sizes="64px"
+                      className="object-contain object-center"
+                    />
+                  </span>
                   <div className="flex-1">
                     <h2 className={clsx("font-display text-lg sm:text-xl", mode.titleColor)}>
                       {mode.title.toUpperCase()}
