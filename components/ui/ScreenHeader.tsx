@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import { usePathname, useRouter } from "next/navigation";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { getAvatarSrc } from "@/lib/game/avatars";
@@ -83,9 +84,9 @@ export function ScreenHeader({
         )}
       </div>
 
-      {confirmingHome && (
+      {confirmingHome && typeof document !== "undefined" && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/50 p-4"
           role="dialog"
           aria-modal="true"
           aria-label="Leave and go home?"
@@ -118,7 +119,8 @@ export function ScreenHeader({
               </button>
             </div>
           </StickerCard>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
