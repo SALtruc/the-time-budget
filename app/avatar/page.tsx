@@ -28,58 +28,40 @@ export default function AvatarPage() {
     <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-5 sm:py-8">
       <ScreenHeader backHref="/rmit-id" theme="yellow" showHelp={false} />
 
-      {/* justify-start, not justify-center: with all 8 avatars now at full
-          size the content is taller than the viewport on most phones, and
-          centering an overflowing flex column pushes its top (the heading)
-          up past the visible area instead of just letting the page scroll. */}
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-start">
         <h1 className="mb-4 max-w-xs text-center font-display text-xl leading-tight sm:mb-7 sm:text-3xl">
           But first, let&apos;s choose your <span className="text-brand-red">avatar</span>
         </h1>
 
-        <div className="grid w-full max-w-[260px] grid-cols-2 gap-2 sm:max-w-2xl sm:grid-cols-4 sm:gap-6">
+        <div className="grid w-full max-w-[312px] grid-cols-2 gap-x-6 gap-y-4 sm:max-w-2xl sm:grid-cols-4 sm:gap-6">
           {AVATARS.map((avatar) => {
             const isSelected = avatarId === avatar.id;
             return (
-              // aspect-square lives on this grid cell itself, not just the
-              // button inside it — a CSS grid cell stretches to its row's
-              // height by default, so if only the button were pinned to a
-              // square, the cell (and anything absolutely positioned off
-              // it) could end up taller than the button and render as an
-              // oversized oval instead of a circle. That mismatch was the
-              // "oversized ugly ring" bug.
               <div key={avatar.id} className="relative aspect-square">
                 <button
                   type="button"
                   onClick={() => setAvatarId(avatar.id)}
                   aria-pressed={isSelected}
                   className={clsx(
-                    "absolute inset-[4%] block select-none overflow-hidden rounded-full border-ink bg-white [-webkit-tap-highlight-color:transparent] transition-[transform,box-shadow] duration-150",
-                    isSelected
-                      ? "-translate-y-[3px] scale-[1.02] shadow-[0_0_0_4px_var(--color-brand-red),3px_3px_0_0_var(--color-brand-navy)]"
-                      : "shadow-sticker-sm active:opacity-80"
+                    "absolute inset-0 block select-none overflow-visible rounded-full bg-transparent [-webkit-tap-highlight-color:transparent] transition-transform duration-150",
+                    isSelected ? "-translate-y-[3px] scale-[1.015]" : "active:opacity-80"
                   )}
                 >
                   <Image
-                    src={avatar.src}
+                    src={isSelected ? avatar.selectedSrc : avatar.nonSelectedSrc}
                     alt=""
-                    width={276}
-                    height={276}
-                    className="h-full w-full object-contain object-center p-1"
+                    width={300}
+                    height={300}
+                    className="h-full w-full object-contain object-center"
                     draggable={false}
                   />
                 </button>
-                {isSelected && (
-                  <span className="pointer-events-none absolute -top-1.5 -right-1.5 z-10 flex h-8 w-8 items-center justify-center rounded-full border-ink bg-brand-red font-display text-sm text-white shadow-sticker-sm">
-                    ✓
-                  </span>
-                )}
               </div>
             );
           })}
         </div>
 
-        <div className="mt-3 w-full max-w-[260px] sm:mt-8 sm:max-w-md">
+        <div className="mt-4 w-full max-w-[312px] sm:mt-8 sm:max-w-md">
           <Button
             variant="primary"
             size="lg"
