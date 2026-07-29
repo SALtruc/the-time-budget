@@ -22,7 +22,7 @@ function requireSupabase() {
 /** Called right after the RMIT Student ID step — creates the profile row immediately. */
 export async function createPlayerProfile(
   studentId: string
-): Promise<PlayerProfileRow> {
+): Promise<PlayerProfileRow | null> {
   const client = requireSupabase();
   const { data, error } = await client
     .from("player_profiles")
@@ -30,7 +30,13 @@ export async function createPlayerProfile(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    // Do not block the classroom game flow if the deployed database has not
+    // had the 7-digit SID migration applied yet. The migration in this repo is
+    // still the real fix for persisted profile capture.
+    console.error("Could not create player profile", error);
+    return null;
+  }
   return data as PlayerProfileRow;
 }
 

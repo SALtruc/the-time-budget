@@ -10,10 +10,12 @@ import { StickerCard } from "./StickerCard";
 
 export function ScreenHeader({
   backHref,
+  onBack,
   theme = "blue",
   showHelp = true,
 }: {
   backHref?: string;
+  onBack?: () => void;
   theme?: "blue" | "yellow";
   showHelp?: boolean;
 }) {
@@ -50,7 +52,15 @@ export function ScreenHeader({
         />
       </div>
       <div className="flex items-center justify-between">
-        {backHref ? (
+        {onBack ? (
+          <button
+            type="button"
+            onClick={onBack}
+            className={`-m-2 flex min-h-11 items-center gap-1 rounded-full p-2 text-base font-bold active-press sm:text-lg ${textColor}`}
+          >
+            Back
+          </button>
+        ) : backHref ? (
           <Link
             href={backHref}
             className={`-m-2 flex min-h-11 items-center gap-1 rounded-full p-2 text-base font-bold active-press sm:text-lg ${textColor}`}
