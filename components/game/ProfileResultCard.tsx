@@ -39,11 +39,11 @@ export function ProfileResultCard({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <StickerCard tone="white" className="p-6 sm:p-8 text-center">
-        <p className="font-display text-base sm:text-lg tracking-wide text-brand-navy/70">
+      <StickerCard tone="white" className="p-6 text-center sm:p-8">
+        <p className="font-display text-lg font-extrabold tracking-wide text-brand-navy/80 sm:text-xl">
           Your Time Profile
         </p>
-        <h1 className="profile-title-shadow text-stroke font-display text-4xl sm:text-5xl leading-tight text-brand-gold">
+        <h1 className="profile-title-shadow text-stroke font-display text-5xl font-extrabold leading-tight text-brand-gold sm:text-6xl">
           {profile.name}
         </h1>
         {subtitle && (
@@ -56,22 +56,22 @@ export function ProfileResultCard({
       <MetricsGrid metrics={profile.metrics} />
 
       <StickerCard tone="gold" className="p-5 sm:p-6">
-        <h2 className="section-title-shadow text-stroke font-display text-xl sm:text-2xl mb-2 text-white">
+        <h2 className="section-title-shadow text-stroke mb-3 font-display text-2xl font-extrabold leading-tight text-white sm:text-3xl">
           WHAT DOES YOUR CHARACTER MEAN?
         </h2>
-        <p className="text-sm sm:text-base leading-relaxed mb-3">
+        <p className="mb-3 text-base font-semibold leading-relaxed sm:text-lg">
           {profile.meaning}
         </p>
-        <p className="text-sm sm:text-base font-bold">
+        <p className="text-base font-extrabold sm:text-lg">
           Key insight: {profile.keyInsight}
         </p>
       </StickerCard>
 
       <StickerCard tone="white" className="p-5 sm:p-6">
-        <h2 className="section-title-shadow text-stroke font-display text-xl sm:text-2xl mb-2 text-brand-pink">
+        <h2 className="section-title-shadow text-stroke mb-3 font-display text-2xl font-extrabold leading-tight text-brand-pink sm:text-3xl">
           WHAT TO DO DIFFERENTLY
         </h2>
-        <p className="text-sm sm:text-base leading-relaxed mb-4">
+        <p className="mb-4 text-base font-semibold leading-relaxed sm:text-lg">
           {profile.advice}
         </p>
         <div className="flex flex-col gap-3">

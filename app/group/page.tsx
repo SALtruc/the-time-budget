@@ -194,7 +194,7 @@ export default function GroupLobbyPage() {
   if (step === "create") {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
-        <ScreenHeader backHref="/group" />
+        <ScreenHeader onBack={() => setStep("intro")} />
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
           <StripeDivider />
           <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
@@ -224,7 +224,7 @@ export default function GroupLobbyPage() {
   if (step === "code-shown") {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
-        <ScreenHeader />
+        <ScreenHeader onBack={() => setStep("intro")} />
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
           <StripeDivider />
           <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
@@ -277,8 +277,8 @@ export default function GroupLobbyPage() {
   // step === "join"
   return (
     <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10">
-      <ScreenHeader backHref="/group" />
-      <div className="mx-auto w-full max-w-md">
+      <ScreenHeader onBack={() => setStep("intro")} />
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center pb-10">
         <StripeDivider />
         <StickerCard className="rounded-t-none p-6 sm:p-8 text-center">
           <h1 className="font-display text-2xl sm:text-3xl text-brand-red mb-4">

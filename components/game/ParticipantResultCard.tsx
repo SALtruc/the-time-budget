@@ -28,7 +28,9 @@ export function ParticipantResultCard({
           {roleName}
         </p>
       )}
-      <p className={`font-display text-lg sm:text-xl ${color}`}>{profileName}</p>
+      <p className={`profile-title-shadow text-stroke font-display text-xl font-extrabold leading-tight sm:text-2xl ${color}`}>
+        {profileName}
+      </p>
     </StickerCard>
   );
 }

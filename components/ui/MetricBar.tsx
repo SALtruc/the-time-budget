@@ -24,7 +24,7 @@ export function MetricBar({
 }) {
   return (
     <StickerCard className="p-4 sm:p-5">
-      <p className="font-display text-lg sm:text-xl mb-3">
+      <p className="mb-3 font-display text-xl font-extrabold leading-tight sm:text-2xl">
         {METRIC_LABELS[metric]}
       </p>
       <ProgressBar

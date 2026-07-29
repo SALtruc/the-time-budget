@@ -6,64 +6,43 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { StickerCard } from "@/components/ui/StickerCard";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
-import { isSupabaseConfigured } from "@/lib/supabase/client";
-import { createPlayerProfile } from "@/lib/supabase/profiles";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
 
 export default function RmitIdPage() {
   const router = useRouter();
   const studentId = usePlayerStore((s) => s.studentId);
   const setStudentId = usePlayerStore((s) => s.setStudentId);
-  const setPlayerProfileId = usePlayerStore((s) => s.setPlayerProfileId);
 
   const [touched, setTouched] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const isValid = /^[0-9]{7}$/.test(studentId);
   const errorId = "student-id-error";
 
-  async function handleContinue() {
+  function handleContinue() {
     setTouched(true);
     if (!isValid) return;
-
-    if (!isSupabaseConfigured) {
-      router.push("/avatar");
-      return;
-    }
-
-    setSubmitting(true);
-    setError(null);
-    try {
-      const profile = await createPlayerProfile(studentId);
-      setPlayerProfileId(profile.id);
-      router.push("/avatar");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally {
-      setSubmitting(false);
-    }
+    router.push("/avatar");
   }
 
   return (
     <main className="bg-grid-yellow flex flex-1 flex-col px-4 py-6 sm:py-10">
       <ScreenHeader theme="yellow" />
 
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-start gap-5">
+      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center pb-6">
         <Image
           src="/assets/logo.png"
           alt="The Time Budget"
           width={800}
           height={220}
-          className="h-auto w-full max-w-xs"
+          className="relative z-10 mb-[-42px] h-auto w-full max-w-[360px]"
+          priority
         />
 
-        <StickerCard className="w-full p-5 text-center sm:p-7">
-          <p className="mb-3 font-display text-xl text-brand-blue sm:text-2xl">
-            Verify your SID
+        <StickerCard className="w-full px-6 pb-8 pt-24 text-center sm:px-8 sm:pb-10">
+          <p className="text-xl font-semibold sm:text-2xl">
+            This is exclusively for
           </p>
-          <p className="text-lg sm:text-xl">This is exclusively for</p>
-          <p className="mb-6 font-display text-2xl text-brand-red sm:text-3xl">
+          <p className="mb-10 font-display text-3xl text-brand-red sm:text-4xl">
             RMIT Students
           </p>
           <label htmlFor="student-id" className="sr-only">
@@ -81,37 +60,50 @@ export default function RmitIdPage() {
             placeholder="Enter your Student ID"
             aria-invalid={touched && !isValid}
             aria-describedby={touched && !isValid ? errorId : undefined}
-            className="w-full border-b-2 border-brand-navy bg-transparent pb-2 text-center text-lg font-semibold outline-none placeholder:text-brand-navy/40"
+            className="w-full border-b-2 border-brand-navy bg-transparent pb-3 text-center text-xl font-semibold outline-none placeholder:text-brand-navy/25 sm:text-2xl"
           />
-          {touched && !isValid && (
-            <p id={errorId} className="mt-3 text-sm font-bold text-brand-red">
-              Please enter your 7-digit SID to verify.
-            </p>
-          )}
-          {error && (
-            <p className="mt-3 text-sm font-bold text-brand-red">{error}</p>
-          )}
+        </StickerCard>
 
-          <div className="mt-6">
+        <div className="mt-5 flex w-full items-start gap-3">
+          <Image
+            src="/assets/mascot-start.png"
+            alt=""
+            width={260}
+            height={322}
+            className="h-auto w-40 shrink-0 sm:w-48"
+          />
+          <div className="flex flex-1 flex-col items-stretch gap-5 pt-4">
             <Button
               variant="primary"
               size="lg"
-              className="w-full !bg-brand-blue !text-white"
-              disabled={submitting}
+              className="w-full !bg-brand-red px-4 text-sm !text-white sm:text-base"
               onClick={handleContinue}
+              aria-describedby={touched && !isValid ? errorId : undefined}
             >
-              {submitting ? "Verifying..." : "Verify"}
+              Please enter your SID to verify!
             </Button>
+            {touched && !isValid && (
+              <p id={errorId} className="sr-only">
+                Please enter your 7-digit SID to verify.
+              </p>
+            )}
+            <div
+              className="flex gap-1 self-end rounded-[10px] border-2 border-brand-navy bg-white px-3 py-2 shadow-sticker-sm"
+              aria-hidden
+            >
+              {Array.from({ length: 5 }).map((_, index) => (
+                <span
+                  key={index}
+                  className="block size-4 bg-brand-gold"
+                  style={{
+                    clipPath:
+                      "polygon(50% 0, 61% 35%, 98% 35%, 68% 56%, 79% 91%, 50% 70%, 21% 91%, 32% 56%, 2% 35%, 39% 35%)",
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </StickerCard>
-
-        <Image
-          src="/assets/mascot-start.png"
-          alt=""
-          width={180}
-          height={220}
-          className="-mt-1 h-auto w-44 self-start sm:w-52"
-        />
+        </div>
       </div>
     </main>
   );
