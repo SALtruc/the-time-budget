@@ -36,7 +36,7 @@ export default function StartPage() {
         width={220}
         height={260}
         priority
-        className="h-auto w-64 sm:w-72"
+        className="h-auto w-64 sm:w-72 animate-mascot-bob"
       />
     </main>
   );

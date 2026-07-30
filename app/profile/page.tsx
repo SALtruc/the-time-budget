@@ -44,7 +44,7 @@ export default function ProfilePage() {
             alt=""
             width={150}
             height={185}
-            className="h-auto w-24 shrink-0 sm:w-28"
+            className="h-auto w-24 shrink-0 sm:w-28 animate-mascot-bob"
           />
           <div className="rounded-[16px] border-ink bg-white px-4 py-3 text-sm font-semibold shadow-sticker-sm sm:text-base">
             Tell us more about yourself

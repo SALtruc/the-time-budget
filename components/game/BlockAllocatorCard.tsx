@@ -13,18 +13,25 @@ export function BlockAllocatorCard({
   percent,
   onChange,
   disabled = false,
+  index = 0,
 }: {
   blockKey: BlockKey;
   percent: number;
   onChange: (next: number) => void;
   disabled?: boolean;
+  index?: number;
 }) {
   const block = BLOCKS[blockKey];
 
   return (
     <StickerCard
       tone="custom"
-      className={clsx("flex flex-col gap-3 p-4 sm:p-5", block.cardBg, block.cardText)}
+      className={clsx(
+        "animate-pop-in flex flex-col gap-3 p-4 sm:p-5",
+        block.cardBg,
+        block.cardText
+      )}
+      style={{ animationDelay: `${index * 60}ms` }}
     >
       <div className="flex items-start justify-between">
         <ActivityIcon blockKey={blockKey} className="size-9 sm:size-10" />

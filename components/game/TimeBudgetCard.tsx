@@ -11,8 +11,8 @@ export function TimeBudgetCard({ allocation }: { allocation: Allocation }) {
     <StickerCard className="p-5 sm:p-6">
       <div className="mb-2 flex items-baseline justify-between">
         <span className="font-bold text-lg sm:text-xl">Time budget</span>
-        <span className="font-display text-2xl sm:text-3xl text-brand-red">
-          {total}% / {percentToHours(total, TOTAL_HOURS)}h
+        <span className="font-display text-xl sm:text-2xl text-brand-red">
+          {total}% ({percentToHours(total, TOTAL_HOURS)}h)
         </span>
       </div>
       <ProgressBar

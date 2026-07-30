@@ -19,7 +19,11 @@ export function ParticipantResultCard({
   const color = NAME_COLORS[index % NAME_COLORS.length];
 
   return (
-    <StickerCard tone="white" className="p-4 sm:p-5 text-center">
+    <StickerCard
+      tone="white"
+      className="animate-pop-in p-4 sm:p-5 text-center"
+      style={{ animationDelay: `${index * 90}ms` }}
+    >
       <p className="text-sm sm:text-base font-bold text-brand-navy/70">
         Player {index + 1}
       </p>
@@ -28,7 +32,7 @@ export function ParticipantResultCard({
           {roleName}
         </p>
       )}
-      <p className={`profile-title-shadow text-stroke font-display text-xl font-extrabold leading-tight sm:text-2xl ${color}`}>
+      <p className={`profile-title-shadow text-stroke break-words font-display text-base font-extrabold leading-tight sm:text-lg ${color}`}>
         {profileName}
       </p>
     </StickerCard>

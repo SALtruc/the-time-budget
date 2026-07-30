@@ -39,11 +39,11 @@ export function ProfileResultCard({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <StickerCard tone="white" className="p-6 text-center sm:p-8">
+      <StickerCard tone="white" className="animate-pop-in p-6 text-center sm:p-8">
         <p className="font-display text-lg font-extrabold tracking-wide text-brand-navy/80 sm:text-xl">
           Your Time Profile
         </p>
-        <h1 className="profile-title-shadow text-stroke mx-auto max-w-[11ch] text-balance font-display text-5xl font-extrabold leading-[0.98] text-brand-gold sm:text-6xl">
+        <h1 className="profile-title-shadow text-stroke mx-auto break-words text-balance font-display text-3xl font-extrabold leading-[1.05] text-brand-gold sm:text-4xl">
           {profile.name}
         </h1>
         {subtitle && (
