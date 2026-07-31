@@ -43,7 +43,7 @@ export function ProfileResultCard({
         <p className="font-display text-lg font-extrabold tracking-wide text-brand-navy/80 sm:text-xl">
           Your Time Profile
         </p>
-        <h1 className="profile-title-shadow text-stroke mx-auto break-words text-balance font-display text-3xl font-extrabold leading-[1.05] text-brand-gold sm:text-4xl">
+        <h1 className="profile-title-shadow text-stroke mx-auto break-words text-balance font-display text-4xl font-extrabold leading-[1.05] text-brand-gold sm:text-5xl">
           {profile.name}
         </h1>
         {subtitle && (
