@@ -26,16 +26,16 @@ export function MetricBar({
 }) {
   return (
     <StickerCard
-      className="animate-pop-in p-3 sm:p-4"
+      className="animate-pop-in p-2 sm:p-3"
       style={{ animationDelay: `${index * 70}ms` }}
     >
-      <p className="mb-2 font-display text-sm font-extrabold leading-tight sm:text-lg">
+      <p className="mb-1 font-display text-xs font-extrabold leading-tight sm:text-sm">
         {METRIC_LABELS[metric]}
       </p>
       <ProgressBar
         percent={(value / 5) * 100}
         colorClassName={METRIC_COLORS[metric]}
-        className="h-2 bg-brand-grey/70"
+        className="h-1.5 bg-brand-grey/70"
       />
     </StickerCard>
   );
