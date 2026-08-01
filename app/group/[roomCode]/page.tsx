@@ -139,7 +139,7 @@ export default function GroupRoomPage() {
         <Button
           variant="primary"
           size="lg"
-          className="!bg-brand-blue !text-white"
+          className="!bg-brand-blue !text-white animate-ready-bounce"
           onClick={() => setRevealResults(true)}
         >
           Reveal results
@@ -256,7 +256,7 @@ export default function GroupRoomPage() {
   }
 
   return (
-    <main className="bg-grid-blue flex flex-1 flex-col gap-6 px-4 pb-32 py-8 sm:py-10">
+    <main className="bg-grid-blue flex flex-1 flex-col gap-6 px-4 pb-40 py-8 sm:py-10">
       <ScreenHeader />
       <div className="mx-auto w-full max-w-4xl">
         <div className="mb-4 flex items-center justify-between gap-4">
@@ -278,13 +278,14 @@ export default function GroupRoomPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {BLOCK_ORDER.map((key) => (
+          {BLOCK_ORDER.map((key, index) => (
             <BlockAllocatorCard
               key={key}
               blockKey={key}
               percent={allocation[key]}
               onChange={(next) => setPercent(key, next)}
               disabled={role.fixedBlock === key}
+              index={index}
             />
           ))}
         </div>

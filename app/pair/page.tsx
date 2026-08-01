@@ -146,8 +146,8 @@ export default function PairLobbyPage() {
         <ScreenHeader backHref="/mode" />
         <div className="mx-auto flex w-full max-w-xl flex-1 flex-col justify-center">
           <StripeDivider />
-          <StickerCard className="rounded-t-none p-6 text-center sm:p-8">
-            <h1 className="mb-8 font-display text-4xl text-brand-red sm:text-5xl">
+          <StickerCard className="rounded-t-none p-5 text-center sm:p-6">
+            <h1 className="mb-4 font-display text-3xl text-brand-red sm:text-4xl">
               Pair Comparison
             </h1>
             <div className="flex flex-col gap-5">
@@ -175,9 +175,9 @@ export default function PairLobbyPage() {
               alt=""
               width={220}
               height={273}
-              className="h-auto w-36 shrink-0 sm:w-44"
+              className="h-auto w-36 shrink-0 sm:w-44 animate-mascot-bob"
             />
-            <StickerCard className="p-4 text-lg font-semibold leading-snug sm:p-5 sm:text-xl">
+            <StickerCard className="p-3 text-sm font-semibold leading-snug sm:p-4 sm:text-base">
               Let&apos;s do this challenge with a partner! Learn together,
               discuss together.
             </StickerCard>

@@ -30,7 +30,7 @@ export default function SelfPacedPage() {
 
   if (step === "allocate") {
     return (
-      <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10 pb-32">
+      <main className="bg-grid-blue flex flex-1 flex-col px-4 py-8 sm:py-10 pb-40">
         <ScreenHeader backHref="/mode" />
         <div className="mx-auto w-full max-w-4xl">
           <h1 className="font-display text-2xl sm:text-3xl mb-4 text-white">
@@ -46,12 +46,13 @@ export default function SelfPacedPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {BLOCK_ORDER.map((key) => (
+            {BLOCK_ORDER.map((key, index) => (
               <BlockAllocatorCard
                 key={key}
                 blockKey={key}
                 percent={allocation[key]}
                 onChange={(next) => setPercent(key, next)}
+                index={index}
               />
             ))}
           </div>

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { getRemainingPercent, getTotalPercent } from "@/lib/game/allocation";
@@ -21,14 +22,14 @@ export function AllocationSummaryBar({
   const overAllocated = total > 100;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[3px] border-brand-navy bg-brand-cream/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur sm:px-8">
-      <div className="mx-auto flex max-w-4xl flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t-[3px] border-brand-navy bg-brand-cream/95 px-4 pb-[calc(0.6rem+env(safe-area-inset-bottom))] pt-2 backdrop-blur sm:px-8">
+      <div className="mx-auto flex max-w-4xl flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-6">
         <div className="flex-1">
-          <div className="mb-1 flex items-center justify-between text-sm sm:text-base font-bold">
-            <span>
+          <div className="mb-0.5 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+            <span className="font-display text-base sm:text-lg text-brand-blue">
               {total}% allocated ({percentToHours(total, TOTAL_HOURS)}h)
             </span>
-            <span className={overAllocated ? "text-brand-red" : ""}>
+            <span className="text-xs sm:text-sm font-bold">
               {overAllocated
                 ? `${Math.abs(remaining)}% over budget`
                 : `${remaining}% remaining`}
@@ -36,16 +37,19 @@ export function AllocationSummaryBar({
           </div>
           <ProgressBar
             percent={Math.min(total, 100)}
-            colorClassName={overAllocated ? "bg-brand-red" : "bg-brand-navy"}
-          className="h-3 border-2 border-brand-navy"
-        />
+            colorClassName="bg-brand-blue"
+            className="h-3 border-2 border-brand-navy"
+          />
         </div>
         <Button
           variant="secondary"
           size="lg"
           disabled={!isComplete || disabled}
           onClick={onContinue}
-          className="w-full sm:w-auto"
+          className={clsx(
+            "w-full sm:w-auto",
+            isComplete && !disabled && "animate-ready-bounce"
+          )}
         >
           {buttonLabel}
         </Button>

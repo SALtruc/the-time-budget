@@ -35,7 +35,8 @@ export default function StartPage() {
         alt="Time Budget guide"
         width={220}
         height={260}
-        className="h-auto w-64 sm:w-72"
+        priority
+        className="h-auto w-64 sm:w-72 animate-mascot-bob"
       />
     </main>
   );

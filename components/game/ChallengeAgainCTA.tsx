@@ -16,7 +16,7 @@ export function ChallengeAgainCTA({
         alt=""
         width={220}
         height={273}
-        className="h-auto w-32 shrink-0 self-end sm:w-40"
+        className="h-auto w-32 shrink-0 self-end sm:w-40 animate-mascot-bob"
       />
       <div className="flex flex-1 flex-col gap-3">
         <StickerCard className="p-3 text-sm font-semibold leading-snug sm:p-4 sm:text-base">

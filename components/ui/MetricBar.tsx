@@ -18,19 +18,24 @@ const METRIC_LABELS: Record<string, string> = {
 export function MetricBar({
   metric,
   value,
+  index = 0,
 }: {
   metric: "performance" | "stress" | "wellbeing" | "missedOpps";
   value: number;
+  index?: number;
 }) {
   return (
-    <StickerCard className="p-4 sm:p-5">
-      <p className="mb-3 font-display text-xl font-extrabold leading-tight sm:text-2xl">
+    <StickerCard
+      className="animate-pop-in p-2 sm:p-3"
+      style={{ animationDelay: `${index * 70}ms` }}
+    >
+      <p className="mb-1 font-display text-xs font-extrabold leading-tight sm:text-sm">
         {METRIC_LABELS[metric]}
       </p>
       <ProgressBar
         percent={(value / 5) * 100}
         colorClassName={METRIC_COLORS[metric]}
-        className="h-2.5 bg-brand-grey/70"
+        className="h-1.5 bg-brand-grey/70"
       />
     </StickerCard>
   );

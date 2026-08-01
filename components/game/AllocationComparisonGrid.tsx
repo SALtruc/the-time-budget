@@ -30,14 +30,16 @@ export function AllocationComparisonGrid({
               return (
                 <div
                   key={key}
-                  className={`flex items-center gap-3 rounded-2xl border-2 border-brand-navy px-3 py-2 ${block.cardBg} ${block.cardText}`}
+                  className={`flex flex-col gap-1 rounded-2xl border-2 border-brand-navy px-3 py-2 ${block.cardBg} ${block.cardText}`}
                 >
-                  <ActivityIcon blockKey={key} className="size-6 shrink-0" />
-                  <span className="min-w-0 flex-1 truncate text-xs font-bold sm:text-sm">
+                  <div className="flex items-center justify-between gap-2">
+                    <ActivityIcon blockKey={key} className="size-6 shrink-0" />
+                    <span className="font-display text-sm tabular-nums sm:text-base">
+                      {percentToHours(percent, TOTAL_HOURS)}h
+                    </span>
+                  </div>
+                  <span className="break-words text-[11px] font-bold leading-tight sm:text-xs">
                     {block.label}
-                  </span>
-                  <span className="font-display text-sm tabular-nums sm:text-base">
-                    {percentToHours(percent, TOTAL_HOURS)}h
                   </span>
                 </div>
               );
