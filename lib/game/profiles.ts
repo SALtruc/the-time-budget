@@ -1,16 +1,23 @@
 import type { Profile, ProfileId } from "./types";
 
+// Copy tone: describe the pattern and its trade-offs without judging the
+// player, and offer suggestions rather than instructions. Every week has
+// context the game can't see (illness, recovery, family, finances).
 export const PROFILES: Record<ProfileId, Profile> = {
   rmitScholar: {
     id: "rmitScholar",
     name: "RMIT Scholar",
     metrics: { performance: 4, stress: 3, wellbeing: 2, missedOpps: 3 },
     meaning:
-      "You are building a strong academic foundation, but your career preparation and real-world experience are being left behind. Recruiters value grades, but they also want to see what you have done outside the classroom.",
+      "You are building a strong academic foundation, and that commitment shows. Career preparation and real-world experience are getting less of your time right now. Employers value grades, and they also like to see what you have explored outside the classroom.",
     keyInsight:
       "Strong grades matter, but employers also value practical experience and career readiness.",
     advice:
-      "Try shifting 2–3 hours from self-studying into career preparation or networking each week. You do not need to study less — you need to make sure your knowledge is being translated into career action.",
+      "If it fits your week, you could try moving 2–3 hours from self-studying into career preparation or networking. It is not about studying less, but about turning what you know into career action.",
+    reflect: [
+      "What are you hoping your grades will open up for you?",
+      "Is there one small career step you could take alongside your study this week?",
+    ],
     deltas: [
       { block: "selfStudying", hours: -2 },
       { block: "careerPrep", hours: 2 },
@@ -21,11 +28,15 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Deadline Warrior",
     metrics: { performance: 3, stress: 5, wellbeing: 1, missedOpps: 4 },
     meaning:
-      "Your week is ruled by assignments and submissions with little time to breathe, rest, or think about your future. This pattern is not sustainable and is likely costing you opportunities you do not even know exist.",
+      "Your week is shaped by assignments and submissions, leaving little room to breathe, rest, or think about what comes next. Busy periods happen to everyone, but if this becomes your usual rhythm it can be hard to sustain.",
     keyInsight:
       "Career preparation is often overlooked because it has no immediate deadline.",
     advice:
-      "Cut assignment hours by planning ahead so you are not cramming at the last minute. Redirect even 2–3 hours into rest or career preparation. A well-rested student produces better work in less time.",
+      "Planning a little further ahead might ease the last-minute pressure. If you free up even 2–3 hours, you could give some of it back to rest or to your career. A rested mind often produces better work in less time.",
+    reflect: [
+      "Is this a typical week for you, or a busy stretch of the semester?",
+      "What usually pushes your assignments to the last minute?",
+    ],
     deltas: [
       { block: "assignment", hours: -2 },
       { block: "restWellbeing", hours: 2 },
@@ -37,10 +48,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Academic Strategist",
     metrics: { performance: 4, stress: 4, wellbeing: 2, missedOpps: 3 },
     meaning:
-      "You are spending so much time on academics that networking, career preparation, and work experience are getting very little attention. You are academically capable but professionally invisible.",
-    keyInsight: "Strategic planning shouldn't stop academics, apply it to your career too.",
+      "You are putting a lot of care into your academics, so networking, career preparation, and work experience are getting less attention for now. You are clearly capable; the opportunity is to let more people see what you can do.",
+    keyInsight: "Strategic planning shouldn't stop at academics; apply it to your career too.",
     advice:
-      "Keep your study and assignment balance but find 3–4 hours to add networking or career preparation. Attend one industry event or career workshop this week instead of an extra revision session.",
+      "You could keep your study balance and look for 3–4 hours for networking or career preparation. Swapping one extra revision session for an industry event or career workshop is a good place to start.",
+    reflect: [
+      "How could the planning skills you use for study help your career too?",
+      "Who is one person in your field you would like to learn from?",
+    ],
     deltas: [
       { block: "networking", hours: 2 },
       { block: "careerPrep", hours: 2 },
@@ -51,11 +66,15 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Side Hustle Hero",
     metrics: { performance: 3, stress: 4, wellbeing: 2, missedOpps: 2 },
     meaning:
-      "You are out in the real world gaining hands-on experience and building practical skills that most of your peers do not have yet. However, if you keep this up without recovery time, your performance at work and at university will both start to decline.",
+      "You are out in the real world gaining hands-on experience and building practical skills that many of your peers are still developing. Work can be a necessity as well as a choice, so it is worth making sure you also have time to recover.",
     keyInsight:
       "Work experience only becomes career capital when you reflect on and communicate what you've learned.",
     advice:
-      "Try reducing work hours by 2–3 hours and putting that time into rest and wellbeing. You are building great experience — protect your ability to sustain it by looking after yourself.",
+      "If your situation allows, giving 2–3 hours back to rest and wellbeing could help you sustain this pace. You are building great experience, and looking after yourself protects it.",
+    reflect: [
+      "What skills from your job could you describe in an interview tomorrow?",
+      "Where in your week do you get real rest?",
+    ],
     deltas: [
       { block: "workExperience", hours: -2 },
       { block: "restWellbeing", hours: 2 },
@@ -66,10 +85,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Busy Bee Professional",
     metrics: { performance: 3, stress: 5, wellbeing: 1, missedOpps: 3 },
     meaning:
-      "You are doing a lot: study, assignments, and work are all competing for your time, but your well-being score is very low, and your stress is at its limit. Doing everything at 60% is less effective than doing fewer things at 100%.",
+      "You are juggling a lot: study, assignments, and work are all competing for your time, and your stress is running high. It is a lot to carry, and spreading yourself this thin can make each part harder than it needs to be.",
     keyInsight: "Constantly juggling commitments can lead to burnout.",
     advice:
-      "You need to make a hard decision about what to cut. Consider reducing either work hours or assignment prep time and putting at least 5–6 hours back into rest and wellbeing. You cannot pour from an empty cup.",
+      "It may help to look at which commitments are truly fixed and which have some flexibility. If you can ease off one of them, even a few extra hours of rest and wellbeing can make a real difference. You cannot pour from an empty cup.",
+    reflect: [
+      "Which of your commitments feel essential right now, and which could wait?",
+      "Who could you talk to about sharing the load?",
+    ],
     deltas: [
       { block: "workExperience", hours: -3 },
       { block: "restWellbeing", hours: 6 },
@@ -80,10 +103,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Mini CEO",
     metrics: { performance: 4, stress: 5, wellbeing: 1, missedOpps: 2 },
     meaning:
-      "You are ambitious, career-driven, and already operating like someone who means business. However, you are building a strong future but at a personal cost that may catch up with you.",
+      "You are ambitious, career-driven, and already operating like someone who means business. You are building a strong future; the thing to watch is how much it is asking of you personally.",
     keyInsight: "Sustainable performance requires recovery, not just effort.",
     advice:
-      "Protect at least 6–8 hours of genuine rest and recovery each week. You do not need to slow down — you need to be sustainable. Even the most successful people schedule recovery time.",
+      "You could try protecting 6–8 hours of genuine rest and recovery each week. It is not about slowing down but about keeping your pace sustainable. Many successful people schedule recovery time the same way they schedule work.",
+    reflect: [
+      "What are you working towards, and how will you know you have got there?",
+      "What does recharging look like for you?",
+    ],
     deltas: [{ block: "restWellbeing", hours: 7 }],
   },
   careerClimber: {
@@ -91,10 +118,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Career Climber",
     metrics: { performance: 4, stress: 3, wellbeing: 3, missedOpps: 1 },
     meaning:
-      "You are laser-focused on your career transition, and it is paying off. Your performance is high, and you are missing very few opportunities. You have found your direction and are actively working toward it.",
+      "You are clearly focused on your career, and it is paying off. Your performance is high and you are making the most of the opportunities around you. You have found a direction and are actively working toward it.",
     keyInsight: "Small, consistent career actions compound over time.",
     advice:
-      "You are doing well — the main thing to watch is not burning out on career preparation alone. Add a small amount of networking to complement your preparation work, and make sure rest is not being sacrificed.",
+      "You are doing well. You might add a little networking to complement your preparation work, and keep an eye on making sure rest still has its place.",
+    reflect: [
+      "Which career action this semester has been most worthwhile for you?",
+      "Who could you connect with to take your preparation further?",
+    ],
     deltas: [
       { block: "networking", hours: 2 },
       { block: "restWellbeing", hours: 1 },
@@ -105,10 +136,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Networking Ninja",
     metrics: { performance: 3, stress: 2, wellbeing: 4, missedOpps: 1 },
     meaning:
-      "You invest heavily in relationships and connections. Your stress is low, your wellbeing is good, and you are missing very few opportunities. However, academic performance may be at risk if study and assignment hours are too low.",
+      "You invest a lot in relationships and connections. Your stress is low, your wellbeing is good, and you are catching lots of opportunities. It is worth checking that study and assignments still have enough room to keep your academics on track.",
     keyInsight: "Networks create opportunities when relationships are genuine and purposeful.",
     advice:
-      "Make sure self-studying and assignments are getting enough hours to keep your academic standing strong. Even shifting 3–4 hours from networking into study will protect your GPA without losing your networking momentum.",
+      "You could make sure self-studying and assignments get the hours they need. Moving 3–4 hours from networking into study could protect your grades without losing your momentum.",
+    reflect: [
+      "Which connections have been most valuable to you so far, and why?",
+      "How are your studies feeling this semester?",
+    ],
     deltas: [
       { block: "networking", hours: -3 },
       { block: "selfStudying", hours: 3 },
@@ -119,10 +154,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Opportunity Hunter",
     metrics: { performance: 4, stress: 3, wellbeing: 3, missedOpps: 1 },
     meaning:
-      "You are actively combining career preparation, networking, and work experience into a powerful package. Your performance is high, and almost no opportunities are slipping past you.",
+      "You are combining career preparation, networking, and work experience into a powerful package. Your performance is high, and you are making the most of the opportunities that come your way.",
     keyInsight: "Career growth shouldn't come at the expense of wellbeing or academics.",
     advice:
-      "The main risk is that rest is being squeezed. Make sure you are getting enough recovery time to sustain this level of activity. Even 1–2 extra hours of rest per week can significantly improve your focus and output.",
+      "Rest may be getting squeezed. Even 1–2 extra hours of recovery a week could help your focus and help you keep this up.",
+    reflect: [
+      "Which opportunity are you most excited about right now?",
+      "Is your pace one you could keep up for the whole semester?",
+    ],
     deltas: [{ block: "restWellbeing", hours: 2 }],
   },
   rechargeChampion: {
@@ -130,10 +169,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Recharge Champion",
     metrics: { performance: 3, stress: 1, wellbeing: 4, missedOpps: 3 },
     meaning:
-      "You understand that rest is not a waste of time; it is what makes everything else work better. However, career preparation and networking are not getting enough attention, which means opportunities are passing you by while you recharge.",
+      "You understand that rest is not a waste of time; it is what makes everything else work better. Career preparation and networking are getting less of your attention at the moment, so some opportunities may pass by while you recharge.",
     keyInsight: "Recovery improves the quality of every other activity.",
     advice:
-      "You do not need to give up rest — you need to redirect some of it into career preparation. Try swapping 3–4 hours of leisure time for a career workshop, a CV review, or a networking event. Rest smart, not just more.",
+      "You do not need to give up rest. When you feel ready, you could try redirecting a few hours into a career workshop, a CV review, or a networking event.",
+    reflect: [
+      "What helps you feel most recharged?",
+      "When you have energy to spare, what career step would you like to try first?",
+    ],
     deltas: [
       { block: "restWellbeing", hours: -3 },
       { block: "careerPrep", hours: 3 },
@@ -144,10 +187,16 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Zen Master",
     metrics: { performance: 2, stress: 1, wellbeing: 5, missedOpps: 5 },
     meaning:
-      "Rest and personal wellbeing are your priority above everything else. However, this comes at a high cost; performance is low and you are missing more opportunities than any other profile. You are recharged but going nowhere fast.",
-    keyInsight: "Too much rest can sometimes indicate avoidance rather than recovery.",
+      "Rest and personal wellbeing are at the centre of your week, so performance and new opportunities are taking a back seat for now. We understand that prioritizing your wellbeing may be what you need right now. As you regain your energy, the next step is to channel that renewed strength into meaningful action and get back on track.",
+    keyInsight:
+      "Rest is essential. Over time, balancing it with action helps you move toward your goals.",
     advice:
-      "You need to make a meaningful shift toward career preparation and networking. Even moving 8–10 hours from rest into career-focused activities will dramatically change your trajectory without destroying your wellbeing.",
+      "There is no need to rush. When you feel ready, you could start small, perhaps a few hours a week on career preparation or networking, and build from there at your own pace.",
+    reflect: [
+      "What is your main priority this week?",
+      "What led you to give so much of your week to rest, and is it what you need right now?",
+      "When you feel ready, what is one small step you would like to take?",
+    ],
     deltas: [
       { block: "restWellbeing", hours: -8 },
       { block: "careerPrep", hours: 4 },
@@ -159,10 +208,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Balanced Battery",
     metrics: { performance: 4, stress: 2, wellbeing: 4, missedOpps: 2 },
     meaning:
-      "You have found a genuinely healthy balance between rest, study, work, and career preparation. Your stress is low, your wellbeing is good, and your performance is strong. You are one of the few profiles that is both sustainable and career-ready at the same time.",
+      "You have found a healthy balance between rest, study, work, and career preparation. Your stress is low, your wellbeing is good, and your performance is strong. You are both sustainable and career-ready at the same time.",
     keyInsight: "Consistency often outperforms periods of intense effort followed by burnout.",
     advice:
-      "You are in a strong position — the main upgrade is to push career preparation slightly higher. Even 2–3 more hours on career prep per week will take you from balanced to truly ahead of the curve.",
+      "You are in a strong position. If you want to go further, 2–3 more hours of career preparation per week could move you from balanced to ahead of the curve.",
+    reflect: [
+      "What habits help you keep this balance?",
+      "What would you like to be ready for by the end of this year?",
+    ],
     deltas: [{ block: "careerPrep", hours: 2 }],
   },
   campusConnector: {
@@ -170,10 +223,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Campus Connector",
     metrics: { performance: 3, stress: 2, wellbeing: 4, missedOpps: 2 },
     meaning:
-      "You are a natural community builder; you invest in people, show up for events, and are well-known around campus. Your well-being is high, and your stress is low. However, academic and career preparation hours may be too low to support your long-term goals.",
+      "You are a natural community builder; you invest in people, show up for events, and are well-known around campus. Your wellbeing is high and your stress is low. It is worth checking that study and career preparation have enough room to support your longer-term goals.",
     keyInsight: "Social capital becomes valuable when converted into opportunities and learning.",
     advice:
-      "Try channelling some of your social energy into professional networking rather than purely campus socialising. And protect at least 15–18 hours for study and assignments to keep your academic performance on track.",
+      "You could channel some of your social energy into professional networking as well as campus life, and keep around 15–18 hours for study and assignments.",
+    reflect: [
+      "Which of your campus activities could connect you with your future industry?",
+      "How are your studies feeling this semester?",
+    ],
     deltas: [
       { block: "leadership", hours: -3 },
       { block: "networking", hours: 3 },
@@ -184,10 +241,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Community Builder",
     metrics: { performance: 4, stress: 3, wellbeing: 3, missedOpps: 2 },
     meaning:
-      "You combine networking, leadership, and career preparation in a way that creates real value for the people around you and for your own career. You are visible, connected, and purposeful.",
+      "You combine networking, student engagement, and career preparation in a way that creates real value for the people around you and for your own career. You are visible, connected, and purposeful.",
     keyInsight: "Community-building is a highly transferable professional skill.",
     advice:
-      "Consider adding some work experience to your week if you have not already. Practical real-world experience alongside your strong community presence will make your graduate profile very competitive.",
+      "If you have not already, you might add some work experience to your week. Real-world experience alongside your community presence would make your graduate profile very competitive.",
+    reflect: [
+      "What have you learned from your community involvement that an employer would value?",
+      "What kind of work experience would build on it?",
+    ],
     deltas: [{ block: "workExperience", hours: 3 }],
   },
   timeManagementArchitect: {
@@ -195,10 +256,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Time Management Architect",
     metrics: { performance: 4, stress: 2, wellbeing: 4, missedOpps: 2 },
     meaning:
-      "You distribute your time deliberately and intentionally. Nothing is neglected, and nothing dominates. You are operating with a level of self-awareness that most students do not develop until much later.",
+      "You distribute your time deliberately and intentionally. Nothing is neglected, and nothing dominates. You are showing a level of self-awareness that many people take years to develop.",
     keyInsight: "Success comes from conscious trade-offs, not perfect balance.",
     advice:
-      "The only upgrade available to you is to push career preparation slightly higher while trimming from self-studying. You are already doing everything right — the question is whether you can sharpen your focus just a little more in the areas with the highest career return.",
+      "You are already in a great place. If you want to fine-tune, you could shift a little time from self-studying to career preparation, the area with the highest long-term return.",
+    reflect: [
+      "How do you decide what gets your time each week?",
+      "Which area would you most like to grow next?",
+    ],
     deltas: [
       { block: "selfStudying", hours: -2 },
       { block: "careerPrep", hours: 2 },
@@ -209,10 +274,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "RMIT All-Rounder",
     metrics: { performance: 3, stress: 3, wellbeing: 3, missedOpps: 3 },
     meaning:
-      "Your time is spread across many areas without a clear dominant focus. This is common in earlier years of university and reflects someone who is still exploring. The risk is that without direction, the weeks pass without meaningful progress.",
+      "Your time is spread across many areas without one clear focus. This is common earlier in university and reflects someone who is still exploring, which is valuable. Over time, a little more direction can help each week add up to progress.",
     keyInsight: "Exploration is valuable early on but should gradually lead to focus.",
     advice:
-      "Pick one or two areas to invest in more deliberately this semester. If you are unsure where to focus, career preparation and networking tend to have the highest long-term return. Start there and see where it leads.",
+      "You could pick one or two areas to invest in more deliberately this semester. If you are unsure where to start, career preparation and networking tend to have a strong long-term return.",
+    reflect: [
+      "Which activity this week felt the most meaningful to you?",
+      "If you could only grow one area this semester, which would it be?",
+    ],
     deltas: [
       { block: "careerPrep", hours: 2 },
       { block: "networking", hours: 2 },
@@ -223,10 +292,14 @@ export const PROFILES: Record<ProfileId, Profile> = {
     name: "Strategic Juggler",
     metrics: { performance: 3, stress: 4, wellbeing: 2, missedOpps: 3 },
     meaning:
-      "You are attempting to do everything at once, and your week is packed. This may look impressive, but your stress is very high, and your well-being is suffering. You are strategic in your thinking but overcommitted in your execution.",
+      "You are trying to do a bit of everything, and your week is packed. That takes real drive, but your stress is high and your wellbeing is feeling it. Your thinking is strategic; your schedule may just be asking too much of you.",
     keyInsight: 'The ability to say "no" is as important as the ability to say "yes."',
     advice:
-      "You need to make a deliberate choice to do less. Identify your lowest-priority block and cut it by 5–8 hours. Redirect that time into rest. Doing five things sustainably is more valuable than doing seven things at the edge of burnout.",
+      "It might help to pick the commitment that matters least to you right now and scale it back, giving that time to rest instead. Doing a few things sustainably is often more rewarding than doing everything at the edge of burnout.",
+    reflect: [
+      "Which commitments are you doing because you want to, and which because you feel you should?",
+      "What would you drop if you had to free up five hours?",
+    ],
     // Illustrative only — the actual lowest-priority block varies per player.
     deltas: [
       { block: "assignment", hours: -5 },

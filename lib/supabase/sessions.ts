@@ -29,6 +29,22 @@ function generateRoomCode(): string {
   return String(Math.floor(10000 + Math.random() * 90000));
 }
 
+/**
+ * Turns Supabase/network failures into a message a student can act on.
+ * Unreachable backends (paused project, offline) surface from supabase-js
+ * as a "Failed to fetch" error rather than anything readable.
+ */
+export function describeSessionError(err: unknown): string {
+  const message =
+    err && typeof err === "object" && "message" in err
+      ? String((err as { message: unknown }).message)
+      : "";
+  if (/failed to fetch|network|load failed|fetch failed/i.test(message)) {
+    return "We couldn't reach the game server. Check your connection and try again, or ask your facilitator.";
+  }
+  return message || "Something went wrong. Please try again.";
+}
+
 function requireSupabase() {
   if (!supabase) {
     throw new Error(

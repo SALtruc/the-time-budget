@@ -53,6 +53,8 @@ export interface Profile {
   meaning: string;
   keyInsight: string;
   advice: string;
+  /** Open questions that invite the player to reflect on their own context rather than follow a directive. */
+  reflect: string[];
   /** Suggested hour adjustments illustrating the advice text, shown as delta rows on the result screen. */
   deltas: ProfileDelta[];
 }

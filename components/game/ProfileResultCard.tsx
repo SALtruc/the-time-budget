@@ -65,11 +65,21 @@ export function ProfileResultCard({
         <p className="text-base font-extrabold sm:text-lg">
           Key insight: {profile.keyInsight}
         </p>
+        {profile.reflect.length > 0 && (
+          <div className="mt-4 rounded-[14px] border-2 border-brand-navy bg-white px-4 py-3 shadow-sticker-sm">
+            <p className="mb-2 font-display text-base sm:text-lg">Ask yourself</p>
+            <ul className="list-disc space-y-1.5 pl-5 text-sm font-semibold leading-relaxed sm:text-base">
+              {profile.reflect.map((question) => (
+                <li key={question}>{question}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </StickerCard>
 
       <StickerCard tone="white" className="p-5 sm:p-6">
         <h2 className="section-title-shadow text-stroke mb-3 font-display text-2xl font-extrabold leading-tight text-brand-pink sm:text-3xl">
-          WHAT TO DO DIFFERENTLY
+          SOMETHING TO TRY
         </h2>
         <p className="mb-4 text-base font-semibold leading-relaxed sm:text-lg">
           {profile.advice}

@@ -11,6 +11,7 @@ import { DigitInput } from "@/components/ui/DigitInput";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import {
   createSession,
+  describeSessionError,
   getSessionByRoomCode,
   joinSession,
   listParticipants,
@@ -67,7 +68,7 @@ export default function GroupLobbyPage() {
       setRoomCode(session.room_code);
       setStep("code-shown");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(describeSessionError(err));
     } finally {
       setLoading(false);
     }
@@ -101,7 +102,7 @@ export default function GroupLobbyPage() {
       });
       router.push(`/group/${session.room_code}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(describeSessionError(err));
     } finally {
       setLoading(false);
     }
@@ -140,7 +141,7 @@ export default function GroupLobbyPage() {
       });
       router.push(`/group/${session.room_code}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(describeSessionError(err));
     } finally {
       setLoading(false);
     }

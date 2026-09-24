@@ -25,6 +25,7 @@ import { matchProfile } from "@/lib/game/matchProfile";
 import { getRole, ROLE_ORDER } from "@/lib/game/roles";
 import { useGameStore } from "@/lib/store/useGameStore";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
+import { formatStudentSubtitle } from "@/lib/game/yearOfStudy";
 import { useSessionStore } from "@/lib/store/useSessionStore";
 import {
   subscribeToParticipants,
@@ -73,6 +74,14 @@ export default function GroupRoomPage() {
     }
   }, [role, setRole]);
 
+  const allReady = participants.length >= 2 && participants.every((p) => p.is_ready);
+
+  // Each stage swaps the whole screen, so start it from the top instead of
+  // keeping the previous screen's scroll position.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [started, submitted, allReady, revealResults]);
+
   if (!sessionId || !participantId || storedRoomCode !== roomCode || !role) {
     return (
       <main className="bg-grid-blue flex flex-1 flex-col items-center justify-center gap-4 px-4 py-12 text-center">
@@ -89,8 +98,6 @@ export default function GroupRoomPage() {
       </main>
     );
   }
-
-  const allReady = participants.length >= 2 && participants.every((p) => p.is_ready);
 
   async function handleSubmit() {
     if (!participantId) return;
@@ -176,7 +183,7 @@ export default function GroupRoomPage() {
         <div className="flex w-full max-w-2xl flex-col gap-6">
           <ProfileResultCard
             profile={profile}
-            subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
+            subtitle={formatStudentSubtitle(yearOfStudy)}
           />
           <ReflectionQuestions
             variant="group"

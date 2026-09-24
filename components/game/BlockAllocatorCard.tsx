@@ -54,7 +54,10 @@ export function BlockAllocatorCard({
       </div>
 
       <div className="mt-auto">
-        <div className="mb-2 flex items-baseline justify-end">
+        <div className="mb-2 flex items-baseline justify-end gap-2">
+          <span className="text-sm font-bold opacity-80 sm:text-base">
+            {percentToHours(percent, TOTAL_HOURS)}h
+          </span>
           <span className="font-display text-2xl leading-none sm:text-3xl">{percent}%</span>
         </div>
         <ProgressBar

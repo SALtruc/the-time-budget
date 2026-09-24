@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 import { Button } from "@/components/ui/Button";
 import { Ribbon } from "@/components/ui/Ribbon";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
@@ -10,6 +11,7 @@ import { InfoModal } from "@/components/ui/InfoModal";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { updatePlayerProfile } from "@/lib/supabase/profiles";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
+import { YEAR_OF_STUDY_OPTIONS } from "@/lib/game/yearOfStudy";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -20,8 +22,16 @@ export default function ProfilePage() {
   const playerProfileId = usePlayerStore((s) => s.playerProfileId);
 
   const [submitting, setSubmitting] = useState(false);
+  const [showErrors, setShowErrors] = useState(false);
+
+  const hasYear = (YEAR_OF_STUDY_OPTIONS as readonly string[]).includes(yearOfStudy);
+  const hasProgram = program.trim().length > 0;
 
   async function handleNext() {
+    if (!hasYear || !hasProgram) {
+      setShowErrors(true);
+      return;
+    }
     setSubmitting(true);
     if (isSupabaseConfigured && playerProfileId) {
       await updatePlayerProfile(playerProfileId, {
@@ -51,30 +61,61 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div>
+        <div role="radiogroup" aria-labelledby="year-of-study-label">
           <Ribbon color="gold" className="mb-2">
-            What year of study are you in?
+            <span id="year-of-study-label">What year of study are you in?</span>
           </Ribbon>
-          <input
-            type="text"
-            value={yearOfStudy}
-            onChange={(e) => setProfileFields({ yearOfStudy: e.target.value })}
-            placeholder="e.g. Year 3"
-            className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm"
-          />
+          <div className="flex flex-wrap gap-2">
+            {YEAR_OF_STUDY_OPTIONS.map((option) => {
+              const isSelected = yearOfStudy === option;
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  onClick={() => setProfileFields({ yearOfStudy: option })}
+                  className={clsx(
+                    "rounded-full border-ink px-4 py-2 text-sm font-bold shadow-sticker-sm transition-colors sm:text-base",
+                    isSelected
+                      ? "bg-brand-navy text-white"
+                      : "bg-white text-brand-navy",
+                    showErrors && !hasYear && "!border-brand-red"
+                  )}
+                >
+                  {option}
+                </button>
+              );
+            })}
+          </div>
+          {showErrors && !hasYear && (
+            <p className="mt-2 text-sm font-bold text-white" role="alert">
+              Please choose your year of study.
+            </p>
+          )}
         </div>
 
         <div>
           <Ribbon color="gold" className="mb-2">
-            What is your current program?
+            <label htmlFor="program">What is your current program?</label>
           </Ribbon>
           <input
+            id="program"
             type="text"
             value={program}
             onChange={(e) => setProfileFields({ program: e.target.value })}
             placeholder="e.g. Digital Marketing"
-            className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm"
+            aria-invalid={showErrors && !hasProgram}
+            className={clsx(
+              "w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm",
+              showErrors && !hasProgram && "!border-brand-red"
+            )}
           />
+          {showErrors && !hasProgram && (
+            <p className="mt-2 text-sm font-bold text-white" role="alert">
+              Please enter your program.
+            </p>
+          )}
         </div>
 
         <div>

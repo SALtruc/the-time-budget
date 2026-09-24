@@ -55,9 +55,13 @@ export default async function HowToPlayPage({
         </div>
 
         <div className="w-full">
-          <h2 className="mb-4 text-center font-display text-xl sm:text-2xl text-white">
+          <h2 className="mb-2 text-center font-display text-xl sm:text-2xl text-white">
             The 7 activity blocks
           </h2>
+          <p className="mb-4 text-center text-sm font-semibold text-white sm:text-base">
+            Class time (lectures, tutorials, labs) counts under{" "}
+            <strong>{BLOCKS.selfStudying.label}</strong>.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {BLOCK_ORDER.map((key) => {
               const block = BLOCKS[key];

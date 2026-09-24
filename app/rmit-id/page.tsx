@@ -45,19 +45,24 @@ export default function RmitIdPage() {
           <p className="mb-10 font-display text-3xl text-brand-red sm:text-4xl">
             RMIT Students
           </p>
-          <label htmlFor="student-id" className="sr-only">
+          <label
+            htmlFor="student-id"
+            className="mb-2 block text-left text-sm font-bold sm:text-base"
+          >
             Student ID
           </label>
           <input
             id="student-id"
             type="text"
             inputMode="numeric"
-            pattern="[0-9]*"
-            value={studentId}
+            autoComplete="off"
+            // Displayed with the RMIT "S" prefix (e.g. S1234567); only the
+            // 7 digits are stored.
+            value={studentId ? `S${studentId}` : ""}
             onChange={(e) =>
               setStudentId(e.target.value.replace(/\D/g, "").slice(0, 7))
             }
-            placeholder="Enter your Student ID"
+            placeholder="e.g. S1234567"
             aria-invalid={touched && !isValid}
             aria-describedby={touched && !isValid ? errorId : undefined}
             className={`w-full border-b-2 bg-transparent pb-3 text-center text-xl font-semibold outline-none transition-colors sm:text-2xl ${
@@ -83,7 +88,7 @@ export default function RmitIdPage() {
                 className="rounded-[22px] border-ink bg-brand-red px-4 py-3 text-center font-display text-sm leading-snug text-white shadow-sticker sm:text-base"
                 role="alert"
               >
-                Please enter your SID to verify!
+                Please enter your SID (S + 7 digits) to verify!
               </div>
             ) : (
               <Button

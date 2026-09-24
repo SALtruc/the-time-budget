@@ -18,7 +18,7 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     label: "Self-studying",
     icon: "📖",
     description:
-      "Reviewing lecture content, reading, and consolidating knowledge in your own time.",
+      "Attending classes (lectures, tutorials, labs), reviewing lecture content, reading, and consolidating knowledge.",
     careerRelevance: "Moderate",
     careerRelevanceNote:
       "Academic knowledge supports career readiness but is not sufficient alone.",
@@ -77,7 +77,7 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
     label: "Career Preparation",
     icon: "🎯",
     description:
-      "CV writing, LinkedIn, interview prep, career workshops, and applications.",
+      "CV writing, LinkedIn, interview prep, career workshops, skills development, and applications.",
     careerRelevance: "Very high",
     careerRelevanceNote:
       "Small, consistent career actions compound over time.",
@@ -86,7 +86,7 @@ export const BLOCKS: Record<BlockKey, BlockDefinition> = {
   },
   leadership: {
     key: "leadership",
-    label: "Leadership",
+    label: "Student Engagement & Development",
     icon: "🌟",
     description:
       "Student clubs, peer mentoring, leadership programs, and community activities.",

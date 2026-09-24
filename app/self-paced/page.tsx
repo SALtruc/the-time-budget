@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BlockAllocatorCard } from "@/components/game/BlockAllocatorCard";
@@ -15,6 +15,7 @@ import { BLOCK_ORDER } from "@/lib/game/blocks";
 import { matchProfile } from "@/lib/game/matchProfile";
 import { useGameStore } from "@/lib/store/useGameStore";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
+import { formatStudentSubtitle } from "@/lib/game/yearOfStudy";
 
 type Step = "allocate" | "result";
 
@@ -27,6 +28,12 @@ export default function SelfPacedPage() {
   const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
 
   const profile = useMemo(() => matchProfile(allocation), [allocation]);
+
+  // Each step swaps the whole screen, so start it from the top instead of
+  // keeping the allocation screen's scroll position.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [step]);
 
   if (step === "allocate") {
     return (
@@ -83,7 +90,7 @@ export default function SelfPacedPage() {
           <div className="-mt-5 sm:-mt-7">
             <ProfileResultCard
               profile={profile}
-              subtitle={yearOfStudy ? `${yearOfStudy} Student` : undefined}
+              subtitle={formatStudentSubtitle(yearOfStudy)}
             />
           </div>
         </div>
