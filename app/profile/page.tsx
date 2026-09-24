@@ -11,7 +11,7 @@ import { InfoModal } from "@/components/ui/InfoModal";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { updatePlayerProfile } from "@/lib/supabase/profiles";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
-import { YEAR_OF_STUDY_OPTIONS } from "@/lib/game/yearOfStudy";
+import { isValidYearOfStudy, normalizeYearOfStudy } from "@/lib/game/yearOfStudy";
 
 // Fixed burst directions so the confetti looks the same on every render
 // (no Math.random during render).
@@ -54,11 +54,9 @@ export default function ProfilePage() {
   const playerProfileId = usePlayerStore((s) => s.playerProfileId);
 
   const [submitting, setSubmitting] = useState(false);
-  // Chip currently playing its pop animation; cleared on animation end so
-  // tapping the same chip again replays it.
-  const [poppingChip, setPoppingChip] = useState<string | null>(null);
 
-  const hasYear = (YEAR_OF_STUDY_OPTIONS as readonly string[]).includes(yearOfStudy);
+  const hasYear = isValidYearOfStudy(yearOfStudy);
+  const normalizedYear = normalizeYearOfStudy(yearOfStudy);
   const hasProgram = isValidProgram(program);
   const programLooksWrong = program.trim().length > 0 && !hasProgram;
   const ready = hasYear && hasProgram;
@@ -68,7 +66,7 @@ export default function ProfilePage() {
     : programLooksWrong
       ? "Hmm, that doesn't look like a program name 🤔"
       : hasYear
-        ? `${yearOfStudy}, nice! What do you study? 📚`
+        ? `${normalizedYear}, nice! What do you study? 📚`
         : hasProgram
           ? "Ooh, sounds fun! Which year are you in? 👀"
           : "Tell us more about yourself";
@@ -78,7 +76,7 @@ export default function ProfilePage() {
     setSubmitting(true);
     if (isSupabaseConfigured && playerProfileId) {
       await updatePlayerProfile(playerProfileId, {
-        yearOfStudy,
+        yearOfStudy: normalizedYear,
         program: program.trim(),
         accessCode,
       }).catch(() => {});
@@ -111,43 +109,19 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div
-          role="radiogroup"
-          aria-labelledby="year-of-study-label"
-          className="animate-pop-in relative"
-          style={{ animationDelay: "80ms" }}
-        >
+        <div className="animate-pop-in relative" style={{ animationDelay: "80ms" }}>
           <SectionTick show={hasYear} />
           <Ribbon color="gold" className="mb-2">
-            <span id="year-of-study-label">What year of study are you in?</span>
+            <label htmlFor="year-of-study">What year of study are you in?</label>
           </Ribbon>
-          <div className="flex flex-wrap gap-2">
-            {YEAR_OF_STUDY_OPTIONS.map((option) => {
-              const isSelected = yearOfStudy === option;
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  role="radio"
-                  aria-checked={isSelected}
-                  onClick={() => {
-                    setProfileFields({ yearOfStudy: option });
-                    setPoppingChip(option);
-                  }}
-                  onAnimationEnd={() => setPoppingChip(null)}
-                  className={clsx(
-                    "rounded-full border-ink px-4 py-2 text-sm font-bold shadow-sticker-sm transition-colors active:translate-x-[2px] active:translate-y-[2px] active:shadow-none sm:text-base",
-                    isSelected
-                      ? "bg-brand-navy text-white"
-                      : "bg-white text-brand-navy hover:bg-brand-cream",
-                    poppingChip === option && "animate-chip-pop"
-                  )}
-                >
-                  {option}
-                </button>
-              );
-            })}
-          </div>
+          <input
+            id="year-of-study"
+            type="text"
+            value={yearOfStudy}
+            onChange={(e) => setProfileFields({ yearOfStudy: e.target.value })}
+            placeholder="e.g. Year 3"
+            className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm transition-colors"
+          />
         </div>
 
         <div className="animate-pop-in relative" style={{ animationDelay: "160ms" }}>
@@ -202,7 +176,7 @@ export default function ProfilePage() {
         <div className="flex items-center justify-end gap-3 pt-2">
           {!ready && (
             <p className="animate-hint-in text-right text-sm font-semibold text-white/85">
-              Pick your year and program to continue
+              Enter your year and program to continue
             </p>
           )}
           <div className="relative shrink-0">
