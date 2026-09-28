@@ -96,7 +96,7 @@ export default function GroupLobbyPage() {
         roomCode: session.room_code,
         participantId: participant.id,
         mode: "group",
-        roleId: ROLE_ORDER[0],
+        roleId: participant.role_id ?? ROLE_ORDER[0],
         isHost: true,
         bonusHours: session.bonus_hours,
       });
@@ -135,7 +135,7 @@ export default function GroupLobbyPage() {
         roomCode: session.room_code,
         participantId: participant.id,
         mode: "group",
-        roleId,
+        roleId: participant.role_id ?? roleId,
         isHost: false,
         bonusHours: session.bonus_hours,
       });

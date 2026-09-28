@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { useEffect, useState } from "react";
 import type { RoleId } from "@/lib/game/types";
 import type { SessionMode } from "@/lib/supabase/sessions";
 
@@ -23,7 +25,7 @@ interface SessionState {
   clearSession: () => void;
 }
 
-export const useSessionStore = create<SessionState>((set) => ({
+export const useSessionStore = create<SessionState>()(persist((set) => ({
   sessionId: null,
   roomCode: null,
   participantId: null,
@@ -54,4 +56,16 @@ export const useSessionStore = create<SessionState>((set) => ({
       isHost: false,
       bonusHours: 0,
     }),
+}), {
+  name: "time-budget:session",
+  storage: createJSONStorage(() => sessionStorage),
+  skipHydration: true,
 }));
+
+export function useSessionHydration(): boolean {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => {
+    void Promise.resolve(useSessionStore.persist.rehydrate()).then(() => setHydrated(true));
+  }, []);
+  return hydrated;
+}

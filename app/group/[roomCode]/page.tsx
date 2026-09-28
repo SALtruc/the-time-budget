@@ -26,7 +26,7 @@ import { getRole, ROLE_ORDER } from "@/lib/game/roles";
 import { useGameStore } from "@/lib/store/useGameStore";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { formatStudentSubtitle } from "@/lib/game/yearOfStudy";
-import { useSessionStore } from "@/lib/store/useSessionStore";
+import { useSessionHydration, useSessionStore } from "@/lib/store/useSessionStore";
 import {
   subscribeToParticipants,
   submitAllocation,
@@ -35,6 +35,7 @@ import {
 } from "@/lib/supabase/sessions";
 
 export default function GroupRoomPage() {
+  const hydrated = useSessionHydration();
   const router = useRouter();
   const params = useParams<{ roomCode: string }>();
   const roomCode = params.roomCode ?? "";
@@ -53,13 +54,16 @@ export default function GroupRoomPage() {
   const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
 
   const [participants, setParticipants] = useState<ParticipantRow[]>([]);
-  const [submitted, setSubmitted] = useState(false);
+  const [submissionSaved, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [started, setStarted] = useState(false);
   const [revealResults, setRevealResults] = useState(false);
 
   const role = roleId ? getRole(roleId) : null;
-  const profile = useMemo(() => matchProfile(allocation), [allocation]);
+  const ownParticipant = participants.find((p) => p.id === participantId);
+  const submitted = submissionSaved || !!ownParticipant?.is_ready;
+  const currentProfile = useMemo(() => matchProfile(allocation), [allocation]);
+  const profile = ownParticipant?.profile_result ?? currentProfile;
   const myIndex = Math.max(0, participants.findIndex((p) => p.id === participantId));
 
   useEffect(() => {
@@ -81,6 +85,10 @@ export default function GroupRoomPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [started, submitted, allReady, revealResults]);
+
+  if (!hydrated) {
+    return <main className="bg-grid-blue flex flex-1 items-center justify-center text-white">Loading your room...</main>;
+  }
 
   if (!sessionId || !participantId || storedRoomCode !== roomCode || !role) {
     return (

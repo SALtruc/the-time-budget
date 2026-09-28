@@ -89,26 +89,95 @@ export async function getSessionByRoomCode(
   return data as SessionRow | null;
 }
 
-export async function joinSession(
+const pendingJoins = new Map<string, Promise<ParticipantRow>>();
+
+export function joinSession(
+  sessionId: string,
+  displayName: string,
+  roleId: RoleId | null = null,
+  playerProfileId: string | null = null
+): Promise<ParticipantRow> {
+  // A second click can arrive before React disables the join button.
+  // Share the in-flight join instead of starting another database request.
+  const pending = pendingJoins.get(sessionId);
+  if (pending) return pending;
+  const request = joinSessionOnce(sessionId, displayName, roleId, playerProfileId)
+    .finally(() => pendingJoins.delete(sessionId));
+  pendingJoins.set(sessionId, request);
+  return request;
+}
+
+async function joinSessionOnce(
   sessionId: string,
   displayName: string,
   roleId: RoleId | null = null,
   playerProfileId: string | null = null
 ): Promise<ParticipantRow> {
   const client = requireSupabase();
+  // Save before the request: retries after a lost response must reuse the
+  // same primary key. Names are not identities (two students can share one).
+  const storageKey = `time-budget:participant:${sessionId}`;
+  let participantId = localStorage.getItem(storageKey);
+  if (!participantId) {
+    participantId = crypto.randomUUID();
+    localStorage.setItem(storageKey, participantId);
+  }
+  const existing = await client
+    .from("participants")
+    .select()
+    .eq("session_id", sessionId)
+    .eq("id", participantId)
+    .maybeSingle();
+  if (existing.error) throw existing.error;
+  if (existing.data) return existing.data as ParticipantRow;
+
+  // Also recover older joins made before the browser identity was saved.
+  if (playerProfileId) {
+    const previous = await client
+      .from("participants")
+      .select()
+      .eq("session_id", sessionId)
+      .eq("player_profile_id", playerProfileId)
+      .order("is_ready", { ascending: false })
+      .order("joined_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    if (previous.error) throw previous.error;
+    if (previous.data) {
+      localStorage.setItem(storageKey, previous.data.id);
+      return previous.data as ParticipantRow;
+    }
+  }
+
+  const session = await client.from("sessions").select("mode").eq("id", sessionId).single();
+  if (session.error) throw session.error;
+  if (session.data.mode === "pair") {
+    const participants = await listParticipants(sessionId);
+    const concurrentJoin = participants.find((p) => p.id === participantId);
+    if (concurrentJoin) return concurrentJoin;
+    if (participants.length >= 2) {
+      throw new Error("This pair room already has two players. Create a new room to play with another partner.");
+    }
+  }
+
   const { data, error } = await client
     .from("participants")
-    .insert({
+    .upsert({
+      id: participantId,
       session_id: sessionId,
       display_name: displayName,
       role_id: roleId,
       player_profile_id: playerProfileId,
-    })
+    }, { onConflict: "id", ignoreDuplicates: true })
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
-  return data as ParticipantRow;
+  if (data) return data as ParticipantRow;
+  // Another concurrent request with this ID already inserted the row.
+  const saved = await client.from("participants").select().eq("id", participantId).single();
+  if (saved.error) throw saved.error;
+  return saved.data as ParticipantRow;
 }
 
 export async function submitAllocation(
@@ -124,7 +193,9 @@ export async function submitAllocation(
       profile_result: profileResult,
       is_ready: true,
     })
-    .eq("id", participantId);
+    .eq("id", participantId)
+    .select("id")
+    .single();
 
   if (error) throw error;
 }
@@ -164,8 +235,26 @@ export function subscribeToParticipants(
 
   // Re-fetch the full list on any change — simplest way to stay consistent,
   // and participant counts per session are tiny (a handful of players).
-  const refresh = () => {
-    listParticipants(sessionId).then(onChange).catch(console.error);
+  let active = true;
+  let refreshing = false;
+  let refreshAgain = false;
+  const refresh = async () => {
+    if (refreshing) {
+      refreshAgain = true;
+      return;
+    }
+    refreshing = true;
+    try {
+      do {
+        refreshAgain = false;
+        const participants = await listParticipants(sessionId);
+        if (active) onChange(participants);
+      } while (active && refreshAgain);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      refreshing = false;
+    }
   };
 
   const channel = client
@@ -180,11 +269,19 @@ export function subscribeToParticipants(
       },
       refresh
     )
-    .subscribe();
+    .subscribe((status) => {
+      if (status === "SUBSCRIBED") void refresh();
+    });
 
-  refresh();
+  void refresh();
+  // Mobile browsers can miss Realtime events while backgrounded.
+  const poll = window.setInterval(refresh, 5000);
+  window.addEventListener("focus", refresh);
 
   return () => {
+    active = false;
+    window.clearInterval(poll);
+    window.removeEventListener("focus", refresh);
     client.removeChannel(channel);
   };
 }

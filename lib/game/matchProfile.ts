@@ -40,7 +40,7 @@ export function matchProfileId(allocation: Allocation): ProfileId {
   } = allocation;
 
   // 1. Zen Master
-  if (isHighest(allocation, "restWellbeing") && restWellbeing >= 25) {
+  if (isHighest(allocation, "restWellbeing") && restWellbeing >= 35) {
     return "zenMaster";
   }
 

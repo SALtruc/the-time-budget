@@ -20,17 +20,20 @@ import { ChallengeAgainCTA } from "@/components/game/ChallengeAgainCTA";
 import { AllocationComparisonGrid } from "@/components/game/AllocationComparisonGrid";
 import { BLOCK_ORDER } from "@/lib/game/blocks";
 import { matchProfile } from "@/lib/game/matchProfile";
+import { getReadyPair } from "@/lib/game/pairParticipants";
 import { useGameStore } from "@/lib/store/useGameStore";
 import { usePlayerStore } from "@/lib/store/usePlayerStore";
 import { formatStudentSubtitle } from "@/lib/game/yearOfStudy";
-import { useSessionStore } from "@/lib/store/useSessionStore";
+import { useSessionHydration, useSessionStore } from "@/lib/store/useSessionStore";
 import {
   subscribeToParticipants,
   submitAllocation,
+  describeSessionError,
   type ParticipantRow,
 } from "@/lib/supabase/sessions";
 
 export default function PairRoomPage() {
+  const hydrated = useSessionHydration();
   const router = useRouter();
   const params = useParams<{ roomCode: string }>();
   const roomCode = params.roomCode ?? "";
@@ -46,11 +49,15 @@ export default function PairRoomPage() {
   const yearOfStudy = usePlayerStore((s) => s.yearOfStudy);
 
   const [participants, setParticipants] = useState<ParticipantRow[]>([]);
-  const [submitted, setSubmitted] = useState(false);
+  const [submissionSaved, setSubmissionSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [revealResults, setRevealResults] = useState(false);
 
-  const profile = useMemo(() => matchProfile(allocation), [allocation]);
+  const ownParticipant = participants.find((p) => p.id === participantId);
+  const submitted = submissionSaved || !!ownParticipant?.is_ready;
+  const currentProfile = useMemo(() => matchProfile(allocation), [allocation]);
+  const profile = ownParticipant?.profile_result ?? currentProfile;
 
   useEffect(() => {
     if (!sessionId) return;
@@ -59,13 +66,18 @@ export default function PairRoomPage() {
   }, [sessionId]);
 
   const bothJoined = participants.length >= 2;
-  const allReady = participants.length >= 2 && participants.every((p) => p.is_ready);
+  const readyPair = getReadyPair(participants);
+  const allReady = readyPair.length === 2 && readyPair.some((p) => p.id === participantId);
 
   // Each stage swaps the whole screen, so start it from the top instead of
   // keeping the previous screen's scroll position.
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [bothJoined, submitted, allReady, revealResults]);
+
+  if (!hydrated) {
+    return <main className="bg-grid-blue flex flex-1 items-center justify-center text-white">Loading your room...</main>;
+  }
 
   if (!sessionId || !participantId || storedRoomCode !== roomCode) {
     return (
@@ -87,9 +99,12 @@ export default function PairRoomPage() {
   async function handleSubmit() {
     if (!participantId) return;
     setSubmitting(true);
+    setError(null);
     try {
-      await submitAllocation(participantId, allocation, profile);
-      setSubmitted(true);
+      await submitAllocation(participantId, allocation, currentProfile);
+      setSubmissionSaved(true);
+    } catch (err) {
+      setError(describeSessionError(err));
     } finally {
       setSubmitting(false);
     }
@@ -115,7 +130,7 @@ export default function PairRoomPage() {
               Time Profiles.
             </p>
           </Ribbon>
-          <AllocationComparisonGrid participants={participants} columns="pair" />
+          <AllocationComparisonGrid participants={readyPair} columns="pair" />
         </div>
         <div className="w-full max-w-3xl">
           <ReflectionQuestions variant="pair" />
@@ -147,7 +162,7 @@ export default function PairRoomPage() {
         />
 
         <div className="grid w-full max-w-3xl grid-cols-2 gap-3 sm:gap-4">
-          {participants.map((p, i) => (
+          {readyPair.map((p, i) => (
             <ParticipantResultCard
               key={p.id}
               index={i}
@@ -242,6 +257,7 @@ export default function PairRoomPage() {
         </div>
       </div>
 
+      {error && <p role="alert" className="mx-auto w-full max-w-4xl rounded-2xl bg-white p-4 font-bold text-brand-red">{error}</p>}
       <AllocationSummaryBar
         allocation={allocation}
         onContinue={handleSubmit}

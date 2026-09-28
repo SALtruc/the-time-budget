@@ -215,6 +215,32 @@ const FIXTURES: Array<{ id: ProfileId; allocation: Allocation }> = [
 ];
 
 describe("matchProfileId", () => {
+  it.each([25, 30, 34])("does not classify %s%% rest as Zen Master", (restWellbeing) => {
+    const allocation: Allocation = {
+      selfStudying: 15, assignment: 15, networking: 5, restWellbeing,
+      workExperience: 10, careerPrep: 10, leadership: 45 - restWellbeing,
+    };
+    expect(matchProfileId(allocation)).not.toBe("zenMaster");
+  });
+
+  it("matches Zen Master at exactly 35% rest", () => {
+    expect(matchProfileId({
+      selfStudying: 15, assignment: 15, networking: 5, restWellbeing: 35,
+      workExperience: 10, careerPrep: 10, leadership: 10,
+    })).toBe("zenMaster");
+  });
+
+  it("still requires rest to be the highest block, including ties", () => {
+    expect(matchProfileId({
+      selfStudying: 35, assignment: 10, networking: 5, restWellbeing: 35,
+      workExperience: 5, careerPrep: 5, leadership: 5,
+    })).toBe("zenMaster");
+    expect(matchProfileId({
+      selfStudying: 40, assignment: 5, networking: 5, restWellbeing: 35,
+      workExperience: 5, careerPrep: 5, leadership: 5,
+    })).toBe("rechargeChampion");
+  });
+
   it.each(FIXTURES)("matches $id", ({ id, allocation }) => {
     const total = Object.values(allocation).reduce((sum, v) => sum + v, 0);
     expect(total).toBe(100);

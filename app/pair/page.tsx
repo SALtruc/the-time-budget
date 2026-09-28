@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -33,6 +33,7 @@ export default function PairLobbyPage() {
   const [roomCode, setRoomCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const requestPending = useRef(false);
 
   if (!isSupabaseConfigured) {
     return (
@@ -59,6 +60,8 @@ export default function PairLobbyPage() {
   }
 
   async function handleCreate() {
+    if (requestPending.current) return;
+    requestPending.current = true;
     setLoading(true);
     setError(null);
     try {
@@ -68,15 +71,18 @@ export default function PairLobbyPage() {
     } catch (err) {
       setError(describeSessionError(err));
     } finally {
+      requestPending.current = false;
       setLoading(false);
     }
   }
 
   async function handleEnterRoomAsHost() {
+    if (requestPending.current) return;
     if (!name.trim()) {
       setError("Enter your name first.");
       return;
     }
+    requestPending.current = true;
     setLoading(true);
     setError(null);
     try {
@@ -101,15 +107,18 @@ export default function PairLobbyPage() {
     } catch (err) {
       setError(describeSessionError(err));
     } finally {
+      requestPending.current = false;
       setLoading(false);
     }
   }
 
   async function handleJoin() {
+    if (requestPending.current) return;
     if (!name.trim() || code.length !== 5) {
       setError("Enter your name and the 5-digit code.");
       return;
     }
+    requestPending.current = true;
     setLoading(true);
     setError(null);
     try {
@@ -137,6 +146,7 @@ export default function PairLobbyPage() {
     } catch (err) {
       setError(describeSessionError(err));
     } finally {
+      requestPending.current = false;
       setLoading(false);
     }
   }

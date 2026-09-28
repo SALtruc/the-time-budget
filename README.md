@@ -1,6 +1,6 @@
 # The Time Budget
 
-A weekly life-simulation game: allocate a 40-hour week across 7 activity
+A weekly life-simulation game: allocate a 168-hour week across 7 activity
 blocks and get matched to one of 17 "Time Profile" characters. Three modes —
 Self-paced (solo), Pair Comparison, and Group Roleplay — built with
 Next.js, Tailwind CSS, Zustand, and Supabase.
@@ -40,8 +40,19 @@ npm test
    - [`supabase/migrations/0002_profiles_and_bonus.sql`](supabase/migrations/0002_profiles_and_bonus.sql)
      — `player_profiles` table (RMIT ID/avatar/onboarding), plus
      `sessions.bonus_hours` and `participants.player_profile_id`.
+   - [`supabase/migrations/0003_allow_7_digit_student_ids.sql`](supabase/migrations/0003_allow_7_digit_student_ids.sql)
+     — supports the 7-digit student IDs used in onboarding.
+   - [`supabase/migrations/20260928055320_enforce_pair_capacity.sql`](supabase/migrations/20260928055320_enforce_pair_capacity.sql)
+     — limits pair rooms to two players, including simultaneous joins.
 
-   Both use the same permissive-RLS tradeoff (fine for a low-stakes classroom
+   For existing installations, apply the new capacity migration before deploying
+   the updated frontend. It preserves existing participants and results. The
+   frontend resumes a browser's saved participant instead of creating another
+   row, restores submitted results after reload, and compares the first two
+   completed players in older overfilled pair rooms. Participant names are
+   never used to merge players.
+
+   The schema uses a permissive-RLS tradeoff (fine for a low-stakes classroom
    game, not for anything sensitive — see the comments in each file), and
    both need explicit `grant`s in addition to the RLS policies (a fresh
    Postgres doesn't grant table access by default the way a hosted Supabase
@@ -83,10 +94,13 @@ isolation (see `lib/game/matchProfile.test.ts`).
 
 ## Design notes
 
-- The time base is a **40-hour week** (not the 168-hour figure mentioned
-  elsewhere in the source spec) — see the comment in `lib/game/hours.ts`.
+- The time base is a **168-hour week** — see `lib/game/hours.ts`.
   All 17 profile-matching rules and the 5 role pre-allocations are expressed
   as percentages, so only displayed hour figures depend on this constant.
+- Zen Master requires Rest & Wellbeing to be the highest block (ties count)
+  and at least **35%** of the week: 58.8 hours/week, or 8.4 hours/day.
+  Rest & Wellbeing includes sleep and other recovery activities. The other
+  profile rules and their priority order remain as specified.
 - Visual style ("sticker" cards: thick black borders, hard offset shadows,
   bold condensed headers) is defined as Tailwind utilities in
   `app/globals.css` and reused via `components/ui/StickerCard.tsx`.
@@ -96,4 +110,5 @@ isolation (see `lib/game/matchProfile.test.ts`).
 - **Frontend**: push to GitHub, import the repo on [Vercel](https://vercel.com/new)
   (free tier), and add the two `NEXT_PUBLIC_SUPABASE_*` env vars in the
   Vercel project settings.
-- **Backend/DB**: nothing to deploy — Supabase is already hosted.
+- **Backend/DB**: apply pending files in `supabase/migrations/` to the hosted
+  Supabase project before deploying frontend changes that depend on them.
