@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
@@ -54,6 +54,7 @@ export default function ProfilePage() {
   const playerProfileId = usePlayerStore((s) => s.playerProfileId);
 
   const [submitting, setSubmitting] = useState(false);
+  const requestPending = useRef(false);
 
   const hasYear = isValidYearOfStudy(yearOfStudy);
   const normalizedYear = normalizeYearOfStudy(yearOfStudy);
@@ -72,7 +73,8 @@ export default function ProfilePage() {
           : "Tell us more about yourself";
 
   async function handleNext() {
-    if (!ready) return;
+    if (!ready || requestPending.current) return;
+    requestPending.current = true;
     setSubmitting(true);
     if (isSupabaseConfigured && playerProfileId) {
       await updatePlayerProfile(playerProfileId, {
@@ -120,6 +122,7 @@ export default function ProfilePage() {
             value={yearOfStudy}
             onChange={(e) => setProfileFields({ yearOfStudy: e.target.value })}
             placeholder="e.g. Year 3"
+            disabled={submitting}
             className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm transition-colors"
           />
         </div>
@@ -135,6 +138,7 @@ export default function ProfilePage() {
             value={program}
             onChange={(e) => setProfileFields({ program: e.target.value })}
             placeholder="e.g. Digital Marketing"
+            disabled={submitting}
             aria-invalid={programLooksWrong}
             aria-describedby={programLooksWrong ? "program-hint" : undefined}
             className={clsx(
@@ -169,6 +173,7 @@ export default function ProfilePage() {
             value={accessCode}
             onChange={(e) => setProfileFields({ accessCode: e.target.value })}
             placeholder="e.g. CXVED"
+            disabled={submitting}
             className="w-full rounded-[16px] border-ink bg-white px-4 py-2.5 text-base font-semibold shadow-sticker-sm"
           />
         </div>
@@ -203,9 +208,11 @@ export default function ProfilePage() {
               size="lg"
               disabled={!ready || submitting}
               onClick={handleNext}
-              className={clsx("relative", ready && "animate-ready-bounce")}
+              aria-busy={submitting}
+              aria-live="polite"
+              className={clsx("relative", ready && !submitting && "animate-ready-bounce")}
             >
-              {submitting ? "Please wait..." : "Next"}
+              {submitting ? "Saving..." : "Next"}
             </Button>
           </div>
         </div>
