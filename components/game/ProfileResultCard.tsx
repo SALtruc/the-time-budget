@@ -79,7 +79,7 @@ export function ProfileResultCard({
 
       <StickerCard tone="white" className="p-5 sm:p-6">
         <h2 className="section-title-shadow text-stroke mb-3 font-display text-2xl font-extrabold leading-tight text-brand-pink sm:text-3xl">
-          SOMETHING TO TRY
+          WHAT COULD YOU TRY NEXT?
         </h2>
         <p className="mb-4 text-base font-semibold leading-relaxed sm:text-lg">
           {profile.advice}
