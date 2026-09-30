@@ -98,7 +98,8 @@ isolation (see `lib/game/matchProfile.test.ts`).
   All 17 profile-matching rules and the 5 role pre-allocations are expressed
   as percentages, so only displayed hour figures depend on this constant.
 - Zen Master requires Rest & Wellbeing to be the highest block (ties count)
-  and at least **35%** of the week: 58.8 hours/week, or 8.4 hours/day.
+  and more than **38%** of the week. With the UI's 5% allocation steps, the
+  first qualifying value is 40%: 67.2 hours/week, or 9.6 hours/day.
   Rest & Wellbeing includes sleep and other recovery activities. The other
   profile rules and their priority order remain as specified.
 - Visual style ("sticker" cards: thick black borders, hard offset shadows,

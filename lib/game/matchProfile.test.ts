@@ -215,7 +215,7 @@ const FIXTURES: Array<{ id: ProfileId; allocation: Allocation }> = [
 ];
 
 describe("matchProfileId", () => {
-  it.each([25, 30, 34])("does not classify %s%% rest as Zen Master", (restWellbeing) => {
+  it.each([25, 30, 35, 38])("does not classify %s%% rest as Zen Master", (restWellbeing) => {
     const allocation: Allocation = {
       selfStudying: 15, assignment: 15, networking: 5, restWellbeing,
       workExperience: 10, careerPrep: 10, leadership: 45 - restWellbeing,
@@ -223,21 +223,21 @@ describe("matchProfileId", () => {
     expect(matchProfileId(allocation)).not.toBe("zenMaster");
   });
 
-  it("matches Zen Master at exactly 35% rest", () => {
+  it("matches Zen Master above the 38% rest threshold", () => {
     expect(matchProfileId({
-      selfStudying: 15, assignment: 15, networking: 5, restWellbeing: 35,
-      workExperience: 10, careerPrep: 10, leadership: 10,
+      selfStudying: 15, assignment: 15, networking: 5, restWellbeing: 39,
+      workExperience: 10, careerPrep: 10, leadership: 6,
     })).toBe("zenMaster");
   });
 
   it("still requires rest to be the highest block, including ties", () => {
     expect(matchProfileId({
-      selfStudying: 35, assignment: 10, networking: 5, restWellbeing: 35,
-      workExperience: 5, careerPrep: 5, leadership: 5,
+      selfStudying: 39, assignment: 5, networking: 5, restWellbeing: 39,
+      workExperience: 4, careerPrep: 4, leadership: 4,
     })).toBe("zenMaster");
     expect(matchProfileId({
-      selfStudying: 40, assignment: 5, networking: 5, restWellbeing: 35,
-      workExperience: 5, careerPrep: 5, leadership: 5,
+      selfStudying: 40, assignment: 5, networking: 4, restWellbeing: 39,
+      workExperience: 4, careerPrep: 4, leadership: 4,
     })).toBe("rechargeChampion");
   });
 
